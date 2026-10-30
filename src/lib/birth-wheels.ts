@@ -24,6 +24,14 @@ export function maxBirthYear(): number {
   return new Date().getFullYear();
 }
 
+/** The wheel's option height counts as measured once readings above the
+ * 10 px real-height floor stopped changing between frames — a 40 px item
+ * on a narrow viewport settles exactly like the 44 px default, never
+ * against a hardcoded constant. */
+export function isSettledItemPx(previous: number, current: number): boolean {
+  return current > 10 && current === previous;
+}
+
 /** True when a birth year is inside the single shared bound. */
 export function isValidBirthYear(year: number, floor: number = MIN_BIRTH_YEAR, ceiling: number = maxBirthYear()): boolean {
   return Number.isFinite(year) && year >= floor && year <= ceiling;

@@ -7,8 +7,8 @@
  */
 import { expect, test } from 'vitest';
 import {
-  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isValidBirthYear,
-  maxBirthYear, monthName, timeWheelText, wheelKeyStep,
+  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
+  isValidBirthYear, maxBirthYear, monthName, timeWheelText, wheelKeyStep,
 } from '../src/lib/birth-wheels';
 import { fmtDateEt, fmtTime } from '../src/lib/format';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput } from '../src/lib/time';
@@ -38,7 +38,6 @@ test('month lengths and leap years decide how far the day wheel reaches', () => 
   expect(daysInMonth(1900, 2)).toBe(28); // not leap in the Gregorian rule
   expect(daysInMonth(1800, 2)).toBe(28); // at the bound: also not a leap year
   expect(daysInMonth(1991, 2)).toBe(28);
-  expect(daysInMonth(maxBirthYear(), 2)).toBe(daysInMonth(maxBirthYear(), 2));
   expect(daysInMonth(1991, 12)).toBe(31);
 });
 
@@ -152,10 +151,27 @@ test('the parser rejects a birth year outside 1800..current year at its edges', 
   // a genuinely wrong shape stays the generic error, not the year-range one
   expect(parseDatePartsEt('31.02.1991')).toBeNull();
   expect(parseDatePartsEt('14.03')).toBeNull();
-  // no second range anywhere: the parser's own supported band is exactly the wheel's
-  for (const year of [1795, 1800, 1991, maxBirthYear(), maxBirthYear() + 5]) {
-    expect(isValidBirthYear(year)).toBe(Number.isFinite(year) && year >= 1800 && year <= maxBirthYear());
-  }
+  // no second range anywhere: expectations come from the stated contract
+  // (1800..current calendar year), not from the predicate's own formula
+  expect(isValidBirthYear(1795)).toBe(false);
+  expect(isValidBirthYear(1800)).toBe(true);
+  expect(isValidBirthYear(1991)).toBe(true);
+  expect(isValidBirthYear(maxBirthYear())).toBe(true);
+  expect(isValidBirthYear(maxBirthYear() + 5)).toBe(false);
+});
+
+// ——— the settle gate matches the responsive grid at every viewport ———
+
+test('a 40px item on a 360px viewport settles like the 44px default, not against a constant', () => {
+  // styles not landed yet: keep waiting whatever the size
+  expect(isSettledItemPx(0, 0)).toBe(false);
+  expect(isSettledItemPx(0, 8)).toBe(false);
+  // first real measurement: confirm it is stable on the next frame
+  expect(isSettledItemPx(0, 44)).toBe(false);
+  expect(isSettledItemPx(44, 40)).toBe(false); // geometry still changing
+  // stable above the real-height floor: commit, narrow viewport included
+  expect(isSettledItemPx(44, 44)).toBe(true);
+  expect(isSettledItemPx(40, 40)).toBe(true);
 });
 
 // ——— the wheels feed the same resolveInstant gate ———

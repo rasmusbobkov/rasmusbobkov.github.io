@@ -9,8 +9,8 @@ import { computeChart, type Chart } from '../lib/chart';
 import { type BirthParts } from '../lib/birth-wheels';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import {
-  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isValidBirthYear,
-  maxBirthYear, monthName, timeWheelText, wheelKeyStep,
+  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
+  isValidBirthYear, maxBirthYear, monthName, timeWheelText, wheelKeyStep,
 } from '../lib/birth-wheels';
 import { searchPlaces, type Place } from '../lib/places';
 import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
@@ -31,8 +31,6 @@ let chart: Chart | null = null;
 let birthInstant: BirthInstant | null = null;
 let placeName = '';
 let selected: Selection | null = null;
-
-type BirthWheelsParts = BirthParts;
 
 // ——— i18n plumbing ———
 function fillStaticI18n(): void {
@@ -132,11 +130,11 @@ let chosenPlace: Place | null = null;
 const WIRE_ITEM_PX = 44; // fallback; the real size is --wheel-item, read below at run time
 const VISIBLE_PAD_ITEMS = 2; // two dimmed neighbours above and below
 let refreshBirthWheels: (() => void) | null = null;
-let writeBirthParts: ((parts: BirthWheelsParts, timeUnknown: boolean) => void) | null = null;
+let writeBirthParts: ((parts: BirthParts, timeUnknown: boolean) => void) | null = null;
 
 interface WheelCfg {
   id: string;
-  part: keyof BirthWheelsParts;
+  part: keyof BirthParts;
   firstValue: number; // the smallest value the list can hold
   itemCount: () => number; // day wheels rebuild; others are static ranges
   /** the option's own short text (the full-meaning text goes on the
@@ -172,7 +170,7 @@ function wireBirthWheels(): void {
     const m = /-opt-(\d+)$/.exec(id ?? '');
     return m ? Math.max(0, Number(m[1])) : fallback;
   };
-  let parts: BirthWheelsParts = {
+  let parts: BirthParts = {
     day: readInitial(cfgs[0], 14),
     month: readInitial(cfgs[1], 3),
     year: readInitial(cfgs[2], 1991),
@@ -365,7 +363,12 @@ function wireBirthWheels(): void {
     commit({ toText: false });
   };
 
-  refreshBirthWheels = () => commit({ toText: false });
+  refreshBirthWheels = () => {
+    // month names carry the language: rebuild that option list outright,
+    // the commit below repaints selection and scroll
+    renderWheel(cfgs[1]);
+    commit({ toText: false });
+  };
 
   renderWheel(cfgs[0]);
   renderWheel(cfgs[2]);
@@ -373,11 +376,19 @@ function wireBirthWheels(): void {
   applyUnknown({ toText: false });
 
   // Styles can land after this module runs (dev bundling), which leaves the
-  // initial centre scroll stuck at 0; re-paint once item geometry is real.
+  // initial centre scroll stuck at 0; re-paint once item geometry is real:
+  // stable readings above the same 10 px floor itemPx uses, at whatever
+  // size the viewport's grid gives them.
+  let lastMeasured = 0;
   const settle = (): void => {
     const item = wheels.get('birth-day')!.querySelector('.wheel-item');
-    if (item && item.getBoundingClientRect().height >= WIRE_ITEM_PX) commit({ toText: false });
-    else requestAnimationFrame(settle);
+    const height = item ? Math.round(item.getBoundingClientRect().height) : 0;
+    if (isSettledItemPx(lastMeasured, height)) {
+      commit({ toText: false });
+      return;
+    }
+    lastMeasured = height;
+    requestAnimationFrame(settle);
   };
   requestAnimationFrame(settle);
 }

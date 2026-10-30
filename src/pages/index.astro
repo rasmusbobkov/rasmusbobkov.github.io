@@ -5,8 +5,8 @@
  * default, rendered here so the page works before JS; the client re-localizes
  * on switch).
  */
-import { t, fmt, DEFAULT_LANG } from '../messages/catalogue';
-import { MIN_BIRTH_YEAR, maxBirthYear, daysInMonth, monthName } from '../lib/birth-wheels';
+import { t, DEFAULT_LANG } from '../messages/catalogue';
+import { MIN_BIRTH_YEAR, maxBirthYear, monthName } from '../lib/birth-wheels';
 import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
@@ -23,15 +23,6 @@ const YEAR_MIN = MIN_BIRTH_YEAR;
 const YEAR_MAX = maxBirthYear();
 const years = Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => YEAR_MIN + i);
 const pad2 = (n: number) => String(n).padStart(2, '0');
-const seedTime = `${pad2(seed.hour)}:${pad2(seed.minute)}`;
-const datePhrase = (day: number, month: number, year: number) =>
-  fmt(L, 'form.wheel.datePhrase', {
-    day: String(day),
-    month: monthName(L, month),
-    year: String(year),
-  });
-const timePhrase = (hour: number, minute: number) =>
-  fmt(L, 'form.wheel.timePhrase', { time: `${pad2(hour)}:${pad2(minute)}` });
 ---
 
 <!doctype html>
