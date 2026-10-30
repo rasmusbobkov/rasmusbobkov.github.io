@@ -4,7 +4,7 @@
  * strings come from the message catalogue; nothing is hardcoded here.
  */
 import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/catalogue';
-import { BODIES, SIGNS, type BodyId } from '../lib/astro-constants';
+import { SIGNS, type BodyId } from '../lib/astro-constants';
 import { computeChart, type Chart } from '../lib/chart';
 import { parseDateEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import { searchPlaces, type Place } from '../lib/places';
@@ -205,7 +205,8 @@ function wireBirthForm(): void {
   });
 }
 
-async function showChartFromInput(input: BirthInput): Promise<void> {
+async function showChartFromInput(input: BirthInput): Promise<boolean> {
+  const seq = ++chartSeq;
   setView('birth-form', false);
   document.getElementById('form-error')?.replaceChildren();
   const inst = resolveInstant(input);
@@ -214,32 +215,39 @@ async function showChartFromInput(input: BirthInput): Promise<void> {
     setView('birth-form', true);
     const errorEl = document.getElementById('form-error');
     if (errorEl) errorEl.textContent = t(lang, input.timeUnknown ? 'form.error.unknownDate' : 'form.error.unknownTime');
-    return;
+    return false;
   }
   setView('chart-view', true);
   const progress = document.getElementById('chart-progress');
   if (progress) progress.hidden = false;
   try {
     await getEphemeris(wasmUrl);
+    if (seq !== chartSeq) return false;
     const computed = await computeChart(inst, wasmUrl);
+    if (seq !== chartSeq) return false;
     chart = computed;
     birthInstant = inst;
     // persist locally
     const stored = toStored({ ...input, placeName });
     saveStoredBirthData(stored);
     renderChartView(computed, inst);
+    return true;
   } catch (err) {
+    if (seq !== chartSeq) return false;
     console.error(err);
     setView('chart-view', false);
     setView('birth-form', true);
     const errorEl = document.getElementById('form-error');
     if (errorEl) errorEl.textContent = t(lang, 'form.error.compute');
+    return false;
   } finally {
-    if (progress) progress.hidden = true;
+    if (seq === chartSeq && progress) progress.hidden = true;
   }
 }
 
 // ——— chart view ———
+let chartSeq = 0;
+
 function renderChartView(c: Chart, inst: BirthInstant): void {
   const headingEl = document.getElementById('chart-born');
   if (headingEl) {
@@ -261,7 +269,8 @@ function renderChartView(c: Chart, inst: BirthInstant): void {
   const svg = document.getElementById('chart-wheel-svg') as unknown as SVGSVGElement | null;
   if (svg) {
     renderWheel(svg, c, {
-      bodyNames: Object.fromEntries(BODIES.map((b) => [b.id, bodyName(b.id)])),
+      participantName,
+      aspectKind: (kind) => t(lang, ('aspect.' + kind) as MessageKey),
       houseItem: (n: number) => fmt(lang, 'house.item', { number: String(n) }),
     }, (sel) => {
       selected = sel;
@@ -319,10 +328,17 @@ function renderLists(c: Chart): void {
   }
 }
 
+function selectionAvailable(c: Chart, sel: Selection): boolean {
+  if (sel.type === 'body') return c.placements.some((p) => p.body === sel.id);
+  if (sel.type === 'house') return (c.houses ?? []).some((h) => h.house === sel.house);
+  return sel.index >= 0 && sel.index < c.aspects.length;
+}
+
 function renderDetail(c: Chart): void {
   const panel = document.getElementById('detail-panel-body');
   const heading = document.getElementById('detail-panel-heading');
   if (!panel || !heading) return;
+  if (selected && !selectionAvailable(c, selected)) selected = null;
   if (!selected) {
     heading.textContent = t(lang, 'chart.detailsHeading');
     panel.textContent = t(lang, 'chart.detailsEmpty');
@@ -421,9 +437,9 @@ function wireDataActions(c: Chart): void {
       }
       const input = toBirthInput(stored);
       placeName = stored.place.name;
-      await showChartFromInput(input);
+      const ok = await showChartFromInput(input);
       const note = document.getElementById('import-note');
-      if (note) note.textContent = t(lang, 'import.success');
+      if (note) note.textContent = ok ? t(lang, 'import.success') : '';
     });
     fileInput.click();
   }, { signal });

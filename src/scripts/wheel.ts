@@ -15,7 +15,8 @@ export type Selection =
   | { type: 'aspect'; index: number };
 
 export interface WheelLabels {
-  bodyNames: Partial<Record<BodyId, string>>;
+  participantName: (id: string) => string;
+  aspectKind: (kind: string) => string;
   houseItem: (n: number) => string;
 }
 
@@ -58,12 +59,23 @@ function attachActivation(node: SVGElement, handler: () => void): void {
 /** collision-avoiding glyph angles, preserving longitude order */
 export function displayAnglesFor(longitudes: readonly number[]): number[] {
   const MIN_SEP = 6.2;
+  const n = longitudes.length;
+  const result = new Array<number>(n);
+  if (n === 0) return result;
   const sorted = longitudes.map((lon, idx) => ({ lon, idx })).sort((a, b) => a.lon - b.lon);
-  const result = new Array<number>(longitudes.length);
+  let widest = -Infinity;
+  let start = 0;
+  for (let i = 0; i < n; i++) {
+    const nextLon = i === n - 1 ? sorted[0].lon + 360 : sorted[i + 1].lon;
+    if (nextLon - sorted[i].lon > widest) {
+      widest = nextLon - sorted[i].lon;
+      start = (i + 1) % n;
+    }
+  }
   let last = -Infinity;
-  for (const { lon, idx } of sorted) {
+  for (let k = 0; k < n; k++) {
+    const { lon, idx } = sorted[(start + k) % n];
     let bumped = lon;
-    while (bumped < last) bumped += 360;
     while (bumped - last < MIN_SEP) bumped += MIN_SEP;
     result[idx] = bumped % 360;
     last = bumped;
@@ -186,7 +198,7 @@ export function renderWheel(
 
     const hitG = el('g', {
       class: 'wheel-hit', tabindex: '0', role: 'button',
-      'aria-label': labels.bodyNames[p.body] ?? p.body,
+      'aria-label': labels.participantName(p.body),
     });
     const glyphText = el('text', {
       x: gPos.x.toFixed(1), y: gPos.y.toFixed(1),
@@ -213,7 +225,7 @@ export function renderWheel(
         : 'var(--gold)';
     const group = el('g', {
       class: 'wheel-aspect', tabindex: '0', role: 'button',
-      'aria-label': `${labels.bodyNames[asp.a as BodyId] ?? asp.a} ${asp.kind} ${labels.bodyNames[asp.b as BodyId] ?? asp.b}`,
+      'aria-label': `${labels.participantName(asp.a)} ${labels.aspectKind(asp.kind)} ${labels.participantName(asp.b)}`,
     });
     if (asp.kind === 'conjunction') {
       const midX = (pa.x + pb.x) / 2;

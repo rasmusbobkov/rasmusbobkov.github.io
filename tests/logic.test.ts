@@ -19,7 +19,6 @@ test('sep measures angular distance on the circle', () => {
 });
 
 test('the five aspects with their standard orbs', () => {
-  const A = { id: 'sun' as const, longitude: 100 };
   // conjunction <= 10
   expect(computeAspects([{ id: 'sun' as const, longitude: 0 }, { id: 'moon' as const, longitude: 5 }])).toHaveLength(1);
   expect(computeAspects([{ id: 'sun' as const, longitude: 0 }, { id: 'moon' as const, longitude: 10.5 }])).toHaveLength(0);
@@ -33,7 +32,6 @@ test('the five aspects with their standard orbs', () => {
   expect(computeAspects([{ id: 'sun' as const, longitude: 0 }, { id: 'moon' as const, longitude: 124 }])[0]?.kind).toBe('trine');
   // opposition <= 10
   expect(computeAspects([{ id: 'sun' as const, longitude: 0 }, { id: 'moon' as const, longitude: 175 }])[0]?.kind).toBe('opposition');
-  void A;
 });
 
 test('Asc/MC participate with tighter orbs', () => {
