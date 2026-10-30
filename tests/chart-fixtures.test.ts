@@ -15,9 +15,9 @@
  *    (https://ssd.jpl.nasa.gov/horizons/, observer ephemeris quantity 31,
  *    Apparent geocentric ecliptic longitude equinox-of-date, which includes
  *    light-time, gravitational deflection, stellar aberration and nutation)
- *    — measured agreement is <= 0.0006 arc-minutes, recorded per fixture in
- *    crossCheckHorizons. No consumer astrology app was used for any
- *    expected value.
+ *    — measured agreement is <= 0.0012 arc-minutes (max 0.00002°), recorded
+ *    per fixture in crossCheckHorizons. No consumer astrology app was used
+ *    for any expected value.
  *
  * The five documented charts span three decades, latitudes 64N..-36.8S and
  * a historical Estonian timezone offset (1961: Moscow time +03:00, before

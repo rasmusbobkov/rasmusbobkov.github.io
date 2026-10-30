@@ -92,7 +92,7 @@ const et = {
   'aspect.opposition': 'vastasseis',
   'aspect.orbColumn': 'orbiit',
   'aspect.meaning.conjunction': 'Kaks mõjutust ühes kohas: nad töötavad koos.',
-  'aspect.meaning.sextile': 'Avatud võimalus: vajab prodamist, et tekkis.',
+  'aspect.meaning.sextile': 'Avatud võimalus: vajab proovimist, et tekkis.',
   'aspect.meaning.square': 'Pinge: tõmbab tähelepanu ja nõuab rohkem õppimist.',
   'aspect.meaning.trine': 'Sujuvus: tugevad asjad liiguvad iseenesest.',
   'aspect.meaning.opposition': 'Tasakaal kahe poole vahel: jääkidele jääb vaatlus.',
@@ -122,6 +122,20 @@ const et = {
   'body.neptune.meaning': 'Unistused ja siseelamus.',
   'body.pluto.meaning': 'Sügavus ja muutused.',
   'body.meanNode.meaning': 'Elu kasvu suund.',
+
+  // Signs
+  'sign.name.1': 'Jäär',
+  'sign.name.2': 'Sõnn',
+  'sign.name.3': 'Kaksikud',
+  'sign.name.4': 'Vähk',
+  'sign.name.5': 'Lõvi',
+  'sign.name.6': 'Neitsi',
+  'sign.name.7': 'Kaalud',
+  'sign.name.8': 'Skorpion',
+  'sign.name.9': 'Ambur',
+  'sign.name.10': 'Kaljukits',
+  'sign.name.11': 'Veevalaja',
+  'sign.name.12': 'Kalad',
 
   // Houses
   'house.item': '{number}. maja',
@@ -169,7 +183,7 @@ const et = {
   'glossary.sextile': 'sekstiil',
   'glossary.sextile.desc': 'Nurk 60 kraadi: avatud võimalus, mis vajab ärksust.',
   'glossary.square': 'ruut',
-  'glossary.square.desc': 'Pingenv nurk: 90 kraadi.',
+  'glossary.square.desc': 'Pingeline nurk: 90 kraadi.',
   'glossary.trine': 'trigoon',
   'glossary.trine.desc': 'Sujuv nurk: 120 kraadi.',
   'glossary.opposition': 'vastasseis',

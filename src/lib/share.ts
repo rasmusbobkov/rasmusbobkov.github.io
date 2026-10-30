@@ -20,13 +20,17 @@ export function encodeShareFragment(
   const moon = placements.find((p) => p.body === 'moon');
   if (!sun || !moon) return null;
   const parts = [
-    `S${sun.signNum}:${sun.degreeInSign.toFixed(1)}`,
-    `M${moon.signNum}:${moon.degreeInSign.toFixed(1)}`,
+    `S${sun.signNum}:${encodeDegree(sun.degreeInSign)}`,
+    `M${moon.signNum}:${encodeDegree(moon.degreeInSign)}`,
   ];
   if (ascendant) {
-    parts.push(`R${ascendant.signNum}:${ascendant.degreeInSign.toFixed(1)}`);
+    parts.push(`R${ascendant.signNum}:${encodeDegree(ascendant.degreeInSign)}`);
   }
   return `p4=${parts.join(',')}`;
+}
+
+function encodeDegree(deg: number): string {
+  return Math.min(deg, 29.9).toFixed(1);
 }
 
 export function decodeShareFragment(fragment: string | null | undefined): Trio | null {

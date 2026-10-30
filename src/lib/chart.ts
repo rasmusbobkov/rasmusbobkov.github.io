@@ -153,28 +153,22 @@ export async function computeChart(instant: BirthInstant, wasmUrl?: string): Pro
 
   if (!instant.timeUnknown) {
     const hd = await sweHouses(jdUt, instant.place.lat, instant.place.lon, wasmUrl);
-    const cuspList = Array.from(hd.cusps ?? []);
-    if (cuspList.length >= 13) {
-      // the WASM houses call returns a leading placeholder: index 0 is not a cusp
-      cusps = [];
-      for (let i = 1; i <= 12; i++) {
-        const lon = cuspList[i]!;
-        cusps.push({
-          house: i as HouseNumber,
-          cuspLongitude: norm360(lon),
-          signNum: signOf(lon),
-          degreeInSign: degreeInSign(lon),
-        });
-      }
+    const cuspList = Array.from(hd.cusps);
+    // the WASM houses call returns a leading placeholder: index 0 is not a cusp
+    cusps = [];
+    for (let i = 1; i <= 12; i++) {
+      const lon = cuspList[i]!;
+      cusps.push({
+        house: i as HouseNumber,
+        cuspLongitude: norm360(lon),
+        signNum: signOf(lon),
+        degreeInSign: degreeInSign(lon),
+      });
     }
-    const ascLon = hd.ascendant ?? cuspList[0] ?? null;
-    const mcLon = hd.mc ?? cuspList[9] ?? null;
-    if (ascLon != null) {
-      ascendant = { longitude: norm360(ascLon), signNum: signOf(ascLon), degreeInSign: degreeInSign(ascLon) };
-    }
-    if (mcLon != null) {
-      mc = { longitude: norm360(mcLon), signNum: signOf(mcLon), degreeInSign: degreeInSign(mcLon) };
-    }
+    const ascLon = hd.ascendant;
+    const mcLon = hd.mc;
+    ascendant = { longitude: norm360(ascLon), signNum: signOf(ascLon), degreeInSign: degreeInSign(ascLon) };
+    mc = { longitude: norm360(mcLon), signNum: signOf(mcLon), degreeInSign: degreeInSign(mcLon) };
   }
 
   for (const p of placements) {

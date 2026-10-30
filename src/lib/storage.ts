@@ -41,11 +41,11 @@ export function toBirthInput(stored: StoredBirthData): BirthInput & { placeName:
 }
 
 export function loadStoredBirthData(): StoredBirthData | null {
-  const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
-  if (!raw) return null;
+  if (typeof localStorage === 'undefined') return null;
   try {
-    const parsed = JSON.parse(raw) as unknown;
-    return validateStored(parsed);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return validateStored(JSON.parse(raw) as unknown);
   } catch {
     return null;
   }
@@ -53,12 +53,16 @@ export function loadStoredBirthData(): StoredBirthData | null {
 
 export function saveStoredBirthData(data: StoredBirthData): void {
   if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch { /* storage full or blocked */ }
 }
 
 export function clearStoredBirthData(): void {
   if (typeof localStorage === 'undefined') return;
-  localStorage.removeItem(STORAGE_KEY);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch { /* storage unavailable */ }
 }
 
 export function validateStored(value: unknown): StoredBirthData | null {
@@ -96,7 +100,12 @@ export function exportJson(data: StoredBirthData): string {
 
 /** Import: parse and validate an exported file's text. */
 export function importJson(text: string): StoredBirthData | null {
-  const parsed = JSON.parse(text) as unknown;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text) as unknown;
+  } catch {
+    return null;
+  }
   if (typeof parsed !== 'object' || parsed === null) return null;
   const v = parsed as Record<string, unknown>;
   if (v.app !== 'firstmate-astro' || typeof v.birth !== 'object' || v.birth === null) return null;

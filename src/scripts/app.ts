@@ -8,7 +8,7 @@ import { SIGNS, type BodyId } from '../lib/astro-constants';
 import { computeChart, type Chart } from '../lib/chart';
 import { parseDateEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import { searchPlaces, type Place } from '../lib/places';
-import { fmtDegComma, fmtDeg, fmtDateEt } from '../lib/format';
+import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
 import {
   loadStoredBirthData, saveStoredBirthData, clearStoredBirthData,
   toStored, toBirthInput, exportJson, importJson, type StoredBirthData,
@@ -28,8 +28,6 @@ let placeName = '';
 let selected: Selection | null = null;
 
 // ——— i18n plumbing ———
-const SIGN_NAMES_ET = ['Jäär', 'Sõnn', 'Kaksikud', 'Vähk', 'Lõvi', 'Neitsi', 'Kaalud', 'Skorpion', 'Ambur', 'Kaljukits', 'Veevalaja', 'Kalad'] as const;
-
 function fillStaticI18n(): void {
   for (const node of document.querySelectorAll<HTMLElement>('[data-i18n]')) {
     const key = node.dataset.i18n as MessageKey;
@@ -45,7 +43,7 @@ function fillStaticI18n(): void {
 }
 
 function signName(num: number): string {
-  return SIGN_NAMES_ET[num - 1] ?? String(num);
+  return t(lang, ('sign.name.' + num) as MessageKey);
 }
 
 function bodyName(id: BodyId): string {
@@ -205,6 +203,27 @@ function wireBirthForm(): void {
   });
 }
 
+/** Put the failing input back into the form so the user can correct and resubmit. */
+function restoreBirthForm(input: BirthInput & { placeName?: string }): void {
+  const dateEl = document.getElementById('birth-date') as HTMLInputElement | null;
+  const timeEl = document.getElementById('birth-time') as HTMLInputElement | null;
+  const placeEl = document.getElementById('birth-place') as HTMLInputElement | null;
+  const unknownEl = document.getElementById('birth-unknown-time') as HTMLInputElement | null;
+  if (!dateEl || !timeEl || !placeEl || !unknownEl) return;
+  chosenPlace = {
+    name: input.placeName ?? placeName,
+    lat: input.place.lat,
+    lon: input.place.lon,
+    tz: input.place.tz,
+    population: 0,
+  };
+  placeEl.value = chosenPlace.name;
+  dateEl.value = fmtDateEt(input.year, input.month, input.day);
+  unknownEl.checked = input.timeUnknown;
+  timeEl.disabled = input.timeUnknown;
+  timeEl.value = input.timeUnknown ? '' : (fmtTime(input.hour, input.minute) ?? '');
+}
+
 async function showChartFromInput(input: BirthInput): Promise<boolean> {
   const seq = ++chartSeq;
   setView('birth-form', false);
@@ -213,6 +232,7 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
   if (!inst) {
     setView('chart-view', false);
     setView('birth-form', true);
+    restoreBirthForm(input);
     const errorEl = document.getElementById('form-error');
     if (errorEl) errorEl.textContent = t(lang, input.timeUnknown ? 'form.error.unknownDate' : 'form.error.unknownTime');
     return false;
@@ -237,6 +257,7 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
     console.error(err);
     setView('chart-view', false);
     setView('birth-form', true);
+    restoreBirthForm(input);
     const errorEl = document.getElementById('form-error');
     if (errorEl) errorEl.textContent = t(lang, 'form.error.compute');
     return false;
@@ -428,8 +449,8 @@ function wireDataActions(c: Chart): void {
     fileInput.addEventListener('change', async () => {
       const file = fileInput.files?.[0];
       if (!file) return;
-      const text = await file.text();
-      const stored = importJson(text);
+      const text = await file.text().catch(() => null);
+      const stored = text === null ? null : importJson(text);
       if (!stored) {
         const note = document.getElementById('import-note');
         if (note) note.textContent = t(lang, 'import.error');
