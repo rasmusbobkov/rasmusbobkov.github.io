@@ -3,7 +3,7 @@
   "include": [".astro/types.d.ts", "src/**/*", "tests/**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "allowJs": false
   }
 }

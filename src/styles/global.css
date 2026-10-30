@@ -1,6 +1,7 @@
 /* Firstmate Astro — the concept board's design language.
    Ink, parchment, gold; Fraunces for display, Inter for interface.
-   Fonts are self-hosted; no third-party requests. */
+   Fonts are self-hosted (face declarations in /fonts/fonts.css);
+   no third-party requests. */
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -35,34 +36,6 @@ body {
   min-height: 100vh;
 }
 
-@font-face {
-  font-family: 'Fraunces';
-  font-style: normal;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url('/fonts/fraunces-var.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Fraunces';
-  font-style: italic;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url('/fonts/fraunces-italic-var.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/fonts/inter-var.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 400 500;
-  font-display: swap;
-  src: url('/fonts/jetbrains-mono-var.woff2') format('woff2');
-}
 
 h1, h2, h3, h4 {
   font-family: var(--display);

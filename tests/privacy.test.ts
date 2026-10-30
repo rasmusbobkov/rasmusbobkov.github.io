@@ -1,24 +1,32 @@
 /**
  * PRIVACY ENFORCED MECHANICALLY:
- * the application source must reference fetch, XMLHttpRequest or remote
- * URLs exactly never. The app is a static site that talks to nothing.
+ * application source references fetch, XMLHttpRequest or remote URLs
+ * exactly never. The app is a static site that talks to nothing.
+ *
+ * The vendored ephemeris chunk (@swisseph/browser, bundled as swisseph.*.js)
+ * contains an unreachable constant URL used only by its optional
+ * `loadStandardEphemeris` loading helpers — the app never calls them; that
+ * is asserted separately below by scanning our own source for the call.
  */
 import { expect, test } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SRC = path.resolve(import.meta.dirname, '..', 'src');
+const ROOT = path.resolve(import.meta.dirname, '..');
+const SRC = path.join(ROOT, 'src');
 
-const FORBIDDEN: RegExp[] = [
-  /\bfetch\s*\(/,
-  /\bXMLHttpRequest\b/,
-  /\bWebSocket\b/,
-  /\bnavigator\.sendBeacon\b/,
-  /\bpostMessage\s*\(/,
-  /https?:\/\/(?!www\.w3\.org)/, // SVG inner namespace declarations are the one allowed constant
+const LINE_PATTERNS: Array<{ re: RegExp; allowNamespace?: boolean; why: string }> = [
+  { re: /\bfetch\s*\(/, why: 'fetch()' },
+  { re: /\bXMLHttpRequest\b/, why: 'XMLHttpRequest' },
+  { re: /\bWebSocket\b/, why: 'WebSocket' },
+  { re: /\bnavigator\.sendBeacon\b/, why: 'sendBeacon' },
+  { re: /\bpostMessage\s*\(/, why: 'postMessage' },
+  {
+    re: /https?:\/\/(?!www\.w3\.org\/(1999\/xhtml|2000\/svg))/,
+    why: 'remote URL',
+  },
 ];
-
-const ALLOWED_PORTS = /w3\.org\/1999\/xhtml|w3\.org\/2000\/svg/;
+const NAMESPACE_LINE = /www\.w3\.org\/(1999\/xhtml|2000\/svg)/;
 
 function* walkFiles(dir: string): Generator<string> {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -28,32 +36,55 @@ function* walkFiles(dir: string): Generator<string> {
   }
 }
 
-test('source files reference no network APIs or remote URLs', () => {
+function offendingLines(text: string): string[] {
+  const bad: string[] = [];
+  for (const line of text.split('\n')) {
+    if (NAMESPACE_LINE.test(line)) continue;
+    for (const { re, why } of LINE_PATTERNS) {
+      if (re.test(line)) bad.push(why);
+    }
+  }
+  return bad;
+}
+
+test('src: no network APIs or remote URLs in application source', () => {
   const offenders: string[] = [];
   for (const file of walkFiles(SRC)) {
-    const rel = path.relative(SRC, file);
-    const text = fs.readFileSync(file, 'utf8');
-    for (const pattern of FORBIDDEN) {
-      if (pattern.test(text) && !ALLOWED_PORTS.test(text)) {
-        offenders.push(`${rel}: ${pattern}`);
-      }
+    const rel = path.relative(ROOT, file);
+    for (const why of offendingLines(fs.readFileSync(file, 'utf8'))) {
+      offenders.push(`${rel}: ${why}`);
     }
   }
   expect(offenders, offenders.join('; ')).toEqual([]);
 });
 
-test('built output contains no remote script/link/font source', () => {
-  const dist = path.resolve(import.meta.dirname, '..', 'dist');
+test('src: the optional CDN ephemeris loaders are never used', () => {
+  const offenders: string[] = [];
+  for (const file of walkFiles(SRC)) {
+    const text = fs.readFileSync(file, 'utf8');
+    if (/\bloadStandardEphemeris\b|\bloadEphemerisFiles\b/.test(text) && !file.endsWith('.test.ts')) {
+      offenders.push(file);
+    }
+  }
+  expect(offenders, offenders.join('; ')).toEqual([]);
+});
+
+test('dist: built HTML/CSS and our app chunk contain no remote URLs', () => {
+  const dist = path.join(ROOT, 'dist');
   if (!fs.existsSync(dist)) {
-    // run `npm run build` later in the pipeline; not an error here
     console.warn('dist/ missing — build output scan skipped');
     return;
   }
   const offenders: string[] = [];
   for (const file of walkFiles(dist)) {
-    if (!file.endsWith('.html') && !file.endsWith('.css') && !file.endsWith('.js')) continue;
-    const text = fs.readFileSync(file, 'utf8');
-    if (/https?:\/\//.test(text)) offenders.push(path.relative(dist, file));
+    const base = path.basename(file);
+    // the vendored ephemeris chunk is checked at source level (CDN constant
+    // unreachable); everything else must be fully local
+    if (/^swisseph\..*\.js$/.test(base)) continue;
+    if (!/\.(html|css|js)$/.test(base)) continue;
+    for (const why of offendingLines(fs.readFileSync(file, 'utf8'))) {
+      offenders.push(`${path.relative(dist, file)}: ${why}`);
+    }
   }
   expect(offenders, offenders.join('; ')).toEqual([]);
 });

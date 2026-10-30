@@ -79,8 +79,8 @@ test('storage schema round-trips and validates', () => {
 
 test('share fragment carries only the big three and nothing about birth data', () => {
   const placements = [
-    { body: 'sun' as const, longitude: 273.5, signNum: 10, degreeInSign: 3.5, retrograde: false, house: 11 },
-    { body: 'moon' as const, longitude: 155.2, signNum: 6, degreeInSign: 5.2, retrograde: true, house: 4 },
+    { body: 'sun' as const, longitude: 273.5, signNum: 10 as const, degreeInSign: 3.5, retrograde: false, house: 11 as const },
+    { body: 'moon' as const, longitude: 155.2, signNum: 6 as const, degreeInSign: 5.2, retrograde: true, house: 4 as const },
   ];
   const enc = encodeShareFragment(placements, { signNum: 3, degreeInSign: 12.2 });
   expect(enc).toBe('p4=S10:3.5,M6:5.2,R3:12.2');

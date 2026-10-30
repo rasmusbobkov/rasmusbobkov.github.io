@@ -106,6 +106,8 @@ const et = {
   'body.neptune': 'Neptuun',
   'body.pluto': 'Pluuto',
   'body.meanNode': 'Kuu sõlm',
+  'body.asc': 'Tõusumärk',
+  'body.mc': 'MC',
   'body.sun.meaning': 'Elu põhisuund.',
   'body.moon.meaning': 'Sisemised vajadused.',
   'body.mercury.meaning': 'Kuidas mõtled ja räägid.',

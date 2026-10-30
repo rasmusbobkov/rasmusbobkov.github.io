@@ -2,9 +2,12 @@
  * Place search over the bundled offline dataset:
  * Estonian settlements (Europe/Tallinn) + major world cities with their IANA
  * timezone. No network geocoding at any point.
+ *
+ * The world-city dataset is code-split: it loads lazily on first use (when
+ * the user starts typing a birth place), keeping the initial payload small.
+ * Both datasets are 100% bundled/offline — no network ever.
  */
-import estoniaData from '../data/estonia-places.json';
-import worldData from '../data/world-cities.json';
+import { default as estoniaData } from '../data/estonia-places.json';
 
 export interface Place {
   name: string;
@@ -13,7 +16,6 @@ export interface Place {
   /** IANA timezone id */
   tz: string;
   population: number;
-  country: string;
 }
 
 interface RawRow {
@@ -22,22 +24,29 @@ interface RawRow {
   lon: number;
   pop: number;
   tz: string;
-  cc?: string;
 }
 
-function hydrate(rows: readonly RawRow[], country: string): Place[] {
+function hydrate(rows: readonly RawRow[], tzOverride?: string): Place[] {
   return rows.map((r) => ({
     name: r.n,
     lat: r.lat,
     lon: r.lon,
-    tz: r.tz,
+    tz: tzOverride ?? r.tz,
     population: r.pop,
-    country,
   }));
 }
 
-const ESTONIA = hydrate(estoniaData as RawRow[], 'EE').map((p) => ({ ...p, tz: 'Europe/Tallinn' }));
-const WORLD = hydrate(worldData as RawRow[], 'WORLD').filter((p) => p.tz.length > 0);
+const ESTONIA = hydrate(estoniaData as RawRow[], 'Europe/Tallinn');
+
+let worldCache: Place[] | null = null;
+
+async function worldPlaces(): Promise<Place[]> {
+  if (!worldCache) {
+    const mod = (await import('../data/world-cities.json')) as unknown as { default: RawRow[] };
+    worldCache = hydrate((mod.default as RawRow[]).filter((r) => r.tz.length > 0));
+  }
+  return worldCache;
+}
 
 /** õ/ä/ö/ü match their plain vowels; case-insensitive; NFC-normalized. */
 function normalize(text: string): string {
@@ -52,16 +61,6 @@ function normalize(text: string): string {
     .replaceAll('ž', 'z');
 }
 
-const INDEX_EE: ReadonlyArray<{ place: Place; key: string }> = ESTONIA.map((p) => ({
-  place: p,
-  key: normalize(p.name),
-}));
-
-const INDEX_WORLD: ReadonlyArray<{ place: Place; key: string }> = WORLD.map((p) => ({
-  place: p,
-  key: normalize(p.name),
-}));
-
 export interface SearchOptions {
   limit?: number;
 }
@@ -70,32 +69,26 @@ export async function searchPlaces(query: string, opts: SearchOptions = {}): Pro
   const limit = opts.limit ?? 9;
   const q = normalize(query.trim());
   if (q.length === 0) return [];
+  const world = await worldPlaces();
   const scored: Array<{ place: Place; score: number }> = [];
-  for (const list of [INDEX_EE, INDEX_WORLD]) {
-    for (const { place, key } of list) {
-      if (key === q) {
-        scored.push({ place, score: 0 });
-      } else if (key.startsWith(q)) {
-        scored.push({ place, score: 1 });
-      } else if (key.includes(q)) {
-        scored.push({ place, score: 2 });
-      }
+  for (const place of [...ESTONIA, ...world]) {
+    const key = normalize(place.name);
+    if (key === q) {
+      scored.push({ place, score: 0 });
+    } else if (key.startsWith(q)) {
+      scored.push({ place, score: 1 });
+    } else if (key.includes(q)) {
+      scored.push({ place, score: 2 });
     }
   }
   scored.sort((x, y) => {
     if (x.score !== y.score) return x.score - y.score;
-    if (x.place.country !== y.place.country) {
-      // Estonian places first
-      if (x.place.country === 'EE') return -1;
-      if (y.place.country === 'EE') return 1;
-      return (y.place.population - x.place.population);
-    }
     return y.place.population - x.place.population;
   });
   const out: Place[] = [];
   const seenNames = new Set<string>();
   for (const { place } of scored) {
-    const key = `${normalize(place.name)}|${place.country}`;
+    const key = `${normalize(place.name)}|${place.tz}`;
     if (seenNames.has(key)) continue;
     seenNames.add(key);
     out.push(place);
@@ -104,10 +97,11 @@ export async function searchPlaces(query: string, opts: SearchOptions = {}): Pro
   return out;
 }
 
-/** For tests: the bundled dataset must cover the exact chart fixtures */
-export function findPlace(name: string): Place | undefined {
+/** For tests and fixtures: exact-name lookup within the bundled data. */
+export async function findPlace(name: string): Promise<Place | undefined> {
   const q = normalize(name);
-  return [...INDEX_EE, ...INDEX_WORLD].find(({ key }) => key === q)?.place;
+  const world = await worldPlaces();
+  return [...ESTONIA, ...world].find((p) => normalize(p.name) === q);
 }
 
 export function placeLabel(place: Place): string {
