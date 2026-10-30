@@ -96,14 +96,3 @@ export async function searchPlaces(query: string, opts: SearchOptions = {}): Pro
   }
   return out;
 }
-
-/** For tests and fixtures: exact-name lookup within the bundled data. */
-export async function findPlace(name: string): Promise<Place | undefined> {
-  const q = normalize(name);
-  const world = await worldPlaces();
-  return [...ESTONIA, ...world].find((p) => normalize(p.name) === q);
-}
-
-export function placeLabel(place: Place): string {
-  return place.name;
-}

@@ -210,6 +210,7 @@ async function showChartFromInput(input: BirthInput): Promise<void> {
   document.getElementById('form-error')?.replaceChildren();
   const inst = resolveInstant(input);
   if (!inst) {
+    setView('chart-view', false);
     setView('birth-form', true);
     const errorEl = document.getElementById('form-error');
     if (errorEl) errorEl.textContent = t(lang, input.timeUnknown ? 'form.error.unknownDate' : 'form.error.unknownTime');
@@ -418,12 +419,11 @@ function wireDataActions(c: Chart): void {
         if (note) note.textContent = t(lang, 'import.error');
         return;
       }
-      saveStoredBirthData(stored);
-      const note = document.getElementById('import-note');
-      if (note) note.textContent = t(lang, 'import.success');
       const input = toBirthInput(stored);
       placeName = stored.place.name;
       await showChartFromInput(input);
+      const note = document.getElementById('import-note');
+      if (note) note.textContent = t(lang, 'import.success');
     });
     fileInput.click();
   }, { signal });

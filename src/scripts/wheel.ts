@@ -5,7 +5,7 @@
  * tappable (planets, houses, aspect lines) and the same content exists as
  * text in the accessible list outside the SVG.
  */
-import { SIGNS, BODIES, ASPECTS, type BodyId } from '../lib/astro-constants';
+import { SIGNS, BODIES, type BodyId } from '../lib/astro-constants';
 import type { Chart, Placement, HouseCusp } from '../lib/chart';
 import type { AspectParticipant } from '../lib/chart';
 
@@ -15,8 +15,6 @@ export type Selection =
   | { type: 'aspect'; index: number };
 
 export interface WheelLabels {
-  /** index 0..11 -> Estonian sign name */
-  signGlyphs?: undefined;
   bodyNames: Partial<Record<BodyId, string>>;
   houseItem: (n: number) => string;
 }
@@ -240,6 +238,4 @@ export function renderWheel(
     attachActivation(group, () => onSelect({ type: 'aspect', index: idx }));
     svgHost.appendChild(group);
   });
-
-  void ASPECTS.length;
 }
