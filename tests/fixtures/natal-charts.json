@@ -1,0 +1,422 @@
+[
+  {
+    "id": "tallinn-1961",
+    "birth": {
+      "date": "1961-03-25",
+      "time": "03:15",
+      "place": "Tallinn, Estonia",
+      "lat": 59.437,
+      "lon": 24.7536,
+      "tz": "Europe/Tallinn",
+      "offsetMinutes": 180,
+      "utcInstant": "1961-03-25T00:15Z",
+      "eraNote": "Estonian SSR under Moscow time (UTC+03:00); daylight saving time was not in use in Estonia until 1981, so the historical offset differs from the modern Europe/Tallinn rules"
+    },
+    "julianDayUt": 2437383.510416667,
+    "reference": {
+      "planets": {
+        "sun": {
+          "lon": 4.121499,
+          "speed": 0.990655
+        },
+        "moon": {
+          "lon": 103.935604,
+          "speed": 11.903171
+        },
+        "mercury": {
+          "lon": 336.801889,
+          "speed": 1.167089
+        },
+        "venus": {
+          "lon": 28.737978,
+          "speed": -0.172652
+        },
+        "mars": {
+          "lon": 100.609656,
+          "speed": 0.388477
+        },
+        "jupiter": {
+          "lon": 301.664104,
+          "speed": 0.163309
+        },
+        "saturn": {
+          "lon": 298.20828,
+          "speed": 0.069442
+        },
+        "uranus": {
+          "lon": 142.190596,
+          "speed": -0.029077
+        },
+        "neptune": {
+          "lon": 220.862362,
+          "speed": -0.020363
+        },
+        "pluto": {
+          "lon": 156.187224,
+          "speed": -0.022191
+        },
+        "meanNode": {
+          "lon": 154.947006,
+          "speed": -0.052954
+        }
+      },
+      "houses": {
+        "asc": 256.593446,
+        "mc": 212.938433,
+        "c1": 256.593446,
+        "c2": 304.340594,
+        "c3": 1.04993,
+        "c4": 32.938433,
+        "c5": 51.84692,
+        "c6": 65.301627,
+        "c7": 76.593446,
+        "c8": 124.340594,
+        "c9": 181.04993,
+        "c10": 212.938433,
+        "c11": 231.84692,
+        "c12": 245.301627
+      }
+    },
+    "crossCheckHorizons": {
+      "body": "sun",
+      "lonApparentEclipticOfDate": 4.121481,
+      "maxAbsDiffDeg": 0.000018
+    }
+  },
+  {
+    "id": "johannesburg-1975",
+    "birth": {
+      "date": "1975-08-10",
+      "time": "07:30",
+      "place": "Johannesburg, South Africa",
+      "lat": -26.2025,
+      "lon": 28.0436,
+      "tz": "Africa/Johannesburg",
+      "offsetMinutes": 120,
+      "utcInstant": "1975-08-10T05:30Z",
+      "eraNote": "UTC+02:00 constant since 1903, no DST"
+    },
+    "julianDayUt": 2442634.729166667,
+    "reference": {
+      "planets": {
+        "sun": {
+          "lon": 136.988108,
+          "speed": 0.959309
+        },
+        "moon": {
+          "lon": 175.447719,
+          "speed": 14.910954
+        },
+        "mercury": {
+          "lon": 146.199256,
+          "speed": 1.898275
+        },
+        "venus": {
+          "lon": 161.400157,
+          "speed": -0.157216
+        },
+        "mars": {
+          "lon": 57.102822,
+          "speed": 0.631497
+        },
+        "jupiter": {
+          "lon": 24.669103,
+          "speed": 0.015098
+        },
+        "saturn": {
+          "lon": 115.777959,
+          "speed": 0.124046
+        },
+        "uranus": {
+          "lon": 208.85924,
+          "speed": 0.028928
+        },
+        "neptune": {
+          "lon": 249.056842,
+          "speed": -0.00605
+        },
+        "pluto": {
+          "lon": 187.257695,
+          "speed": 0.027313
+        },
+        "meanNode": {
+          "lon": 236.881447,
+          "speed": -0.052986
+        }
+      },
+      "houses": {
+        "asc": 151.037402,
+        "mc": 70.245686,
+        "c1": 151.037402,
+        "c2": 190.928019,
+        "c3": 223.781018,
+        "c4": 250.245686,
+        "c5": 274.15712,
+        "c6": 299.48597,
+        "c7": 331.037402,
+        "c8": 10.928019,
+        "c9": 43.781018,
+        "c10": 70.245686,
+        "c11": 94.15712,
+        "c12": 119.48597
+      }
+    },
+    "crossCheckHorizons": {
+      "body": "sun",
+      "lonApparentEclipticOfDate": 136.9880964,
+      "maxAbsDiffDeg": 0.000012
+    }
+  },
+  {
+    "id": "reykjavik-1981",
+    "birth": {
+      "date": "1981-06-21",
+      "time": "13:00",
+      "place": "Reykjavik, Iceland",
+      "lat": 64.1355,
+      "lon": -21.8954,
+      "tz": "Atlantic/Reykjavik",
+      "offsetMinutes": 0,
+      "utcInstant": "1981-06-21T13:00Z",
+      "eraNote": "UTC+00:00 permanent since 1968 (no DST after then), subarctic latitude 64N"
+    },
+    "julianDayUt": 2444777.041666667,
+    "reference": {
+      "planets": {
+        "sun": {
+          "lon": 90.0499,
+          "speed": 0.953877
+        },
+        "moon": {
+          "lon": 315.019374,
+          "speed": 12.8218
+        },
+        "mercury": {
+          "lon": 90.81281,
+          "speed": -0.578453
+        },
+        "venus": {
+          "lon": 109.88093,
+          "speed": 1.219464
+        },
+        "mars": {
+          "lon": 71.539843,
+          "speed": 0.69996
+        },
+        "jupiter": {
+          "lon": 181.347349,
+          "speed": 0.071086
+        },
+        "saturn": {
+          "lon": 183.223858,
+          "speed": 0.027478
+        },
+        "uranus": {
+          "lon": 236.817043,
+          "speed": -0.032457
+        },
+        "neptune": {
+          "lon": 263.298239,
+          "speed": -0.026766
+        },
+        "pluto": {
+          "lon": 201.562893,
+          "speed": -0.005657
+        },
+        "meanNode": {
+          "lon": 123.429491,
+          "speed": -0.052941
+        }
+      },
+      "houses": {
+        "asc": 175.824368,
+        "mc": 83.334674,
+        "c1": 175.824368,
+        "c2": 195.481609,
+        "c3": 223.270699,
+        "c4": 263.334674,
+        "c5": 305.383054,
+        "c6": 334.755682,
+        "c7": 355.824368,
+        "c8": 15.481609,
+        "c9": 43.270699,
+        "c10": 83.334674,
+        "c11": 125.383054,
+        "c12": 154.755682
+      }
+    },
+    "crossCheckHorizons": {
+      "body": "sun",
+      "lonApparentEclipticOfDate": 90.0498801,
+      "maxAbsDiffDeg": 0.00002
+    }
+  },
+  {
+    "id": "hongkong-1978",
+    "birth": {
+      "date": "1978-11-01",
+      "time": "21:15",
+      "place": "Hong Kong",
+      "lat": 22.3193,
+      "lon": 114.1694,
+      "tz": "Asia/Hong_Kong",
+      "offsetMinutes": 480,
+      "utcInstant": "1978-11-01T13:15Z",
+      "eraNote": "UTC+08:00; the October 1978 DST period had already ended"
+    },
+    "julianDayUt": 2443814.052083333,
+    "reference": {
+      "planets": {
+        "sun": {
+          "lon": 218.763208,
+          "speed": 1.000995
+        },
+        "moon": {
+          "lon": 227.883396,
+          "speed": 13.870408
+        },
+        "mercury": {
+          "lon": 237.530336,
+          "speed": 1.404696
+        },
+        "venus": {
+          "lon": 228.799277,
+          "speed": -0.523468
+        },
+        "mars": {
+          "lon": 239.638539,
+          "speed": 0.71729
+        },
+        "jupiter": {
+          "lon": 128.113433,
+          "speed": 0.076046
+        },
+        "saturn": {
+          "lon": 161.467849,
+          "speed": 0.08685
+        },
+        "uranus": {
+          "lon": 226.226148,
+          "speed": 0.062055
+        },
+        "neptune": {
+          "lon": 256.649764,
+          "speed": 0.031255
+        },
+        "pluto": {
+          "lon": 197.465035,
+          "speed": 0.037484
+        },
+        "meanNode": {
+          "lon": 174.426484,
+          "speed": -0.052957
+        }
+      },
+      "houses": {
+        "asc": 93.324249,
+        "mc": 352.802274,
+        "c1": 93.324249,
+        "c2": 117.28168,
+        "c3": 142.986338,
+        "c4": 172.802274,
+        "c5": 206.750862,
+        "c6": 241.378966,
+        "c7": 273.324249,
+        "c8": 297.28168,
+        "c9": 322.986338,
+        "c10": 352.802274,
+        "c11": 26.750862,
+        "c12": 61.378966
+      }
+    },
+    "crossCheckHorizons": {
+      "body": "sun",
+      "lonApparentEclipticOfDate": 218.7631915,
+      "maxAbsDiffDeg": 0.000016
+    }
+  },
+  {
+    "id": "auckland-1990",
+    "birth": {
+      "date": "1990-12-24",
+      "time": "09:30",
+      "place": "Auckland, New Zealand",
+      "lat": -36.8485,
+      "lon": 174.7633,
+      "tz": "Pacific/Auckland",
+      "offsetMinutes": 780,
+      "utcInstant": "1990-12-23T20:30Z",
+      "eraNote": "NZDT UTC+13:00, Southern Hemisphere summer daylight saving"
+    },
+    "julianDayUt": 2448249.354166667,
+    "reference": {
+      "planets": {
+        "sun": {
+          "lon": 271.756483,
+          "speed": 1.018688
+        },
+        "moon": {
+          "lon": 346.236222,
+          "speed": 12.892742
+        },
+        "mercury": {
+          "lon": 272.869042,
+          "speed": -1.370344
+        },
+        "venus": {
+          "lon": 284.502416,
+          "speed": 1.255131
+        },
+        "mars": {
+          "lon": 58.257583,
+          "speed": -0.117723
+        },
+        "jupiter": {
+          "lon": 132.686906,
+          "speed": -0.075411
+        },
+        "saturn": {
+          "lon": 294.730412,
+          "speed": 0.112655
+        },
+        "uranus": {
+          "lon": 279.242449,
+          "speed": 0.05955
+        },
+        "neptune": {
+          "lon": 283.810649,
+          "speed": 0.037209
+        },
+        "pluto": {
+          "lon": 229.343264,
+          "speed": 0.032045
+        },
+        "meanNode": {
+          "lon": 299.565515,
+          "speed": -0.052968
+        }
+      },
+      "houses": {
+        "asc": 314.68456,
+        "mc": 216.716953,
+        "c1": 314.68456,
+        "c2": 337.155438,
+        "c3": 4.309491,
+        "c4": 36.716953,
+        "c5": 71.835117,
+        "c6": 105.191183,
+        "c7": 134.68456,
+        "c8": 157.155438,
+        "c9": 184.309491,
+        "c10": 216.716953,
+        "c11": 251.835117,
+        "c12": 285.191183
+      }
+    },
+    "crossCheckHorizons": {
+      "body": "sun",
+      "lonApparentEclipticOfDate": 271.7564654,
+      "maxAbsDiffDeg": 0.000018
+    }
+  }
+]
