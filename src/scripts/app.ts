@@ -39,6 +39,8 @@ function fillStaticI18n(): void {
     const key = node.dataset.i18nPlaceholder as MessageKey;
     if (node instanceof HTMLInputElement) node.placeholder = t(lang, key);
   }
+  const enNote = document.getElementById('lang-coming');
+  if (enNote) enNote.hidden = lang !== 'en';
   document.documentElement.lang = lang;
 }
 
@@ -64,6 +66,10 @@ function setView(id: string, visible: boolean): void {
 
 // ——— boot ———
 async function boot(): Promise<void> {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === 'et' || saved === 'en') lang = saved;
+  } catch { /* private mode */ }
   fillStaticI18n();
 
   document.getElementById('lang-et')?.addEventListener('click', () => setLang('et'));
@@ -97,8 +103,6 @@ function setLang(next: Lang): void {
   lang = next;
   try { localStorage.setItem(LANG_KEY, next); } catch { /* private mode */ }
   fillStaticI18n();
-  const enNote = document.getElementById('lang-coming');
-  if (enNote) enNote.hidden = next !== 'en';
   if (chart && birthInstant) {
     renderChartView(chart, birthInstant);
   }
@@ -114,6 +118,7 @@ function wireBirthForm(): void {
   const unknownEl = document.getElementById('birth-unknown-time') as HTMLInputElement | null;
   const resultsEl = document.getElementById('place-results');
   const errorEl = document.getElementById('form-error');
+  let searchSeq = 0;
 
   unknownEl?.addEventListener('change', () => {
     if (timeEl) {
@@ -125,6 +130,8 @@ function wireBirthForm(): void {
   placeEl?.addEventListener('input', async () => {
     chosenPlace = null;
     const q = placeEl.value;
+    searchSeq += 1;
+    const seq = searchSeq;
     if (!resultsEl || q.trim().length < 2) {
       if (resultsEl) {
         resultsEl.innerHTML = '';
@@ -133,7 +140,7 @@ function wireBirthForm(): void {
       return;
     }
     const results = await searchPlaces(q, { limit: 8 });
-    if (!resultsEl) return;
+    if (!resultsEl || seq !== searchSeq) return;
     resultsEl.innerHTML = '';
     if (results.length === 0) {
       const li = document.createElement('li');
@@ -222,6 +229,10 @@ async function showChartFromInput(input: BirthInput): Promise<void> {
     renderChartView(computed, inst);
   } catch (err) {
     console.error(err);
+    setView('chart-view', false);
+    setView('birth-form', true);
+    const errorEl = document.getElementById('form-error');
+    if (errorEl) errorEl.textContent = t(lang, 'form.error.compute');
   } finally {
     if (progress) progress.hidden = true;
   }
@@ -357,9 +368,16 @@ function renderDetail(c: Chart): void {
 }
 
 // ——— share / export / import / reset ———
+let dataActionsController: AbortController | null = null;
+
 function wireDataActions(c: Chart): void {
-  const shareBtn = document.getElementById('share-copy');
-  shareBtn?.replaceWith(shareBtn.cloneNode(true));
+  // rewiring on every render must not duplicate listeners
+  dataActionsController?.abort();
+
+  const controller = new AbortController();
+  dataActionsController = controller;
+  const signal = controller.signal;
+
   document.getElementById('share-copy')?.addEventListener('click', async () => {
     const frag = encodeShareFragment(c.placements, c.ascendant);
     if (!frag) return;
@@ -373,10 +391,9 @@ function wireDataActions(c: Chart): void {
       const note = document.getElementById('share-note');
       if (note) note.textContent = url;
     }
-  });
+  }, { signal });
 
-  const exportBtn = document.getElementById('export-json');
-  exportBtn?.addEventListener('click', () => {
+  document.getElementById('export-json')?.addEventListener('click', () => {
     const stored = loadStoredBirthData();
     if (!stored) return;
     const blob = new Blob([exportJson(stored)], { type: 'application/json' });
@@ -385,10 +402,9 @@ function wireDataActions(c: Chart): void {
     a.download = 'firstmate-astro-andmed.json';
     a.click();
     URL.revokeObjectURL(a.href);
-  });
+  }, { signal });
 
-  const importBtn = document.getElementById('import-json');
-  importBtn?.addEventListener('click', () => {
+  document.getElementById('import-json')?.addEventListener('click', () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'application/json,.json';
@@ -410,14 +426,13 @@ function wireDataActions(c: Chart): void {
       await showChartFromInput(input);
     });
     fileInput.click();
-  });
+  }, { signal });
 
-  const resetBtn = document.getElementById('reset-data');
-  resetBtn?.addEventListener('click', () => {
+  document.getElementById('reset-data')?.addEventListener('click', () => {
     if (!confirm(t(lang, 'reset.confirm'))) return;
     clearStoredBirthData();
     location.reload();
-  });
+  }, { signal });
 }
 
 // ——— shared trio view ———

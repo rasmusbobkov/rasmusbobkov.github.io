@@ -69,6 +69,11 @@ export function validateStored(value: unknown): StoredBirthData | null {
   if (!d || typeof d.year !== 'number' || typeof d.month !== 'number' || typeof d.day !== 'number') return null;
   const p = v.place as Record<string, unknown> | undefined;
   if (!p || typeof p.lat !== 'number' || typeof p.lon !== 'number' || typeof p.tz !== 'string' || typeof p.name !== 'string') return null;
+  if (
+    !Number.isFinite(p.lat) || p.lat < -90 || p.lat > 90 ||
+    !Number.isFinite(p.lon) || p.lon < -180 || p.lon > 180 ||
+    p.tz.length === 0
+  ) return null;
   let time: { hour: number; minute: number } | null = null;
   if (!v.timeUnknown) {
     const t = v.time as Record<string, unknown> | undefined;

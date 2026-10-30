@@ -44,6 +44,7 @@ const et = {
   'form.error.place': 'Vali sünnikoht nimekirjast.',
   'form.error.unknownDate': 'Sellist kuupäeva ei ole.',
   'form.error.unknownTime': 'Sellist kellaaega ei ole.',
+  'form.error.compute': 'Kaarti ei õnnestunud arvutada. Proovi uuesti.',
 
   // Chart view
   'chart.heading': 'Sinu sünnikaart',

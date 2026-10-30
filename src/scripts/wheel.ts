@@ -222,7 +222,7 @@ export function renderWheel(
       const midY = (pa.y + pb.y) / 2;
       const midAngle = (Math.atan2(midY - CY, midX - CX) * 180) / Math.PI;
       const arcR = Math.max(40, Math.hypot(midX - CX, midY - CY) * 0.3);
-      const arcMid = polar(CX, CY, arcR, midAngle);
+      const arcMid = polar(CX, CY, arcR, -midAngle);
       group.appendChild(el('path', {
         d: `M ${pa.x.toFixed(1)} ${pa.y.toFixed(1)} Q ${arcMid.x.toFixed(1)} ${arcMid.y.toFixed(1)} ${pb.x.toFixed(1)} ${pb.y.toFixed(1)}`,
         fill: 'none', stroke: color, 'stroke-width': 4.5, opacity: 0.55, 'stroke-linecap': 'round',

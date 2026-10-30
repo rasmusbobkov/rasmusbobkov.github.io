@@ -43,8 +43,9 @@ export function resolveInstant(input: BirthInput): BirthInstant | null {
     { zone: input.place.tz },
   );
   if (!local.isValid) return null;
-  // Luxon keeps wall time in zones with gaps ambiguously; an invalid result
-  // after construction means a nonexistent local time (DST gap).
+  // Luxon constructs a DST-gap wall time as valid but forward-shifted, so
+  // require the resolved wall clock to be the one that was entered.
+  if (local.hour !== hour || local.minute !== minute) return null;
   const utcDt = local.toUTC();
   // The zone's offset actually applied to this instant, minutes east of UTC.
   const offsetMinutes = local.offset;

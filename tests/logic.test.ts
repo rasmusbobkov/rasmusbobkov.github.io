@@ -7,7 +7,7 @@ import { computeAspects, sep, norm360, signOf } from '../src/lib/chart';
 import { encodeShareFragment, decodeShareFragment } from '../src/lib/share';
 import { toStored, validateStored, exportJson, importJson } from '../src/lib/storage';
 import { fmtDegComma, fmtDateEt } from '../src/lib/format';
-import { parseDateEt, parseTimeEt } from '../src/lib/time';
+import { parseDateEt, parseTimeEt, resolveInstant, type BirthInput } from '../src/lib/time';
 
 test('sep measures angular distance on the circle', () => {
   expect(sep(10, 15)).toBe(5);
@@ -58,11 +58,6 @@ test('angles do not aspect each other', () => {
   expect(res).toHaveLength(0);
 });
 
-test('retrograde is carried through placements', () => {
-  // covered in fixtures via speed sign; here nothing to compute
-  expect(true).toBe(true);
-});
-
 test('storage schema round-trips and validates', () => {
   const input = {
     year: 1991, month: 3, day: 14, hour: 14, minute: 30, timeUnknown: false,
@@ -75,6 +70,9 @@ test('storage schema round-trips and validates', () => {
   expect(importJson(exportJson(back!))!.place.name).toBe('Tallinn');
   expect(validateStored({ schemaVersion: 99, date: {}, place: {}, time: {} })).toBeNull();
   expect(validateStored({ schemaVersion: 1, date: { year: 1.5, month: 1, day: 1 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 'a', minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 999, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 999, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: '' }, time: { hour: 0, minute: 0 } })).toBeNull();
 });
 
 test('share fragment carries only the big three and nothing about birth data', () => {
@@ -84,8 +82,6 @@ test('share fragment carries only the big three and nothing about birth data', (
   ];
   const enc = encodeShareFragment(placements, { signNum: 3, degreeInSign: 12.2 });
   expect(enc).toBe('p4=S10:3.5,M6:5.2,R3:12.2');
-  expect(String(enc)).not.toContain('14');
-  expect(String(enc)).not.toContain('30');
   const dec = decodeShareFragment('#' + enc);
   expect(dec).toEqual({
     sun: { signNum: 10, degree: 3.5 },
@@ -107,4 +103,19 @@ test('formatting: decimal comma and dd.mm.yyyy', () => {
   expect(parseTimeEt('9:05')).toEqual({ hour: 9, minute: 5 });
   expect(parseTimeEt('24:00')).toBeNull();
   expect(parseTimeEt('14:60')).toBeNull();
+});
+
+test('a wall time inside a DST spring gap is rejected, not forward-shifted', () => {
+  const base = {
+    year: 1990, month: 3, day: 25, hour: 2, minute: 30, timeUnknown: false,
+    place: { lat: 59.437, lon: 24.7536, tz: 'Europe/Tallinn' },
+  } satisfies BirthInput;
+  // 1990-03-25 02:00 EET -> 03:00 EEST: 02:30 never happened in Tallinn
+  expect(resolveInstant(base)).toBeNull();
+  // the same clock time one hour later exists and keeps the entered wall time
+  const exists = resolveInstant({ ...base, hour: 3, minute: 30 });
+  expect(exists).not.toBeNull();
+  expect(exists?.localTime).toEqual({ hour: 3, minute: 30 });
+  expect(exists?.offsetMinutes).toBe(180);
+  expect(exists?.utc.isoString.slice(0, 16)).toBe('1990-03-25T00:30');
 });

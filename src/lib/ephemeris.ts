@@ -20,6 +20,10 @@ export function getEphemeris(wasmUrl?: string): Promise<SwissEphemeris> {
       await swe.init(wasmUrl);
       return swe;
     })();
+    // a failed init must not poison the singleton for the rest of the session
+    swePromise.catch(() => {
+      swePromise = null;
+    });
   }
   return swePromise;
 }
