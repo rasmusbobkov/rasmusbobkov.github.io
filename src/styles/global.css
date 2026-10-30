@@ -1,0 +1,182 @@
+/* Firstmate Astro — the concept board's design language.
+   Ink, parchment, gold; Fraunces for display, Inter for interface.
+   Fonts are self-hosted; no third-party requests. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --ink: #0A0C11;
+  --ink-2: #10141B;
+  --ink-3: #161B24;
+  --paper: #F1E9DA;
+  --gold: #C6A15F;
+  --gold-dim: rgba(198, 161, 95, .16);
+  --sage: #7E9C88;
+  --rose: #B57B7C;
+  --slate: #70809B;
+  --muted: rgba(241, 233, 218, .64);
+  --faint: rgba(241, 233, 218, .36);
+  --line: rgba(241, 233, 218, .13);
+  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --glyph: 'Apple Symbols', 'Segoe UI Symbol', 'DejaVu Sans', serif;
+}
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-weight: 350;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-italic-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-var.woff2') format('woff2');
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 330;
+  letter-spacing: -.015em;
+  line-height: 1.14;
+  margin: 0;
+  color: var(--paper);
+}
+
+a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(198, 161, 95, .3); }
+a:hover { border-bottom-color: var(--gold); }
+
+button {
+  font-family: var(--body);
+  cursor: pointer;
+  border-radius: 10px;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid var(--line);
+  font-size: 14px;
+  padding: 9px 18px;
+  transition: border-color .15s ease, background .15s ease, color .15s ease;
+  letter-spacing: .01em;
+}
+button:hover { border-color: rgba(198, 161, 95, .5); }
+button.primary {
+  background: var(--gold);
+  color: #161208;
+  font-weight: 550;
+  border-color: var(--gold);
+  letter-spacing: .02em;
+}
+button.primary:hover { filter: brightness(1.06); }
+button.chip {
+  padding: 5px 13px;
+  font-size: 12.5px;
+  border-radius: 8px;
+  background: var(--gold-dim);
+  border-color: rgba(198, 161, 95, .3);
+  color: var(--gold);
+  font-family: var(--mono);
+  letter-spacing: .02em;
+}
+button.chip:hover { color: var(--paper); }
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+input {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--paper);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  width: 100%;
+  letter-spacing: .02em;
+  transition: border-color .15s ease;
+}
+input:focus { border-color: rgba(198, 161, 95, .55); }
+input::placeholder { color: var(--faint); }
+label { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--mono); color: var(--faint); margin: 0 0 7px; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+@media (max-width: 640px) {
+  .wrap { padding: 0 18px; }
+}
+
+/* Layout inside the chart view: wheel left, text right; stacks on narrow screens */
+.chart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .chart-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .012));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 10px;
+}
+
+.note {
+  font-size: 12.5px;
+  color: var(--faint);
+  line-height: 1.55;
+}
+
+.glyph { font-family: var(--glyph); color: var(--gold); }

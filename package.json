@@ -1,0 +1,32 @@
+{
+  "name": "firstmate-astro",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev --background",
+    "dev:fg": "astro dev",
+    "dev:stop": "astro dev stop",
+    "dev:status": "astro dev status",
+    "dev:logs": "astro dev logs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@swisseph/browser": "^1.4.0",
+    "astro": "^7.4.4",
+    "luxon": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
+  }
+}
