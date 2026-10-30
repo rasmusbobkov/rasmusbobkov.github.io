@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# chart-engine fixture generator workspace (local sweph install + ephemeris files)
+gen/
