@@ -6,6 +6,7 @@
  */
 import { DateTime } from 'luxon';
 import { fmtDateEt, fmtTime } from './format';
+import { MIN_BIRTH_YEAR, maxBirthYear } from './birth-wheels';
 
 export interface BirthInput {
   year: number;
@@ -104,23 +105,35 @@ export function parseTimeEt(text: string): { hour: number; minute: number } | nu
 }
 
 /** A calendar-real date inside the app's supported years: months 1–12, a day
- * the month actually contains. The form parser and storage validation share
- * this so every date the app accepts is one. */
+ * the month actually contains, and a birth year inside the one shared bound
+ * (1800..current year) that also governs the year wheel and import
+ * validation — no second range anywhere. */
 export function isValidCalendarDate(year: number, month: number, day: number): boolean {
   if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return false;
   if (month < 1 || month > 12 || day < 1 || day > 31) return false;
-  if (year < 1800 || year > 2399) return false;
+  if (year < MIN_BIRTH_YEAR || year > maxBirthYear()) return false;
   return DateTime.utc(year, month, day, 12).isValid;
 }
 
-/** "14.03.1991" or "14.3.1991" -> components | null */
-export function parseDateEt(text: string): { year: number; month: number; day: number } | null {
+/** "14.03.1805" -> month/day-valid components WITHOUT the year-range
+ * check, so the form can tell a wrong shape from a birth year outside the
+ * shared bound and reject the latter with its own message. */
+export function parseDatePartsEt(text: string): { year: number; month: number; day: number } | null {
   const m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(text.trim());
   if (!m) return null;
   const day = Number(m[1]);
   const month = Number(m[2]);
   const year = Number(m[3]);
-  return isValidCalendarDate(year, month, day) ? { year, month, day } : null;
+  if (month < 1 || month > 12) return null;
+  if (DateTime.utc(year, month, day, 12).isValid) return { year, month, day };
+  return null;
+}
+
+/** "14.03.1991" or "14.3.1991" -> components | null */
+export function parseDateEt(text: string): { year: number; month: number; day: number } | null {
+  const parts = parseDatePartsEt(text);
+  if (!parts) return null;
+  return isValidCalendarDate(parts.year, parts.month, parts.day) ? parts : null;
 }
 
 export function displayBirthLine(input: BirthInput): string {

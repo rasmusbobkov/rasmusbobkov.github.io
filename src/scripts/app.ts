@@ -6,7 +6,12 @@
 import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/catalogue';
 import { SIGNS, type BodyId } from '../lib/astro-constants';
 import { computeChart, type Chart } from '../lib/chart';
-import { parseDateEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
+import { type BirthParts } from '../lib/birth-wheels';
+import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
+import {
+  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isValidBirthYear,
+  maxBirthYear, monthName, timeWheelText, wheelKeyStep,
+} from '../lib/birth-wheels';
 import { searchPlaces, type Place } from '../lib/places';
 import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
 import {
@@ -26,6 +31,8 @@ let chart: Chart | null = null;
 let birthInstant: BirthInstant | null = null;
 let placeName = '';
 let selected: Selection | null = null;
+
+type BirthWheelsParts = BirthParts;
 
 // ——— i18n plumbing ———
 function fillStaticI18n(): void {
@@ -73,6 +80,7 @@ async function boot(): Promise<void> {
   document.getElementById('lang-et')?.addEventListener('click', () => setLang('et'));
   document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
 
+  wireBirthWheels();
   wireBirthForm();
   document.getElementById('glossary-toggle')?.addEventListener('click', () => {
     const panel = document.getElementById('glossary-panel');
@@ -102,6 +110,7 @@ function setLang(next: Lang): void {
   lang = next;
   try { localStorage.setItem(LANG_KEY, next); } catch { /* private mode */ }
   fillStaticI18n();
+  refreshBirthWheels?.();
   if (shareTrio) renderShareRows(shareTrio);
   if (chart && birthInstant) {
     renderChartView(chart, birthInstant);
@@ -110,6 +119,248 @@ function setLang(next: Lang): void {
 
 // ——— birth form ———
 let chosenPlace: Place | null = null;
+
+/**
+ * Birth entry wheels: three side by side for the date (day, month, year),
+ * two for the time (hour, minute). Each is a real scroll list that snaps to
+ * the item in the centre band; the wheels render into the same
+ * dd.mm.yyyy / HH:MM text fields the form has always parsed — the two
+ * representations stay in sync both ways. The submit path itself
+ * (parseDateEt/parseTimeEt -> resolveInstant) is untouched, so DST-gap
+ * rejection and the fall-back notice keep working.
+ */
+const WIRE_ITEM_PX = 44; // keep in sync with --wheel-item in index.astro
+const VISIBLE_PAD_ITEMS = 2; // two dimmed neighbours above and below
+let refreshBirthWheels: (() => void) | null = null;
+let writeBirthParts: ((parts: BirthWheelsParts, timeUnknown: boolean) => void) | null = null;
+
+interface WheelCfg {
+  id: string;
+  part: keyof BirthWheelsParts;
+  firstValue: number; // the smallest value the list can hold
+  itemCount: () => number; // day wheels rebuild; others are static ranges
+  /** the option's own short text (the full-meaning text goes on the
+   * selected option only, so screen readers read the selection whole) */
+  shortLabel: (value: number) => string;
+}
+
+function wireBirthWheels(): void {
+  const dateEl = document.getElementById('birth-date') as HTMLInputElement | null;
+  const timeEl = document.getElementById('birth-time') as HTMLInputElement | null;
+  const unknownEl = document.getElementById('birth-unknown-time') as HTMLInputElement | null;
+  const timeWheelsEl = document.getElementById('birth-time-wheels');
+  if (!dateEl || !timeEl || !unknownEl) return;
+
+  const cfgs: WheelCfg[] = [
+    { id: 'birth-day', part: 'day', firstValue: 1, itemCount: () => daysInMonth(parts.year, parts.month), shortLabel: (v) => String(v).padStart(2, '0') },
+    { id: 'birth-month', part: 'month', firstValue: 1, itemCount: () => 12, shortLabel: (v) => monthName(lang, v) },
+    { id: 'birth-year', part: 'year', firstValue: MIN_BIRTH_YEAR, itemCount: () => maxBirthYear() - MIN_BIRTH_YEAR + 1, shortLabel: (v) => String(v) },
+    { id: 'birth-hour', part: 'hour', firstValue: 0, itemCount: () => 24, shortLabel: (v) => String(v).padStart(2, '0') },
+    { id: 'birth-minute', part: 'minute', firstValue: 0, itemCount: () => 60, shortLabel: (v) => String(v).padStart(2, '0') },
+  ];
+  const wheels = new Map<string, HTMLElement>();
+  for (const cfg of cfgs) {
+    const el = document.getElementById(cfg.id) as HTMLElement | null;
+    if (!el) return;
+    wheels.set(cfg.id, el);
+  }
+
+  // initial state from the server-rendered selection, falling back to the
+  // documented example
+  const readInitial = (cfg: WheelCfg, fallback: number): number => {
+    const id = wheels.get(cfg.id)!.getAttribute('aria-activedescendant');
+    const m = /-opt-(\d+)$/.exec(id ?? '');
+    return m ? Math.max(0, Number(m[1])) : fallback;
+  };
+  let parts: BirthWheelsParts = {
+    day: readInitial(cfgs[0], 14),
+    month: readInitial(cfgs[1], 3),
+    year: readInitial(cfgs[2], 1991),
+    hour: readInitial(cfgs[3], 14),
+    minute: readInitial(cfgs[4], 30),
+  };
+
+  const itemId = (cfg: WheelCfg, value: number): string => `${cfg.id}-opt-${value}`;
+  const byId = (id: string): HTMLElement | null => document.getElementById(id);
+
+  /** Re-render one wheel's option list (day follows the month length, the
+   * year wheel follows the shared bound computed at run time). */
+  const renderWheel = (cfg: WheelCfg): void => {
+    const count = cfg.itemCount();
+    const wheel = wheels.get(cfg.id)!;
+    const frag = document.createDocumentFragment();
+    for (let p = 0; p < VISIBLE_PAD_ITEMS; p += 1) {
+      const pad = document.createElement('div');
+      pad.className = 'wheel-pad';
+      pad.setAttribute('aria-hidden', 'true');
+      frag.appendChild(pad);
+    }
+    for (let i = 0; i < count; i += 1) {
+      const value = cfg.firstValue + i;
+      const item = document.createElement('div');
+      item.className = 'wheel-item';
+      item.id = itemId(cfg, value);
+      item.setAttribute('role', 'option');
+      item.textContent = cfg.shortLabel(value);
+      frag.appendChild(item);
+    }
+    for (let p = 0; p < VISIBLE_PAD_ITEMS; p += 1) {
+      const pad = document.createElement('div');
+      pad.className = 'wheel-pad';
+      pad.setAttribute('aria-hidden', 'true');
+      frag.appendChild(pad);
+    }
+    wheel.replaceChildren(frag);
+  };
+
+  /** Paint one wheel: selection flags, the whole-meaning text on the
+   * selected option, and scroll so the selected item sits in the band. */
+  const paintWheel = (cfg: WheelCfg, value: number, smooth: boolean): void => {
+    const wheel = wheels.get(cfg.id)!;
+    const valueEl = byId(itemId(cfg, value));
+    if (!valueEl) return;
+    for (const el of wheel.querySelectorAll('.wheel-item[aria-selected="true"]')) {
+      el.removeAttribute('aria-selected');
+    }
+    valueEl.setAttribute('aria-selected', 'true');
+    // the selected option reads with the whole meaning: the full date or
+    // the full clock time, not the bare part
+    const full = cfg.part === 'hour' || cfg.part === 'minute'
+      ? timeWheelText(lang, parts)
+      : dateWheelText(lang, parts);
+    valueEl.setAttribute('aria-label', full);
+    wheel.setAttribute('aria-activedescendant', valueEl.id);
+    const target = (value - cfg.firstValue) * WIRE_ITEM_PX;
+    if (Math.round(wheel.scrollTop) !== target) wheel.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+  };
+
+  /** Clamp everything to what month, year and the shared bound allow,
+   * repaint the wheels and (optionally) the synced text fields. */
+  const commit = ({ toText, smooth = false }: { toText: boolean; smooth?: boolean }): void => {
+    parts = clampParts(parts);
+    if (!isValidBirthYear(parts.year)) parts.year = Math.min(Math.max(parts.year, MIN_BIRTH_YEAR), maxBirthYear());
+    if (Number.isNaN(parts.day) || parts.day > daysInMonth(parts.year, parts.month)) parts.day = clampDay(parts.year, parts.month, parts.day);
+    for (const cfg of cfgs) {
+      if (cfg.itemCount() !== wheels.get(cfg.id)!.querySelectorAll('.wheel-item').length) renderWheel(cfg);
+      const maxIndex = cfg.itemCount() - 1;
+      const idx = Math.min(Math.max(parts[cfg.part] - cfg.firstValue, 0), maxIndex);
+      parts[cfg.part] = cfg.firstValue + idx;
+      paintWheel(cfg, cfg.firstValue + idx, smooth);
+    }
+    if (toText) {
+      dateEl.value = fmtDateEt(parts.year, parts.month, parts.day);
+      if (!unknownEl.checked) timeEl.value = fmtTime(parts.hour, parts.minute) ?? '';
+    }
+  };
+
+  for (const cfg of cfgs) {
+    const wheel = wheels.get(cfg.id)!;
+    // scroll -> selection: the item in the centre band is the value
+    let raf = 0;
+    wheel.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const idx = Math.round(wheel.scrollTop / WIRE_ITEM_PX);
+        const value = Math.min(Math.max(cfg.firstValue + idx, cfg.firstValue), cfg.firstValue + cfg.itemCount() - 1);
+        if (value !== parts[cfg.part]) {
+          parts[cfg.part] = value;
+          commit({ toText: true });
+        }
+      });
+    });
+    // mouse drag (touch keeps its native flick and momentum)
+    wheel.addEventListener('pointerdown', (ev) => {
+      if (ev.pointerType === 'touch') return;
+      const startY = ev.clientY;
+      const startScroll = wheel.scrollTop;
+      wheel.setPointerCapture(ev.pointerId);
+      const onMove = (me: PointerEvent): void => { wheel.scrollTop = startScroll - (me.clientY - startY); };
+      const onUp = (): void => {
+        wheel.removeEventListener('pointermove', onMove);
+        wheel.removeEventListener('pointerup', onUp);
+        wheel.removeEventListener('pointercancel', onUp);
+      };
+      wheel.addEventListener('pointermove', onMove);
+      wheel.addEventListener('pointerup', onUp);
+      wheel.addEventListener('pointercancel', onUp);
+    });
+    // keyboard: ArrowUp selects the item above (smaller), ArrowDown below,
+    // Home is the first item, End the last; the list scrolls along
+    wheel.addEventListener('keydown', (ev) => {
+      const step = wheelKeyStep(ev.key, parts[cfg.part], cfg.firstValue, cfg.firstValue + cfg.itemCount() - 1);
+      if (step === null) return;
+      ev.preventDefault();
+      parts[cfg.part] = step;
+      commit({ toText: true, smooth: true });
+    });
+    // clicking an item selects it
+    wheel.addEventListener('click', (ev) => {
+      const item = (ev.target as HTMLElement).closest('.wheel-item');
+      if (!(item instanceof HTMLElement)) return;
+      const value = Number(/-opt-(\d+)$/.exec(item.id)?.[1]);
+      if (!Number.isFinite(value)) return;
+      parts[cfg.part] = value;
+      commit({ toText: true, smooth: true });
+    });
+  }
+
+  // The text fallback types into the same state: a value the existing
+  // parser accepts moves the wheels; while typing stays open-ended the
+  // wheels wait. Submit keeps parsing the text field, so nothing here can
+  // slip around resolveInstant's calendar or DST validation.
+  dateEl.addEventListener('input', () => {
+    const parsed = parseDateEt(dateEl.value);
+    if (parsed) {
+      parts = { ...parts, ...parsed };
+      commit({ toText: false });
+    }
+  });
+  dateEl.addEventListener('change', () => {
+    if (parseDateEt(dateEl.value)) commit({ toText: true });
+  });
+  const onTimeText = () => {
+    const parsed = parseTimeEt(timeEl.value);
+    if (parsed) {
+      parts = { ...parts, ...parsed };
+      commit({ toText: false });
+    }
+  };
+  timeEl.addEventListener('input', onTimeText);
+  timeEl.addEventListener('change', () => {
+    if (parseTimeEt(timeEl.value)) commit({ toText: true });
+  });
+
+  // "I don't know my birth time" hides the time wheels with the text
+  // field; houses and the Rising sign stay unavailable, nothing guessed.
+  const applyUnknown = ({ toText }: { toText: boolean }): void => {
+    if (timeWheelsEl) timeWheelsEl.hidden = unknownEl.checked;
+    timeEl.disabled = unknownEl.checked;
+    if (unknownEl.checked) {
+      timeEl.value = '';
+    } else {
+      commit({ toText });
+    }
+  };
+  unknownEl.addEventListener('change', () => applyUnknown({ toText: true }));
+
+  writeBirthParts = (next, timeUnknown) => {
+    parts = next;
+    unknownEl.checked = timeUnknown;
+    if (timeWheelsEl) timeWheelsEl.hidden = timeUnknown;
+    timeEl.disabled = timeUnknown;
+    if (timeUnknown) timeEl.value = '';
+    commit({ toText: false });
+  };
+
+  refreshBirthWheels = () => commit({ toText: false });
+
+  renderWheel(cfgs[0]);
+  renderWheel(cfgs[2]);
+  commit({ toText: true, smooth: false });
+  applyUnknown({ toText: false });
+}
+
 
 function wireBirthForm(): void {
   const dateEl = document.getElementById('birth-date') as HTMLInputElement | null;
@@ -120,12 +371,7 @@ function wireBirthForm(): void {
   const errorEl = document.getElementById('form-error');
   let searchSeq = 0;
 
-  unknownEl?.addEventListener('change', () => {
-    if (timeEl) {
-      timeEl.disabled = unknownEl.checked;
-      if (unknownEl.checked) timeEl.value = '';
-    }
-  });
+  // the unknown-time checkbox, the wheels and the sync all live in wireBirthWheels
 
   placeEl?.addEventListener('input', async () => {
     chosenPlace = null;
@@ -175,7 +421,12 @@ function wireBirthForm(): void {
 
     const parsedDate = parseDateEt(dateEl.value);
     if (!parsedDate) {
-      if (errorEl) errorEl.textContent = t(lang, 'form.error.date');
+      if (errorEl) {
+        // a well-formed date whose year is outside the shared bound gets
+        // its own message, not the generic format hint
+        const shaped = parseDatePartsEt(dateEl.value);
+        errorEl.textContent = t(lang, shaped ? 'form.error.yearRange' : 'form.error.date');
+      }
       return;
     }
     let hour: number | null = null;
@@ -220,6 +471,17 @@ function restoreBirthForm(input: BirthInput & { placeName?: string }): void {
     population: 0,
   };
   placeEl.value = chosenPlace.name;
+  // the wheels read the restored birth entry, unknown-time state included
+  writeBirthParts?.(
+    {
+      day: input.day,
+      month: input.month,
+      year: input.year,
+      hour: input.hour ?? 12,
+      minute: input.minute ?? 0,
+    },
+    input.timeUnknown,
+  );
   dateEl.value = fmtDateEt(input.year, input.month, input.day);
   unknownEl.checked = input.timeUnknown;
   timeEl.disabled = input.timeUnknown;
