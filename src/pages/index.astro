@@ -80,9 +80,11 @@ const timePhrase = (hour: number, minute: number) =>
                 <div class="wheel-frame">
                   <div class="wheel" role="listbox" id="birth-day" aria-labelledby="birth-day-label" tabindex="0" aria-activedescendant={`birth-day-opt-${seed.day}`}>
                     <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
                       <div class="wheel-item" id={`birth-day-opt-${d}`} role="option" aria-selected={d === seed.day}>{pad2(d)}</div>
                     ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     <div class="wheel-pad" aria-hidden="true"></div>
                   </div>
                   <span class="wheel-band" aria-hidden="true"></span>
@@ -93,9 +95,11 @@ const timePhrase = (hour: number, minute: number) =>
                 <div class="wheel-frame">
                   <div class="wheel" role="listbox" id="birth-month" aria-labelledby="birth-month-label" tabindex="0" aria-activedescendant={`birth-month-opt-${seed.month}`}>
                     <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                       <div class="wheel-item" id={`birth-month-opt-${m}`} role="option" aria-selected={m === seed.month}>{monthName(L, m)}</div>
                     ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     <div class="wheel-pad" aria-hidden="true"></div>
                   </div>
                   <span class="wheel-band" aria-hidden="true"></span>
@@ -106,9 +110,11 @@ const timePhrase = (hour: number, minute: number) =>
                 <div class="wheel-frame">
                   <div class="wheel" role="listbox" id="birth-year" aria-labelledby="birth-year-label" tabindex="0" aria-activedescendant={`birth-year-opt-${seed.year}`}>
                     <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     {years.map((y) => (
                       <div class="wheel-item" id={`birth-year-opt-${y}`} role="option" aria-selected={y === seed.year}>{y}</div>
                     ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     <div class="wheel-pad" aria-hidden="true"></div>
                   </div>
                   <span class="wheel-band" aria-hidden="true"></span>
@@ -130,9 +136,11 @@ const timePhrase = (hour: number, minute: number) =>
                 <div class="wheel-frame">
                   <div class="wheel" role="listbox" id="birth-hour" aria-labelledby="birth-hour-label" tabindex="0" aria-activedescendant={`birth-hour-opt-${seed.hour}`}>
                     <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     {Array.from({ length: 24 }, (_, i) => i).map((h) => (
                       <div class="wheel-item" id={`birth-hour-opt-${h}`} role="option" aria-selected={h === seed.hour}>{pad2(h)}</div>
                     ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     <div class="wheel-pad" aria-hidden="true"></div>
                   </div>
                   <span class="wheel-band" aria-hidden="true"></span>
@@ -143,9 +151,11 @@ const timePhrase = (hour: number, minute: number) =>
                 <div class="wheel-frame">
                   <div class="wheel" role="listbox" id="birth-minute" aria-labelledby="birth-minute-label" tabindex="0" aria-activedescendant={`birth-minute-opt-${seed.minute}`}>
                     <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     {Array.from({ length: 60 }, (_, i) => i).map((m) => (
                       <div class="wheel-item" id={`birth-minute-opt-${m}`} role="option" aria-selected={m === seed.minute}>{pad2(m)}</div>
                     ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
                     <div class="wheel-pad" aria-hidden="true"></div>
                   </div>
                   <span class="wheel-band" aria-hidden="true"></span>
@@ -301,91 +311,6 @@ const timePhrase = (hour: number, minute: number) =>
   main > * + * { margin-top: 20px; }
   .birth-card { max-width: 560px; margin: 0 auto; }
   .field { margin-top: 18px; }
-
-  /* Birth entry wheels: day/month/year side by side, then hour/minute.
-     A wheel is a real scroll list that snaps to the item in the centre
-     band; mouse drag, touch flick and wheel scroll all move it. */
-  .birth-wheels { border: 0; padding: 0; margin: 18px 0 0; min-width: 0; }
-  .birth-wheels legend { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--mono); color: var(--faint); padding: 0; margin: 0 0 8px; }
-  .wheel-row { display: flex; gap: 10px; min-width: 0; }
-  .wheel-row + .wheel-row { margin-top: 10px; }
-  .wheel-col { flex: 1 1 0; min-width: 0; }
-  .wheel-col-day { flex: .8 1 0; }
-  .wheel-col-month { flex: 1.5 1 0; }
-  .wheel-col-year { flex: 1 1 0; }
-  .wheel-label { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--mono); color: var(--faint); margin: 0 0 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .wheel-frame { position: relative; min-width: 0; }
-  .wheel {
-    --wheel-item: 44px;
-    display: block;
-    height: calc(var(--wheel-item) * 5);   /* two dimmed neighbours each side */
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-    scrollbar-width: none;
-    overscroll-behavior-y: contain;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--ink-2);
-    touch-action: pan-y;
-    cursor: ns-resize;
-  }
-  .wheel::-webkit-scrollbar { display: none; }
-  .wheel:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .wheel:focus { border-color: rgba(198, 161, 95, .55); }
-  .wheel-pad { height: var(--wheel-item); flex: none; }
-  .wheel-item {
-    height: var(--wheel-item);
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: var(--mono);
-    font-size: 15px;
-    letter-spacing: .02em;
-    color: var(--muted);
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .wheel-item[aria-selected='true'] { color: var(--gold); font-weight: 600; }
-  /* the highlighted centre band with dimmed neighbours above and below */
-  .wheel-band {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: var(--wheel-item);
-    transform: translateY(-50%);
-    border-top: 1px solid rgba(198, 161, 95, .45);
-    border-bottom: 1px solid rgba(198, 161, 95, .45);
-    background: linear-gradient(90deg, rgba(198, 161, 95, .14), rgba(198, 161, 95, .05));
-    pointer-events: none;
-  }
-  .wheel-band::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 9px;
-    box-shadow: 0 0 0 1px rgba(198, 161, 95, .12) inset;
-  }
-  /* dimming scrim over the list, transparent at the centre band */
-  .wheel-frame::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, var(--ink) 0%, rgba(10, 12, 17, .55) 18%, transparent 38%, transparent 62%, rgba(10, 12, 17, .55) 82%, var(--ink) 100%);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .wheel-band { z-index: 2; }
-  @media (max-width: 360px) {
-    .wheel { --wheel-item: 40px; }
-    .wheel-item { font-size: 14px; padding: 0 6px; }
-  }
   .checkbox-row { display: flex; gap: 10px; align-items: center; text-transform: none; font-family: var(--body); font-size: 14.5px; color: var(--paper); letter-spacing: 0; }
   .checkbox-row input { width: auto; }
   .place-results { list-style: none; margin: 6px 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-height: 260px; overflow-y: auto; }

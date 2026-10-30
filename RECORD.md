@@ -69,3 +69,41 @@ against JPL Horizons. This validates the port and the app's full path
 (timezone → UTC → JD → positions/houses). It does not exhaustively verify
 the ephemeris over its whole validity range; regeneration tooling and
 tolerances are committed for future extension.
+
+## Birth entry wheels
+
+The birth date and time are turned, not typed — three wheels side by side
+for the date (day, month, year) and two for the time (hour, minute),
+because a wheel row is far more compact than stacked sliders. Each wheel is
+a real vertical scroll list with scroll-snap: the selection sits in a
+highlighted centre band, neighbours are dimmed by a scrim, and mouse drag,
+touch flick, wheel scroll, arrow keys, Home and End all move it. Date
+options read the whole date to a screen reader ("14. märts 1991"), time
+options the whole clock time ("kell 14:30") — the whole-meaning label lives
+on the selected option only, so the annotated tree stays small even with a
+227-option year wheel.
+
+Implementation notes worth keeping: the wheel CSS lives in global.css
+because Astro scopes component styles by attribute, and the DOM option
+lists are built by app.ts at run time — scoped rules would never match
+JS-created elements. Programmatic scrolls are always instant: a smooth
+scroll fires intermediate scroll events that look like user picks and
+fight the target. The scroll handler reads the real item height
+(40 px under 360 px) rather than a constant. Two pad items above and below
+the list make snap-centre math a straight index*itemHeight.
+
+One shared year bound governs the parser, the year wheel, the pristine default
+and import validation: 1800 to the current calendar year, computed at
+runtime (never a hardcoded year that goes stale). A typed value the parser
+rejects as out-of-range gets its own form error (form.error.yearRange)
+instead of being silently rewritten; a value the parser accepts always
+moves the wheels and never alters the meaning.
+
+Trade-off: wheels and text fields are initialised from the example the form
+always showed (14.03.1991, 14:30) and agree from first paint — the value is
+never hidden, as a placeholder never was.
+
+The submit path is structurally untouched: submit keeps parsing the
+dd.mm.yyyy / HH:MM fields, so DST-gap rejection and the fall-back note are
+exactly what they were; tests/birth-wheels.test.ts re-proves both through
+the wheel path alongside clamping, keyboard movement and two-way sync.

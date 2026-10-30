@@ -129,7 +129,7 @@ let chosenPlace: Place | null = null;
  * (parseDateEt/parseTimeEt -> resolveInstant) is untouched, so DST-gap
  * rejection and the fall-back notice keep working.
  */
-const WIRE_ITEM_PX = 44; // keep in sync with --wheel-item in index.astro
+const WIRE_ITEM_PX = 44; // fallback; the real size is --wheel-item, read below at run time
 const VISIBLE_PAD_ITEMS = 2; // two dimmed neighbours above and below
 let refreshBirthWheels: (() => void) | null = null;
 let writeBirthParts: ((parts: BirthWheelsParts, timeUnknown: boolean) => void) | null = null;
@@ -182,6 +182,12 @@ function wireBirthWheels(): void {
 
   const itemId = (cfg: WheelCfg, value: number): string => `${cfg.id}-opt-${value}`;
   const byId = (id: string): HTMLElement | null => document.getElementById(id);
+  /** The real item size (--wheel-item; 40px on very narrow screens). */
+  const itemPx = (): number => {
+    const it = wheels.get('birth-day')!.querySelector('.wheel-item');
+    const h = it ? it.getBoundingClientRect().height : 0;
+    return h > 10 ? Math.round(h) : WIRE_ITEM_PX;
+  };
 
   /** Re-render one wheel's option list (day follows the month length, the
    * year wheel follows the shared bound computed at run time). */
@@ -215,7 +221,7 @@ function wireBirthWheels(): void {
 
   /** Paint one wheel: selection flags, the whole-meaning text on the
    * selected option, and scroll so the selected item sits in the band. */
-  const paintWheel = (cfg: WheelCfg, value: number, smooth: boolean): void => {
+  const paintWheel = (cfg: WheelCfg, value: number): void => {
     const wheel = wheels.get(cfg.id)!;
     const valueEl = byId(itemId(cfg, value));
     if (!valueEl) return;
@@ -230,13 +236,18 @@ function wireBirthWheels(): void {
       : dateWheelText(lang, parts);
     valueEl.setAttribute('aria-label', full);
     wheel.setAttribute('aria-activedescendant', valueEl.id);
-    const target = (value - cfg.firstValue) * WIRE_ITEM_PX;
-    if (Math.round(wheel.scrollTop) !== target) wheel.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+    const item = itemPx();
+    const target = (value - cfg.firstValue) * item;
+    if (Math.abs(wheel.scrollTop - target) > item / 2) {
+      // always instant: a smooth programmatic scroll would fire intermediate
+      // scroll events that look like user selections and fight the target
+      wheel.scrollTo({ top: target, behavior: 'auto' });
+    }
   };
 
   /** Clamp everything to what month, year and the shared bound allow,
    * repaint the wheels and (optionally) the synced text fields. */
-  const commit = ({ toText, smooth = false }: { toText: boolean; smooth?: boolean }): void => {
+  const commit = ({ toText }: { toText: boolean }): void => {
     parts = clampParts(parts);
     if (!isValidBirthYear(parts.year)) parts.year = Math.min(Math.max(parts.year, MIN_BIRTH_YEAR), maxBirthYear());
     if (Number.isNaN(parts.day) || parts.day > daysInMonth(parts.year, parts.month)) parts.day = clampDay(parts.year, parts.month, parts.day);
@@ -245,7 +256,7 @@ function wireBirthWheels(): void {
       const maxIndex = cfg.itemCount() - 1;
       const idx = Math.min(Math.max(parts[cfg.part] - cfg.firstValue, 0), maxIndex);
       parts[cfg.part] = cfg.firstValue + idx;
-      paintWheel(cfg, cfg.firstValue + idx, smooth);
+      paintWheel(cfg, cfg.firstValue + idx);
     }
     if (toText) {
       dateEl.value = fmtDateEt(parts.year, parts.month, parts.day);
@@ -261,7 +272,8 @@ function wireBirthWheels(): void {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
-        const idx = Math.round(wheel.scrollTop / WIRE_ITEM_PX);
+        const item = itemPx();
+        const idx = Math.round(wheel.scrollTop / item);
         const value = Math.min(Math.max(cfg.firstValue + idx, cfg.firstValue), cfg.firstValue + cfg.itemCount() - 1);
         if (value !== parts[cfg.part]) {
           parts[cfg.part] = value;
@@ -274,7 +286,7 @@ function wireBirthWheels(): void {
       if (ev.pointerType === 'touch') return;
       const startY = ev.clientY;
       const startScroll = wheel.scrollTop;
-      wheel.setPointerCapture(ev.pointerId);
+      try { wheel.setPointerCapture(ev.pointerId); } catch { /* synthetic events have no captured pointer */ }
       const onMove = (me: PointerEvent): void => { wheel.scrollTop = startScroll - (me.clientY - startY); };
       const onUp = (): void => {
         wheel.removeEventListener('pointermove', onMove);
@@ -292,7 +304,7 @@ function wireBirthWheels(): void {
       if (step === null) return;
       ev.preventDefault();
       parts[cfg.part] = step;
-      commit({ toText: true, smooth: true });
+      commit({ toText: true });
     });
     // clicking an item selects it
     wheel.addEventListener('click', (ev) => {
@@ -301,7 +313,7 @@ function wireBirthWheels(): void {
       const value = Number(/-opt-(\d+)$/.exec(item.id)?.[1]);
       if (!Number.isFinite(value)) return;
       parts[cfg.part] = value;
-      commit({ toText: true, smooth: true });
+      commit({ toText: true });
     });
   }
 
@@ -357,8 +369,17 @@ function wireBirthWheels(): void {
 
   renderWheel(cfgs[0]);
   renderWheel(cfgs[2]);
-  commit({ toText: true, smooth: false });
+  commit({ toText: true });
   applyUnknown({ toText: false });
+
+  // Styles can land after this module runs (dev bundling), which leaves the
+  // initial centre scroll stuck at 0; re-paint once item geometry is real.
+  const settle = (): void => {
+    const item = wheels.get('birth-day')!.querySelector('.wheel-item');
+    if (item && item.getBoundingClientRect().height >= WIRE_ITEM_PX) commit({ toText: false });
+    else requestAnimationFrame(settle);
+  };
+  requestAnimationFrame(settle);
 }
 
 
