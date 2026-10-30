@@ -35,7 +35,6 @@ const et = {
   'form.place.placeholder': 'nt Tallinn',
   'form.place.hint': 'Ajavöönd tuleneb kohast, ka ajaloolistes piirides.',
   'form.place.noResults': 'Seda kohta ei leitud. Proovi lähimas suuremas asulas.',
-  'form.place.resultsLabel': 'Vali nimekirjast',
   'form.unknownTime': 'Ma ei tea oma sünniaega',
   'form.unknownTime.note': 'Kuupäev ja koht piisavad planeetide ja märkide jaoks. Maju ja tõusumärki ei arvutata ega pakuta.',
   'form.submit': 'Arvuta sünnikaart',
@@ -62,7 +61,6 @@ const et = {
   'chart.unknownTimeBanner': 'Sünniaeg on teadmata. Maju ja tõusumärki ei arvutata ega hiljem pakuta.',
   'chart.moonUncertain': 'Kuu märk võib olla teistsugune, sest sünniaeg on teadmata.',
   'chart.retroNote': 'Planeet liigub retrograadselt.',
-  'chart.noTime': 'aeg teadmata',
 
   // Share / export / reset
   'share.heading': 'Jaga kolme peamist',
@@ -92,10 +90,10 @@ const et = {
   'aspect.opposition': 'vastasseis',
   'aspect.orbColumn': 'orbiit',
   'aspect.meaning.conjunction': 'Kaks mõjutust ühes kohas: nad töötavad koos.',
-  'aspect.meaning.sextile': 'Avatud võimalus: vajab proovimist, et tekkis.',
+  'aspect.meaning.sextile': 'Avatud võimalus: vajab proovimist, et midagi tekiks.',
   'aspect.meaning.square': 'Pinge: tõmbab tähelepanu ja nõuab rohkem õppimist.',
   'aspect.meaning.trine': 'Sujuvus: tugevad asjad liiguvad iseenesest.',
-  'aspect.meaning.opposition': 'Tasakaal kahe poole vahel: jääkidele jääb vaatlus.',
+  'aspect.meaning.opposition': 'Tasakaal kahe poole vahel: mõlemad vajavad tähelepanu.',
 
   // Bodies
   'body.sun': 'Päike',
@@ -140,7 +138,6 @@ const et = {
   // Houses
   'house.item': '{number}. maja',
   'house.cusp': 'tipp {degree}',
-  'house.cuspUnknown': 'tipp teadmata',
   'house.meaning.1': 'Sina ise: välimus ja algused.',
   'house.meaning.2': 'Raha ja väärtused.',
   'house.meaning.3': 'Igapäevane side: kõne, kirjad, lähedased.',
@@ -149,14 +146,10 @@ const et = {
   'house.meaning.6': 'Töö ja keha igapäevaselt.',
   'house.meaning.7': 'Partnerid ja lepped.',
   'house.meaning.8': 'Sügavatõmmis: jagamine ja muutused.',
-  'house.meaning.9': 'Parem mõte: õppimine, reisid, risti loengud.',
+  'house.meaning.9': 'Parem mõte: õppimine, reisid ja kauged paigad.',
   'house.meaning.10': 'Avalik elu: roll ja vastutus.',
   'house.meaning.11': 'Sõbrad ja eesmärgid.',
   'house.meaning.12': 'Vaikus ja taastumine.',
-
-  // Places
-  'place.searchLabel': 'Sünnikoht',
-  'place.timezoneNote': 'Ajaloolised ajavööndi nihe on kohas asuva andmetabeli põhjal.',
 
   // Language switch
   'lang.label': 'Keel',
@@ -194,8 +187,6 @@ const et = {
   'glossary.orb.desc': 'Kui palju aspekt võib täisnurgast kõrvale olla ja siiski kehtida. Kasutame: konjunktsioon ±10°, vastasseis ±10°, ruut ±8°, trigoon ±8°, sekstiil ±6°.',
   'glossary.retrograde': 'retrograadne',
   'glossary.retrograde.desc': 'Planeet näib taevases vaates liiguvat tagasi.',
-  'glossary.meanNode': 'Kuu sõlm',
-  'glossary.meanNode.desc': 'Kuu keskmine sõlm (mean node).',
 } as const;
 
 export type MessageKey = keyof typeof et;
