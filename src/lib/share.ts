@@ -6,7 +6,7 @@
  */
 import type { Placement } from './chart';
 
-interface Trio {
+export interface Trio {
   sun: { signNum: number; degree: number } | null;
   moon: { signNum: number; degree: number } | null;
   rising: { signNum: number; degree: number } | null;

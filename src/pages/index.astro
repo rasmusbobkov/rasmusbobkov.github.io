@@ -50,7 +50,7 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
         <form id="birth-form-el" novalidate>
           <div class="field">
             <label for="birth-date" data-i18n="form.date">{tx('form.date')}</label>
-            <input id="birth-date" name="date" inputmode="numeric" autocomplete="bday" placeholder={tx('form.date.placeholder')} />
+            <input id="birth-date" name="date" inputmode="numeric" placeholder={tx('form.date.placeholder')} />
           </div>
           <div class="field">
             <label for="birth-time" data-i18n="form.time">{tx('form.time')}</label>

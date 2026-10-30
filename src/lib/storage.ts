@@ -71,6 +71,10 @@ export function validateStored(value: unknown): StoredBirthData | null {
   if (v.schemaVersion !== STORAGE_VERSION) return null;
   const d = v.date as Record<string, unknown> | undefined;
   if (!d || typeof d.year !== 'number' || typeof d.month !== 'number' || typeof d.day !== 'number') return null;
+  if (
+    !Number.isFinite(d.year) || !Number.isFinite(d.month) || !Number.isFinite(d.day) ||
+    d.year < 1800 || d.year > 2399
+  ) return null;
   const p = v.place as Record<string, unknown> | undefined;
   if (!p || typeof p.lat !== 'number' || typeof p.lon !== 'number' || typeof p.tz !== 'string' || typeof p.name !== 'string') return null;
   if (

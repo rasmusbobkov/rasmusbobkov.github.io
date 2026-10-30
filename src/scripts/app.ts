@@ -13,7 +13,7 @@ import {
   loadStoredBirthData, saveStoredBirthData, clearStoredBirthData,
   toStored, toBirthInput, exportJson, importJson, type StoredBirthData,
 } from '../lib/storage';
-import { encodeShareFragment, decodeShareFragment } from '../lib/share';
+import { encodeShareFragment, decodeShareFragment, type Trio } from '../lib/share';
 import { getEphemeris } from '../lib/ephemeris';
 import { renderWheel, type Selection } from './wheel';
 // the WASM asset is imported at build time; the browser resolves it from our own origin
@@ -82,6 +82,7 @@ async function boot(): Promise<void> {
   // share fragment first: a read-only trio view, never stored
   const trio = decodeShareFragment(location.hash);
   if (trio) {
+    shareTrio = trio;
     renderShareView(trio);
     return;
   }
@@ -101,6 +102,7 @@ function setLang(next: Lang): void {
   lang = next;
   try { localStorage.setItem(LANG_KEY, next); } catch { /* private mode */ }
   fillStaticI18n();
+  if (shareTrio) renderShareRows(shareTrio);
   if (chart && birthInstant) {
     renderChartView(chart, birthInstant);
   }
@@ -473,8 +475,9 @@ function wireDataActions(c: Chart): void {
 }
 
 // ——— shared trio view ———
-function renderShareView(trio: { sun: { signNum: number; degree: number } | null; moon: { signNum: number; degree: number } | null; rising: { signNum: number; degree: number } | null }): void {
-  setView('shareview', true);
+let shareTrio: Trio | null = null;
+
+function renderShareRows(trio: Trio): void {
   const list = document.getElementById('shareview-list');
   if (!list) return;
   const rows: string[] = [];
@@ -486,8 +489,14 @@ function renderShareView(trio: { sun: { signNum: number; degree: number } | null
     li.textContent = r;
     return li;
   }));
+}
+
+function renderShareView(trio: Trio): void {
+  setView('shareview', true);
+  renderShareRows(trio);
   document.getElementById('shareview-cta')?.addEventListener('click', () => {
     history.replaceState(null, '', location.pathname);
+    shareTrio = null;
     setView('shareview', false);
     setView('birth-form', true);
   });
