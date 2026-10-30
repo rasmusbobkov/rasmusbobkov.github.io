@@ -9,7 +9,7 @@ import { computeChart, type Chart } from '../lib/chart';
 import { type BirthParts } from '../lib/birth-wheels';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import {
-  MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
+  MIN_BIRTH_YEAR, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
   isValidBirthYear, maxBirthYear, monthName, timeWheelText, wheelKeyStep,
 } from '../lib/birth-wheels';
 import { searchPlaces, type Place } from '../lib/places';
@@ -62,9 +62,12 @@ function participantName(id: string): string {
   return bodyName(id as BodyId);
 }
 
+let onBirthFormShow: (() => void) | null = null;
+
 function setView(id: string, visible: boolean): void {
   const node = document.getElementById(id);
   if (node) node.hidden = !visible;
+  if (id === 'birth-form' && visible) onBirthFormShow?.();
 }
 
 // ——— boot ———
@@ -248,7 +251,6 @@ function wireBirthWheels(): void {
   const commit = ({ toText }: { toText: boolean }): void => {
     parts = clampParts(parts);
     if (!isValidBirthYear(parts.year)) parts.year = Math.min(Math.max(parts.year, MIN_BIRTH_YEAR), maxBirthYear());
-    if (Number.isNaN(parts.day) || parts.day > daysInMonth(parts.year, parts.month)) parts.day = clampDay(parts.year, parts.month, parts.day);
     for (const cfg of cfgs) {
       if (cfg.itemCount() !== wheels.get(cfg.id)!.querySelectorAll('.wheel-item').length) renderWheel(cfg);
       const maxIndex = cfg.itemCount() - 1;
@@ -378,19 +380,31 @@ function wireBirthWheels(): void {
   // Styles can land after this module runs (dev bundling), which leaves the
   // initial centre scroll stuck at 0; re-paint once item geometry is real:
   // stable readings above the same 10 px floor itemPx uses, at whatever
-  // size the viewport's grid gives them.
+  // size the viewport's grid gives them. With the birth form hidden every
+  // item measures 0 forever (saved-data boot, share view), so the loop
+  // stops there and re-arms on the shared setView show boundary.
+  let settling = false;
   let lastMeasured = 0;
   const settle = (): void => {
     const item = wheels.get('birth-day')!.querySelector('.wheel-item');
     const height = item ? Math.round(item.getBoundingClientRect().height) : 0;
+    if (height === 0) { settling = false; return; }
     if (isSettledItemPx(lastMeasured, height)) {
+      settling = false;
       commit({ toText: false });
       return;
     }
     lastMeasured = height;
     requestAnimationFrame(settle);
   };
-  requestAnimationFrame(settle);
+  const wakeSettle = (): void => {
+    if (settling) return;
+    settling = true;
+    lastMeasured = 0;
+    requestAnimationFrame(settle);
+  };
+  onBirthFormShow = wakeSettle;
+  wakeSettle();
 }
 
 
