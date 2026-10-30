@@ -7,6 +7,10 @@ import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/ca
 import { SIGNS, type BodyId } from '../lib/astro-constants';
 import { computeChart, type Chart } from '../lib/chart';
 import { parseDateEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
+import {
+  clampParts, dateAriaText, daysInMonth, keyboardStep, monthName, timeAriaText,
+  type BirthParts,
+} from '../lib/birth-parts';
 import { searchPlaces, type Place } from '../lib/places';
 import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
 import {
@@ -73,6 +77,7 @@ async function boot(): Promise<void> {
   document.getElementById('lang-et')?.addEventListener('click', () => setLang('et'));
   document.getElementById('lang-en')?.addEventListener('click', () => setLang('en'));
 
+  wireBirthSliders();
   wireBirthForm();
   document.getElementById('glossary-toggle')?.addEventListener('click', () => {
     const panel = document.getElementById('glossary-panel');
@@ -102,6 +107,7 @@ function setLang(next: Lang): void {
   lang = next;
   try { localStorage.setItem(LANG_KEY, next); } catch { /* private mode */ }
   fillStaticI18n();
+  refreshBirthSliders?.();
   if (shareTrio) renderShareRows(shareTrio);
   if (chart && birthInstant) {
     renderChartView(chart, birthInstant);
@@ -110,6 +116,136 @@ function setLang(next: Lang): void {
 
 // ——— birth form ———
 let chosenPlace: Place | null = null;
+
+/**
+ * Sliders are the primary birth entry: five range inputs (day, month, year,
+ * hour, minute) that render into the same dd.mm.yyyy / HH:MM text fields the
+ * form has always parsed — the two representations stay in sync both ways.
+ * The submit path itself (parseDateEt/parseTimeEt -> resolveInstant) is
+ * untouched, so DST-gap rejection and the fall-back notice keep working.
+ */
+let refreshBirthSliders: (() => void) | null = null;
+let writeBirthParts: ((parts: BirthParts, timeUnknown: boolean) => void) | null = null;
+
+function wireBirthSliders(): void {
+  const dayEl = document.getElementById('birth-day') as HTMLInputElement | null;
+  const monthEl = document.getElementById('birth-month') as HTMLInputElement | null;
+  const yearEl = document.getElementById('birth-year') as HTMLInputElement | null;
+  const hourEl = document.getElementById('birth-hour') as HTMLInputElement | null;
+  const minuteEl = document.getElementById('birth-minute') as HTMLInputElement | null;
+  const dayOut = document.getElementById('birth-day-out') as HTMLOutputElement | null;
+  const monthOut = document.getElementById('birth-month-out') as HTMLOutputElement | null;
+  const yearOut = document.getElementById('birth-year-out') as HTMLOutputElement | null;
+  const hourOut = document.getElementById('birth-hour-out') as HTMLOutputElement | null;
+  const minuteOut = document.getElementById('birth-minute-out') as HTMLOutputElement | null;
+  const dateEl = document.getElementById('birth-date') as HTMLInputElement | null;
+  const timeEl = document.getElementById('birth-time') as HTMLInputElement | null;
+  const unknownEl = document.getElementById('birth-unknown-time') as HTMLInputElement | null;
+  const timeSlidersEl = document.getElementById('birth-time-sliders');
+  if (!dayEl || !monthEl || !yearEl || !hourEl || !minuteEl || !dateEl || !timeEl || !unknownEl) return;
+  if (!dayOut || !monthOut || !yearOut || !hourOut || !minuteOut) return;
+
+  const readParts = (): BirthParts => ({
+    day: dayEl.valueAsNumber,
+    month: monthEl.valueAsNumber,
+    year: yearEl.valueAsNumber,
+    hour: hourEl.valueAsNumber,
+    minute: minuteEl.valueAsNumber,
+  });
+
+  const writeParts = (parts: BirthParts): void => {
+    const clamped = clampParts(parts);
+    dayEl.max = String(daysInMonth(clamped.year, clamped.month));
+    dayEl.value = String(clamped.day);
+    monthEl.value = String(clamped.month);
+    yearEl.value = String(clamped.year);
+    hourEl.value = String(clamped.hour);
+    minuteEl.value = String(clamped.minute);
+  };
+
+  /** Paint the current slider state: readouts, aria-valuetext, day clamp
+   * and (optionally) the synced text fields. */
+  const syncFromParts = ({ toText }: { toText: boolean }): void => {
+    const parts = clampParts(readParts());
+    const dayMax = daysInMonth(parts.year, parts.month);
+    if (Number(dayEl.max) !== dayMax) dayEl.max = String(dayMax);
+    if (dayEl.valueAsNumber > dayMax) dayEl.value = String(dayMax);
+    const current = readParts();
+    dayOut.textContent = String(current.day);
+    monthOut.textContent = monthName(lang, current.month);
+    yearOut.textContent = String(current.year);
+    hourOut.textContent = String(current.hour);
+    minuteOut.textContent = String(current.minute);
+    const dateTxt = dateAriaText(lang, current);
+    for (const el of [dayEl, monthEl, yearEl]) el.ariaValueText = dateTxt;
+    const timeTxt = timeAriaText(lang, current);
+    for (const el of [hourEl, minuteEl]) el.ariaValueText = timeTxt;
+    if (toText) {
+      dateEl.value = fmtDateEt(current.year, current.month, current.day);
+      if (!unknownEl.checked) timeEl.value = fmtTime(current.hour, current.minute) ?? '';
+    }
+  };
+
+  for (const el of [dayEl, monthEl, yearEl, hourEl, minuteEl]) {
+    el.addEventListener('input', () => syncFromParts({ toText: true }));
+    el.addEventListener('keydown', (ev) => {
+      const step = keyboardStep(ev.key, el.valueAsNumber, Number(el.min) || 0, Number(el.max));
+      if (step === null) return;
+      ev.preventDefault();
+      el.value = String(step);
+      syncFromParts({ toText: true });
+    });
+  }
+
+  // The text fallback types into the same state: a value the existing
+  // parser accepts moves the sliders; while typing stays open-ended the
+  // sliders wait. Submit keeps parsing the text field, so nothing here can
+  // slip around resolveInstant's calendar or DST validation.
+  dateEl.addEventListener('input', () => {
+    const parsed = parseDateEt(dateEl.value);
+    if (parsed) writeParts({ ...readParts(), ...parsed });
+  });
+  dateEl.addEventListener('change', () => {
+    if (parseDateEt(dateEl.value)) syncFromParts({ toText: true });
+  });
+  const onTimeText = () => {
+    const parsed = parseTimeEt(timeEl.value);
+    if (parsed) writeParts({ ...readParts(), ...parsed });
+  };
+  timeEl.addEventListener('input', onTimeText);
+  timeEl.addEventListener('change', () => {
+    if (parseTimeEt(timeEl.value)) syncFromParts({ toText: true });
+  });
+
+  // "I don't know my birth time" hides the time sliders with the text
+  // field; houses and the Rising sign stay unavailable, nothing guessed.
+  const applyUnknown = ({ toText }: { toText: boolean }): void => {
+    if (timeSlidersEl) timeSlidersEl.hidden = unknownEl.checked;
+    timeEl.disabled = unknownEl.checked;
+    if (unknownEl.checked) {
+      timeEl.value = '';
+      for (const el of [hourEl, minuteEl]) {
+        el.disabled = true;
+        el.ariaValueText = null;
+      }
+    } else {
+      for (const el of [hourEl, minuteEl]) el.disabled = false;
+      syncFromParts({ toText });
+    }
+  };
+  unknownEl.addEventListener('change', () => applyUnknown({ toText: true }));
+
+  writeBirthParts = (parts, timeUnknown) => {
+    writeParts(parts);
+    unknownEl.checked = timeUnknown;
+    applyUnknown({ toText: false });
+  };
+
+  refreshBirthSliders = () => syncFromParts({ toText: false });
+  syncFromParts({ toText: true });
+  applyUnknown({ toText: false });
+}
+
 
 function wireBirthForm(): void {
   const dateEl = document.getElementById('birth-date') as HTMLInputElement | null;
@@ -120,12 +256,7 @@ function wireBirthForm(): void {
   const errorEl = document.getElementById('form-error');
   let searchSeq = 0;
 
-  unknownEl?.addEventListener('change', () => {
-    if (timeEl) {
-      timeEl.disabled = unknownEl.checked;
-      if (unknownEl.checked) timeEl.value = '';
-    }
-  });
+  // the unknown-time checkbox, the sliders and the sync all live in wireBirthSliders
 
   placeEl?.addEventListener('input', async () => {
     chosenPlace = null;
@@ -220,6 +351,17 @@ function restoreBirthForm(input: BirthInput & { placeName?: string }): void {
     population: 0,
   };
   placeEl.value = chosenPlace.name;
+  // the sliders slide to the restored birth entry, unknown-time state included
+  writeBirthParts?.(
+    {
+      day: input.day,
+      month: input.month,
+      year: input.year,
+      hour: input.hour ?? 12,
+      minute: input.minute ?? 0,
+    },
+    input.timeUnknown,
+  );
   dateEl.value = fmtDateEt(input.year, input.month, input.day);
   unknownEl.checked = input.timeUnknown;
   timeEl.disabled = input.timeUnknown;

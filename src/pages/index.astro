@@ -5,10 +5,29 @@
  * default, rendered here so the page works before JS; the client re-localizes
  * on switch).
  */
-import { t, DEFAULT_LANG } from '../messages/catalogue';
+import { t, fmt, DEFAULT_LANG } from '../messages/catalogue';
 import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
+
+// The year slider's decade landmarks: exact track positions (1900..2026 is
+// 126 steps, so space-between would drift) so a distant year is reachable
+// by drag without pixel-hunting.
+const YEAR_MIN = 1900;
+const YEAR_MAX = 2026;
+const yearTicks = [...Array.from({ length: 13 }, (_, i) => YEAR_MIN + i * 10), YEAR_MAX].map(
+  (year) => ({ year, pct: ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100 }),
+);
+// Default birth entry = the example value the form has always shown;
+// the sliders and the text fields agree on it from the first paint.
+const seed = { day: 14, month: 3, year: 1991, hour: 14, minute: 30 };
+const seedTime = `${String(seed.hour).padStart(2, '0')}:${String(seed.minute).padStart(2, '0')}`;
+const seedDateAria = fmt(L, 'form.slider.datePhrase', {
+  day: String(seed.day),
+  month: t(L, `form.month.${seed.month}` as Parameters<typeof t>[1]),
+  year: String(seed.year),
+});
+const seedTimeAria = fmt(L, 'form.slider.timePhrase', { time: seedTime });
 ---
 <!doctype html>
 <html lang="et">
@@ -48,14 +67,63 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
         <h2 data-i18n="form.heading">{tx('form.heading')}</h2>
         <p class="note" data-i18n="form.lede">{tx('form.lede')}</p>
         <form id="birth-form-el" novalidate>
+          <fieldset id="birth-date-sliders" class="birth-sliders">
+            <legend data-i18n="form.date">{tx('form.date')}</legend>
+            <div class="slider-row">
+              <div class="slider-head">
+                <label for="birth-day" data-i18n="form.day">{tx('form.day')}</label>
+                <output id="birth-day-out" for="birth-day" aria-hidden="true">{seed.day}</output>
+              </div>
+              <input id="birth-day" type="range" min="1" max="31" step="1" value={seed.day} aria-valuetext={seedDateAria} />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head">
+                <label for="birth-month" data-i18n="form.month">{tx('form.month')}</label>
+                <output id="birth-month-out" for="birth-month" aria-hidden="true">{tx('form.month.3')}</output>
+              </div>
+              <input id="birth-month" type="range" min="1" max="12" step="1" value={seed.month} aria-valuetext={seedDateAria} />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head">
+                <label for="birth-year" data-i18n="form.year">{tx('form.year')}</label>
+                <output id="birth-year-out" for="birth-year" aria-hidden="true">{seed.year}</output>
+              </div>
+              <input id="birth-year" type="range" min={YEAR_MIN} max={YEAR_MAX} step="1" value={seed.year} aria-valuetext={seedDateAria} />
+              <div class="tick-row" aria-hidden="true">
+                {yearTicks.map((tick) => (
+                  <span style={`left:${tick.pct}%`}>{tick.year}</span>
+                ))}
+              </div>
+            </div>
+          </fieldset>
           <div class="field">
-            <label for="birth-date" data-i18n="form.date">{tx('form.date')}</label>
+            <label for="birth-date" data-i18n="form.dateText">{tx('form.dateText')}</label>
             <input id="birth-date" name="date" inputmode="numeric" placeholder={tx('form.date.placeholder')} />
+            <p class="note" data-i18n="form.dateText.hint">{tx('form.dateText.hint')}</p>
           </div>
-          <div class="field">
-            <label for="birth-time" data-i18n="form.time">{tx('form.time')}</label>
-            <input id="birth-time" name="time" inputmode="numeric" placeholder={tx('form.time.placeholder')} />
+
+          <fieldset id="birth-time-sliders" class="birth-sliders">
+            <legend data-i18n="form.time">{tx('form.time')}</legend>
+            <div class="slider-row">
+              <div class="slider-head">
+                <label for="birth-hour" data-i18n="form.hour">{tx('form.hour')}</label>
+                <output id="birth-hour-out" for="birth-hour" aria-hidden="true">{seed.hour}</output>
+              </div>
+              <input id="birth-hour" type="range" min="0" max="23" step="1" value={seed.hour} aria-valuetext={seedTimeAria} />
+            </div>
+            <div class="slider-row">
+              <div class="slider-head">
+                <label for="birth-minute" data-i18n="form.minute">{tx('form.minute')}</label>
+                <output id="birth-minute-out" for="birth-minute" aria-hidden="true">{seed.minute}</output>
+              </div>
+              <input id="birth-minute" type="range" min="0" max="59" step="1" value={seed.minute} aria-valuetext={seedTimeAria} />
+            </div>
             <p class="note" data-i18n="form.time.hint">{tx('form.time.hint')}</p>
+          </fieldset>
+          <div class="field">
+            <label for="birth-time" data-i18n="form.timeText">{tx('form.timeText')}</label>
+            <input id="birth-time" name="time" inputmode="numeric" placeholder={tx('form.time.placeholder')} />
+            <p class="note" data-i18n="form.timeText.hint">{tx('form.timeText.hint')}</p>
           </div>
           <div class="field">
             <label for="birth-place" data-i18n="form.place">{tx('form.place')}</label>
@@ -199,6 +267,87 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
   main > * + * { margin-top: 20px; }
   .birth-card { max-width: 560px; margin: 0 auto; }
   .field { margin-top: 18px; }
+
+  /* Birth entry sliders: one row per part.
+     Touch target: the input itself is 44px tall, well over the minimum. */
+  .birth-sliders { border: 0; padding: 0; margin: 18px 0 0; min-width: 0; }
+  .birth-sliders legend { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--mono); color: var(--faint); padding: 0; margin: 0 0 8px; }
+  .slider-row + .slider-row { margin-top: 10px; }
+  .slider-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 2px; min-width: 0; }
+  .slider-head label { margin: 0; }
+  .slider-head output { font-family: var(--mono); font-size: 15px; color: var(--gold); letter-spacing: .02em; white-space: nowrap; }
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 44px;              /* the whole input is the touch target */
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--ink-3), var(--ink-2));
+  }
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid #161208;
+    margin-top: -10px;         /* (26px thumb - 8px track) / 2 */
+    cursor: grab;
+  }
+  input[type='range']::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--ink-3), var(--ink-2));
+  }
+  input[type='range']::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid #161208;
+    cursor: grab;
+  }
+  input[type='range']:hover::-webkit-slider-thumb { filter: brightness(1.08); }
+  input[type='range']:hover::-moz-range-thumb { filter: brightness(1.08); }
+  input[type='range']:disabled { opacity: .45; }
+  input[type='range']:disabled::-webkit-slider-thumb { cursor: default; }
+  input[type='range']:disabled::-moz-range-thumb { cursor: default; }
+  @media (max-width: 640px) {
+    input[type='range']::-webkit-slider-thumb { width: 30px; height: 30px; margin-top: -12px; }
+    input[type='range']::-moz-range-thumb { width: 26px; height: 26px; }
+  }
+  .tick-row { position: relative; height: 18px; margin-top: -2px; min-width: 0; }
+  .tick-row span {
+    position: absolute;
+    top: 0;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--faint);
+    line-height: 1.8;
+  }
+  .tick-row span::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 5px;
+    margin: 2px auto 0;
+    background: rgba(198, 161, 95, .5);
+  }
+  .tick-row span:first-child { transform: translateX(0); }
+  .tick-row span:last-child { transform: translateX(-100%); }
+  .tick-row span:not(:first-child):not(:last-child) { transform: translateX(-50%); }
   .checkbox-row { display: flex; gap: 10px; align-items: center; text-transform: none; font-family: var(--body); font-size: 14.5px; color: var(--paper); letter-spacing: 0; }
   .checkbox-row input { width: auto; }
   .place-results { list-style: none; margin: 6px 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-height: 260px; overflow-y: auto; }
