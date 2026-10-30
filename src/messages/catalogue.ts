@@ -19,7 +19,9 @@ export const DEFAULT_LANG: Lang = 'et';
 const et = {
   // App identity
   'app.name': 'Firstmate Astro',
+  'app.description': 'Sinu sünnikaart, arvutatud sinu seadmes.',
   'app.comingSoon': 'Inglise tõlge on tulemas. Seni räägib Firstmate Astro sinuga eesti keeles.',
+  'misc.calculating': 'Arvutan…',
 
   // Birth form
   'form.heading': 'Sinu sünnikaart',

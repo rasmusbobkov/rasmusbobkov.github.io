@@ -16,7 +16,7 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="no-referrer" />
-    <meta name="description" content="Sinu sünnikaart Eversti" />
+    <meta name="description" content={tx('app.description')} />
     <title>{tx('app.name')}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
@@ -80,7 +80,7 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
         <div class="chart-head">
           <h2 data-i18n="chart.heading">{tx('chart.heading')}</h2>
           <p id="chart-born" class="chart-born"></p>
-          <p id="chart-progress" hidden class="note">…</p>
+          <p id="chart-progress" hidden class="note" data-i18n="misc.calculating">{tx('misc.calculating')}</p>
           <p id="chart-unknown-time-banner" hidden class="banner note" data-i18n="chart.unknownTimeBanner">{tx('chart.unknownTimeBanner')}</p>
         </div>
 
