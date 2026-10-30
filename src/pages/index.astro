@@ -346,8 +346,11 @@ const seedTimeAria = fmt(L, 'form.slider.timePhrase', { time: seedTime });
     background: rgba(198, 161, 95, .5);
   }
   .tick-row span:first-child { transform: translateX(0); }
+  /* the two rightmost labels are close together; anchor them by their right
+     edge instead of the centre so they do not collide */
   .tick-row span:last-child { transform: translateX(-100%); }
-  .tick-row span:not(:first-child):not(:last-child) { transform: translateX(-50%); }
+  .tick-row span:nth-last-child(2) { transform: translateX(-100%); }
+  .tick-row span:not(:first-child):not(:nth-last-child(1)):not(:nth-last-child(2)) { transform: translateX(-50%); }
   .checkbox-row { display: flex; gap: 10px; align-items: center; text-transform: none; font-family: var(--body); font-size: 14.5px; color: var(--paper); letter-spacing: 0; }
   .checkbox-row input { width: auto; }
   .place-results { list-style: none; margin: 6px 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; max-height: 260px; overflow-y: auto; }

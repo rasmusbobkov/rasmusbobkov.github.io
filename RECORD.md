@@ -69,3 +69,31 @@ against JPL Horizons. This validates the port and the app's full path
 (timezone → UTC → JD → positions/houses). It does not exhaustively verify
 the ephemeris over its whole validity range; regeneration tooling and
 tolerances are committed for future extension.
+
+## Birth entry sliders
+
+The birth date and time are picked, not typed: five range sliders (day,
+month, year, hour, minute), one readout each. The day slider's max follows
+the selected month and year — 31.04 is impossible, 29.02 only in a leap
+year — so a shorter choice clamps the day down instead of leaving an
+invalid combination. Keyboard: arrows, Home and End are native; PageUp and
+PageDown get an explicit ±10 step (not every browser steps a range by
+page). Every slider's aria-valuetext reads the whole meaning ("14. märts
+1991", "kell 14:30"), not just the part being dragged, and the year slider
+carries decade ticks positioned by percentage (1900..2026 is 126 steps, so
+space-between would drift).
+
+Two representations, one state: the sliders render into the same
+dd.mm.yyyy / HH:MM text fields the form has always shown, now labelled
+"tekstina". Text input moves the sliders when the existing parser accepts
+it; while typing stays open-ended the sliders wait, and a canonical form is
+written back only on change (blur), never mid-typing. Submit keeps parsing
+the text fields, so DST-gap rejection and the fall-back notice are
+structurally untouched — `tests/birth-parts.test.ts` re-proves both cases
+through the slider path.
+
+Trade-off: the sliders and text fields are initialised from the example
+value the form always showed (14.03.1991, 14:30) and agree from first
+paint — bidirectionally honest, at the cost that submitting untouched
+yields the example date. The value is never hidden, as it was with a
+placeholder.

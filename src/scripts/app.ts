@@ -203,14 +203,22 @@ function wireBirthSliders(): void {
   // slip around resolveInstant's calendar or DST validation.
   dateEl.addEventListener('input', () => {
     const parsed = parseDateEt(dateEl.value);
-    if (parsed) writeParts({ ...readParts(), ...parsed });
+    if (parsed) {
+      writeParts({ ...readParts(), ...parsed });
+      // repaint readouts and aria immediately, but leave the field the
+      // user is typing in alone
+      syncFromParts({ toText: false });
+    }
   });
   dateEl.addEventListener('change', () => {
     if (parseDateEt(dateEl.value)) syncFromParts({ toText: true });
   });
   const onTimeText = () => {
     const parsed = parseTimeEt(timeEl.value);
-    if (parsed) writeParts({ ...readParts(), ...parsed });
+    if (parsed) {
+      writeParts({ ...readParts(), ...parsed });
+      syncFromParts({ toText: false });
+    }
   };
   timeEl.addEventListener('input', onTimeText);
   timeEl.addEventListener('change', () => {
