@@ -71,6 +71,14 @@ test('storage schema round-trips and validates', () => {
   expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 999, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
   expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 999, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
   expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: '' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  // dates and times that the entry path itself can never produce
+  expect(validateStored({ schemaVersion: 1, date: { year: 19991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 13, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 32 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 2, day: 30 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 0, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 25, minute: 0 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: false, place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: { hour: 0, minute: -30 } })).toBeNull();
+  expect(validateStored({ schemaVersion: 1, date: { year: 1991, month: 3, day: 14 }, timeUnknown: 'yes', place: { name: 'x', lat: 1, lon: 1, tz: 'x' }, time: null })).toBeNull();
 });
 
 test('share fragment carries only the big three and nothing about birth data', () => {
@@ -116,4 +124,28 @@ test('a wall time inside a DST spring gap is rejected, not forward-shifted', () 
   expect(exists?.localTime).toEqual({ hour: 3, minute: 30 });
   expect(exists?.offsetMinutes).toBe(180);
   expect(exists?.utc.isoString.slice(0, 16)).toBe('1990-03-25T00:30');
+  expect(exists?.ambiguous).toBe(false);
+});
+
+test('a wall time inside a DST fall-back overlap resolves to the earlier occurrence and is flagged', () => {
+  const input = {
+    year: 1991, month: 9, day: 29, hour: 2, minute: 30, timeUnknown: false,
+    place: { lat: 59.437, lon: 24.7536, tz: 'Europe/Tallinn' },
+  } satisfies BirthInput;
+  // IANA Europe/Tallinn fell back 02:59:59 EEST (UTC+3) -> 02:00 EET (UTC+2)
+  // on 1991-09-29, so the wall clock 02:00..02:59 happened twice; the two
+  // occurrences are 1991-09-28T23:30Z and 1991-09-29T00:30Z
+  const inst = resolveInstant(input);
+  expect(inst).not.toBeNull();
+  expect(inst!.ambiguous).toBe(true);
+  expect(inst!.utc.isoString.slice(0, 16)).toBe('1991-09-28T23:30');
+  expect(inst!.offsetMinutes).toBe(180);
+  expect(inst!.localTime).toEqual({ hour: 2, minute: 30 });
+  // an ordinary time on the same folded calendar day is unambiguous
+  const ordinary = resolveInstant({ ...input, hour: 15, minute: 0 });
+  expect(ordinary!.ambiguous).toBe(false);
+  expect(ordinary!.utc.isoString.slice(0, 16)).toBe('1991-09-29T13:00');
+  // an unknown birth time has no entered wall time to be ambiguous about
+  const unknown = resolveInstant({ ...input, hour: null, minute: null, timeUnknown: true });
+  expect(unknown!.ambiguous).toBe(false);
 });

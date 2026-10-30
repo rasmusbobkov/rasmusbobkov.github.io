@@ -34,7 +34,9 @@ fixture pins the Moscow-time path; `tests/chart-fixtures.test.ts` asserts
 the resolved offset per fixture.
 
 Nonexistent local times (DST spring gaps) surface as a form error rather
-than being silently shifted.
+than being silently shifted. A wall time the fall-back shows twice still
+resolves: it always uses the earlier occurrence and the chart view carries
+a note saying the same clock time happened twice.
 
 ## Place data
 

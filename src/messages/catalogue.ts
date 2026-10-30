@@ -61,6 +61,7 @@ const et = {
   'chart.unknownTimeBanner': 'Sünniaeg on teadmata. Maju ja tõusumärki ei arvutata ega hiljem pakuta.',
   'chart.moonUncertain': 'Kuu märk võib olla teistsugune, sest sünniaeg on teadmata.',
   'chart.retroNote': 'Planeet liigub retrograadselt.',
+  'time.ambiguousFallback': 'Sellel kuupäeval esineb see kellaaeg kaks korda, sest kella keeratakse tagasi. Kasutasime varasemat.',
 
   // Share / export / reset
   'share.heading': 'Jaga kolme peamist',

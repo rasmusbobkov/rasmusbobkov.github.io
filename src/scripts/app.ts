@@ -289,6 +289,9 @@ function renderChartView(c: Chart, inst: BirthInstant): void {
       : '';
   }
 
+  const timeNote = document.getElementById('chart-time-note');
+  if (timeNote) timeNote.hidden = !inst.ambiguous;
+
   const svg = document.getElementById('chart-wheel-svg') as unknown as SVGSVGElement | null;
   if (svg) {
     renderWheel(svg, c, {
@@ -434,8 +437,17 @@ function wireDataActions(c: Chart): void {
   }, { signal });
 
   document.getElementById('export-json')?.addEventListener('click', () => {
-    const stored = loadStoredBirthData();
-    if (!stored) return;
+    if (!birthInstant) return;
+    const stored: StoredBirthData = toStored({
+      year: birthInstant.local.year,
+      month: birthInstant.local.month,
+      day: birthInstant.local.day,
+      hour: birthInstant.localTime?.hour ?? null,
+      minute: birthInstant.localTime?.minute ?? null,
+      timeUnknown: birthInstant.timeUnknown,
+      place: birthInstant.place,
+      placeName,
+    });
     const blob = new Blob([exportJson(stored)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);

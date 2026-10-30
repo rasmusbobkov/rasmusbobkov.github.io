@@ -2,7 +2,7 @@
  * Local persistence: a versioned localStorage schema for birth data,
  * export to a JSON file, import back. Birth data stays in the browser.
  */
-import type { BirthInput } from './time';
+import { isValidCalendarDate, type BirthInput } from './time';
 
 export const STORAGE_KEY = 'firstmate-astro.birth.v1';
 export const STORAGE_VERSION = 1;
@@ -71,10 +71,7 @@ export function validateStored(value: unknown): StoredBirthData | null {
   if (v.schemaVersion !== STORAGE_VERSION) return null;
   const d = v.date as Record<string, unknown> | undefined;
   if (!d || typeof d.year !== 'number' || typeof d.month !== 'number' || typeof d.day !== 'number') return null;
-  if (
-    !Number.isFinite(d.year) || !Number.isFinite(d.month) || !Number.isFinite(d.day) ||
-    d.year < 1800 || d.year > 2399
-  ) return null;
+  if (!isValidCalendarDate(d.year, d.month, d.day)) return null;
   const p = v.place as Record<string, unknown> | undefined;
   if (!p || typeof p.lat !== 'number' || typeof p.lon !== 'number' || typeof p.tz !== 'string' || typeof p.name !== 'string') return null;
   if (
@@ -82,17 +79,22 @@ export function validateStored(value: unknown): StoredBirthData | null {
     !Number.isFinite(p.lon) || p.lon < -180 || p.lon > 180 ||
     p.tz.length === 0
   ) return null;
+  if (typeof v.timeUnknown !== 'boolean') return null;
   let time: { hour: number; minute: number } | null = null;
   if (!v.timeUnknown) {
     const t = v.time as Record<string, unknown> | undefined;
-    if (!t || typeof t.hour !== 'number' || typeof t.minute !== 'number') return null;
+    if (
+      !t || typeof t.hour !== 'number' || typeof t.minute !== 'number' ||
+      !Number.isFinite(t.hour) || !Number.isFinite(t.minute) ||
+      t.hour < 0 || t.hour > 23 || t.minute < 0 || t.minute > 59
+    ) return null;
     time = { hour: t.hour, minute: t.minute };
   }
   return {
     schemaVersion: 1,
     date: { year: d.year, month: d.month, day: d.day },
     time,
-    timeUnknown: Boolean(v.timeUnknown),
+    timeUnknown: v.timeUnknown,
     place: { name: p.name, lat: p.lat, lon: p.lon, tz: p.tz },
   };
 }

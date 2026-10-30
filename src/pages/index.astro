@@ -82,6 +82,7 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
           <p id="chart-born" class="chart-born"></p>
           <p id="chart-progress" hidden class="note" data-i18n="misc.calculating">{tx('misc.calculating')}</p>
           <p id="chart-unknown-time-banner" hidden class="banner note" data-i18n="chart.unknownTimeBanner">{tx('chart.unknownTimeBanner')}</p>
+          <p id="chart-time-note" hidden class="note" data-i18n="time.ambiguousFallback">{tx('time.ambiguousFallback')}</p>
         </div>
 
         <div class="chart-layout">

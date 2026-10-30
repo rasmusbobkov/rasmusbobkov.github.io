@@ -30,6 +30,9 @@ export interface BirthInstant {
   utc: { year: number; month: number; day: number; hourDecimal: number; isoString: string };
   /** the IANA offset actually applied, minutes east of UTC */
   offsetMinutes: number | null;
+  /** true when the entered wall time occurs twice in the zone (DST fall-back);
+   * the recorded instant is the earlier occurrence */
+  ambiguous: boolean;
   /** Julian day UT, set by the chart engine */
   julianDayUt?: number;
 }
@@ -46,11 +49,22 @@ export function resolveInstant(input: BirthInput): BirthInstant | null {
   // Luxon constructs a DST-gap wall time as valid but forward-shifted, so
   // require the resolved wall clock to be the one that was entered.
   if (local.hour !== hour || local.minute !== minute) return null;
-  const utcDt = local.toUTC();
+
+  let ambiguous = false;
+  let resolved = local;
+  if (!input.timeUnknown) {
+    const twin = foldTwin(local);
+    if (twin && twin.isValid) {
+      ambiguous = true;
+      if (twin.toMillis() < local.toMillis()) resolved = twin as DateTime<true>;
+    }
+  }
+
+  const utcDt = resolved.toUTC();
   // The zone's offset actually applied to this instant, minutes east of UTC.
-  const offsetMinutes = local.offset;
+  const offsetMinutes = resolved.offset;
   return {
-    local: { year: local.year, month: local.month, day: local.day },
+    local: { year: resolved.year, month: resolved.month, day: resolved.day },
     localTime: input.timeUnknown ? null : { hour, minute },
     place: input.place,
     timeUnknown: input.timeUnknown,
@@ -62,7 +76,21 @@ export function resolveInstant(input: BirthInput): BirthInstant | null {
       isoString: utcDt.toISO(),
     },
     offsetMinutes,
+    ambiguous,
   } satisfies BirthInstant;
+}
+
+/** The other instant of a DST fall-back, when the wall clock occurs again
+ * after the clocks were set back. Bounded to four hours, wider than any
+ * real fall-back. */
+function foldTwin(dt: DateTime): DateTime | null {
+  for (let minutes = 1; minutes <= 240; minutes += 1) {
+    const later = dt.plus({ minutes });
+    if (later.hour === dt.hour && later.minute === dt.minute) return later;
+    const earlier = dt.minus({ minutes });
+    if (earlier.hour === dt.hour && earlier.minute === dt.minute) return earlier;
+  }
+  return null;
 }
 
 /** "14:30" -> { hour: 14, minute: 30 } | null */
@@ -75,6 +103,16 @@ export function parseTimeEt(text: string): { hour: number; minute: number } | nu
   return { hour, minute };
 }
 
+/** A calendar-real date inside the app's supported years: months 1–12, a day
+ * the month actually contains. The form parser and storage validation share
+ * this so every date the app accepts is one. */
+export function isValidCalendarDate(year: number, month: number, day: number): boolean {
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) return false;
+  if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+  if (year < 1800 || year > 2399) return false;
+  return DateTime.utc(year, month, day, 12).isValid;
+}
+
 /** "14.03.1991" or "14.3.1991" -> components | null */
 export function parseDateEt(text: string): { year: number; month: number; day: number } | null {
   const m = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(text.trim());
@@ -82,11 +120,7 @@ export function parseDateEt(text: string): { year: number; month: number; day: n
   const day = Number(m[1]);
   const month = Number(m[2]);
   const year = Number(m[3]);
-  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-  if (year < 1800 || year > 2399) return null;
-  // existence check via Luxon on UTC noon (offset-independent)
-  if (!DateTime.utc(year, month, day, 12).isValid) return null;
-  return { year, month, day };
+  return isValidCalendarDate(year, month, day) ? { year, month, day } : null;
 }
 
 export function displayBirthLine(input: BirthInput): string {
