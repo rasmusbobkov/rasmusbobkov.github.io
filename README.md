@@ -53,5 +53,5 @@ value was derived from any consumer astrology app.
 `tests/privacy.test.ts` fails if `src/` references `fetch`, `XMLHttpRequest`,
 WebSockets, `sendBeacon`, `postMessage` or any remote URL, and re-scans the
 built output. Persistence is a versioned localStorage schema with JSON
-export/import; the share link encodes only the derived Sun/Moon/Rising signs
-in the URL fragment — never birth time or place.
+export/import; the share link encodes only the derived Sun/Moon/Rising sign
+placements in the URL fragment — never birth time or place.
