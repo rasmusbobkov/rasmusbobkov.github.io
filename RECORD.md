@@ -135,8 +135,10 @@ the regenerated text still matches the pin.
 Hits report the file, line and exact string (the gate reads the source
 files' own lines). All checks are wrappers-free regex and counters —
 no model calls, no network, no randomness. Out of scope by the brief:
-Estonian spelling (separate issue), similarity scoring (separate
-issue), and story copy changes beyond what the checks require.
+similarity scoring (separate issue), and story copy changes beyond
+what the checks require — Estonian spelling was also out of scope
+then and has since gained its own gate ("Estonian spellcheck"
+below).
 
 ## Birth entry wheels
 

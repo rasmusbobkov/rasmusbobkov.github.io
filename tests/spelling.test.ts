@@ -182,7 +182,7 @@ describe('the allowlist stays reviewed', () => {
 });
 
 // ——— proven-off misspellings that once shipped ———
-    // 'ütleda' (the bait above) was found by a slow human reader in shipped
+// 'ütleda' (the bait above) was found by a slow human reader in shipped
 // copy and fixed to 'ütelda'; the maker words 'lõpuleviimine' vs the
 // EKS form 'lõpule viimine' and the non-word 'nataalne' were fixed at
 // the same time. The tests above keep the corpus clean; this file's
