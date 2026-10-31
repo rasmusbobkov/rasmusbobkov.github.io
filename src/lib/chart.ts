@@ -72,7 +72,7 @@ export function degreeInSign(longitude: number): number {
 export type AspectParticipant = BodyId | 'asc' | 'mc';
 
 /** Placidus Asc/MC participate in aspects with tighter orbs (standard practice) */
-const ANGLE_ORB_FACTOR = 0.6;
+export const ANGLE_ORB_FACTOR = 0.6;
 
 export interface AspectInput {
   id: AspectParticipant;
