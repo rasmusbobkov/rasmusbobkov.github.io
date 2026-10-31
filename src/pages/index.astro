@@ -6,10 +6,26 @@
  * on switch).
  */
 import { t, DEFAULT_LANG } from '../messages/catalogue';
+import { MIN_BIRTH_YEAR, maxBirthYear, monthName, SEED_BIRTH_ENTRY } from '../lib/birth-wheels';
 import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
+
+// Default birth entry: the example value the form has always shown; the
+// wheels and the text fields agree on it from the first paint — the same
+// constant app.ts seeds the client state from, not a second copy.
+const seed = SEED_BIRTH_ENTRY;
+
+// The one shared year bound: floor 1800, ceiling = the current calendar
+// year, computed at runtime — the same bound the parser and import
+// validation read, so no second range exists anywhere. (The build bakes
+// the option list; app.ts re-renders it against maxBirthYear() at run time.)
+const YEAR_MIN = MIN_BIRTH_YEAR;
+const YEAR_MAX = maxBirthYear();
+const years = Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => YEAR_MIN + i);
+const pad2 = (n: number) => String(n).padStart(2, '0');
 ---
+
 <!doctype html>
 <html lang="et">
   <head>
@@ -48,14 +64,102 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
         <h2 data-i18n="form.heading">{tx('form.heading')}</h2>
         <p class="note" data-i18n="form.lede">{tx('form.lede')}</p>
         <form id="birth-form-el" novalidate>
+          <fieldset id="birth-date-wheels" class="birth-wheels">
+            <legend data-i18n="form.date">{tx('form.date')}</legend>
+            <div class="wheel-row">
+              <div class="wheel-col wheel-col-day">
+                <span class="wheel-label" id="birth-day-label" data-i18n="form.day">{tx('form.day')}</span>
+                <div class="wheel-frame">
+                  <div class="wheel" role="listbox" id="birth-day" aria-labelledby="birth-day-label" tabindex="0" aria-activedescendant={`birth-day-opt-${seed.day}`}>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                      <div class="wheel-item" id={`birth-day-opt-${d}`} role="option" aria-selected={d === seed.day}>{pad2(d)}</div>
+                    ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                  </div>
+                  <span class="wheel-band" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="wheel-col wheel-col-month">
+                <span class="wheel-label" id="birth-month-label" data-i18n="form.month">{tx('form.month')}</span>
+                <div class="wheel-frame">
+                  <div class="wheel" role="listbox" id="birth-month" aria-labelledby="birth-month-label" tabindex="0" aria-activedescendant={`birth-month-opt-${seed.month}`}>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                      <div class="wheel-item" id={`birth-month-opt-${m}`} role="option" aria-selected={m === seed.month}>{monthName(L, m)}</div>
+                    ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                  </div>
+                  <span class="wheel-band" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="wheel-col wheel-col-year">
+                <span class="wheel-label" id="birth-year-label" data-i18n="form.year">{tx('form.year')}</span>
+                <div class="wheel-frame">
+                  <div class="wheel" role="listbox" id="birth-year" aria-labelledby="birth-year-label" tabindex="0" aria-activedescendant={`birth-year-opt-${seed.year}`}>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    {years.map((y) => (
+                      <div class="wheel-item" id={`birth-year-opt-${y}`} role="option" aria-selected={y === seed.year}>{y}</div>
+                    ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                  </div>
+                  <span class="wheel-band" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
+          </fieldset>
           <div class="field">
-            <label for="birth-date" data-i18n="form.date">{tx('form.date')}</label>
+            <label for="birth-date" data-i18n="form.dateText">{tx('form.dateText')}</label>
             <input id="birth-date" name="date" inputmode="numeric" placeholder={tx('form.date.placeholder')} />
+            <p class="note" data-i18n="form.dateText.hint">{tx('form.dateText.hint')}</p>
           </div>
-          <div class="field">
-            <label for="birth-time" data-i18n="form.time">{tx('form.time')}</label>
-            <input id="birth-time" name="time" inputmode="numeric" placeholder={tx('form.time.placeholder')} />
+
+          <fieldset id="birth-time-wheels" class="birth-wheels">
+            <legend data-i18n="form.time">{tx('form.time')}</legend>
+            <div class="wheel-row">
+              <div class="wheel-col">
+                <span class="wheel-label" id="birth-hour-label" data-i18n="form.hour">{tx('form.hour')}</span>
+                <div class="wheel-frame">
+                  <div class="wheel" role="listbox" id="birth-hour" aria-labelledby="birth-hour-label" tabindex="0" aria-activedescendant={`birth-hour-opt-${seed.hour}`}>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    {Array.from({ length: 24 }, (_, i) => i).map((h) => (
+                      <div class="wheel-item" id={`birth-hour-opt-${h}`} role="option" aria-selected={h === seed.hour}>{pad2(h)}</div>
+                    ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                  </div>
+                  <span class="wheel-band" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="wheel-col">
+                <span class="wheel-label" id="birth-minute-label" data-i18n="form.minute">{tx('form.minute')}</span>
+                <div class="wheel-frame">
+                  <div class="wheel" role="listbox" id="birth-minute" aria-labelledby="birth-minute-label" tabindex="0" aria-activedescendant={`birth-minute-opt-${seed.minute}`}>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    {Array.from({ length: 60 }, (_, i) => i).map((m) => (
+                      <div class="wheel-item" id={`birth-minute-opt-${m}`} role="option" aria-selected={m === seed.minute}>{pad2(m)}</div>
+                    ))}
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                    <div class="wheel-pad" aria-hidden="true"></div>
+                  </div>
+                  <span class="wheel-band" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
             <p class="note" data-i18n="form.time.hint">{tx('form.time.hint')}</p>
+          </fieldset>
+          <div class="field">
+            <label for="birth-time" data-i18n="form.timeText">{tx('form.timeText')}</label>
+            <input id="birth-time" name="time" inputmode="numeric" placeholder={tx('form.time.placeholder')} />
+            <p class="note" data-i18n="form.timeText.hint">{tx('form.timeText.hint')}</p>
           </div>
           <div class="field">
             <label for="birth-place" data-i18n="form.place">{tx('form.place')}</label>
