@@ -135,8 +135,10 @@ the regenerated text still matches the pin.
 Hits report the file, line and exact string (the gate reads the source
 files' own lines). All checks are wrappers-free regex and counters —
 no model calls, no network, no randomness. Out of scope by the brief:
-Estonian spelling (separate issue), similarity scoring (separate
-issue), and story copy changes beyond what the checks require.
+similarity scoring (separate issue), and story copy changes beyond
+what the checks require — Estonian spelling was also out of scope
+then and has since gained its own gate ("Estonian spellcheck"
+below).
 
 ## Birth entry wheels
 
@@ -251,3 +253,41 @@ pretending none exists.
 **Out of scope, unchanged**: tier-3 animation, payments, accounts, English
 copy, synastry, notifications, transit-to-transit and retrograde-station
 commentary. The ephemeris seam and its licence posture are untouched.
+
+## Estonian spellcheck
+
+Estonian copy is the product, so the app now checks its own spelling:
+`tests/spelling.test.ts` runs every shipped word through the Estonian
+et_EE hunspell dictionary (282 173 entries) and fails with the file, the
+exact string and the offending word. Corrupted sour note from the brief
+fixed there too: shipped copy contained real spelling errors ('ütleda'
+→ 'ütelda', glued 'lõpuleviimine(s)' → the EKS form 'lõpule viimine',
+and 'natalne', a word Estonian does not have — rewritten as 'teeb
+vastasseisu' like every other aspect note), each verified against the
+Eesti õigekeelsussõnaraamat and listed in the PR body rather than
+allowlisted.
+
+- **Pure JavaScript, no system dependency**: `hunspell-asm`, WebAssembly
+  hunspell. Debian's nspell was tried first and could not be used at all:
+  with this dictionary affix/compound setup it never finished loading
+  (>60 s before the check even started), while hunspell-asm loads the
+  dictionary in ~0.15 s and checks the whole corpus (555 strings) in
+  milliseconds — the whole suite still runs in ~0.4 s.
+- **The dictionary is committed** (`tests/spelling/dictionaries/et`,
+  LGPL-2.1, from wooorm/dictionaries / meso.ee), so the check runs
+  offline and identically on every machine and in CI.
+- **The allowlist is one reviewed file** (`tests/spelling/allowlist.txt`):
+  one word per line, each with its reason — brand terms (Firstmate,
+  Astro), planet names the dictionary misses (Saturn, Veenus, Neptuun,
+  Pluuto), astrology vocabulary the concept board deliberately keeps
+  ('trigoon', 'asendents', MC), standard Estonian words the dictionary
+  gaps on ('retrograadne', 'tähelepanu', the oblique 'liiguvat'), and
+  the three English placeholder labels (Planets, Houses, Aspects). The
+  suite enforces a reason per
+  line and rejects allowlist entries that are neither dictionary words
+  nor used by the corpus.
+- **Known limit, stated plainly**: et_EE hunspell compound rules
+  (COMPOUNDFLAG) accept some glued concatenations, so a malformed
+  compound can still pass. The gate is a spelling check, not a grammar
+  judge; it reliably catches non-words and single-word misspellings
+  ('ütleda' class), which is what ships into the copy today.

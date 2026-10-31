@@ -17,7 +17,7 @@ landing surface; the chart wheel is the depth layer underneath it.
 ```
 npm install            # use --legacy-peer-deps if npm's resolver balks on vitest peers
 npm run dev            # astro dev --background; stop/status/logs via npm run dev:<cmd>
-npm test               # correctness, privacy and story-content gates
+npm test               # correctness, privacy, story-content and Estonian-spelling gates
 npm run build          # static output into dist/
 ```
 

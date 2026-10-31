@@ -81,7 +81,7 @@
         "action": "Ütle täna ühele lähedasele välja, mida sa temalt konkreetselt ootad, ja kuula ära, mis ta vastab.",
         "pitfall": "Vahemaa võib tunduda lahkumisena ja selle eest on kergesti rünnatud. Tegelikult on see lihtsalt hetk, kus mõlemad inimesed vajavad endale ruumi."
       },
-      "note": "Ringi liikub Saturn ja seisab sinu nataalse vastaspoolel: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist."
+      "note": "Ringi liikub Saturn ja teeb vastasseisu: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist."
     },
     "jupiter-trine-work": {
       "input": {
@@ -165,7 +165,7 @@
         "action": "Alusta täna seda asja, mida sa juba nädalapäevade kaupa lükkad, ja tee sellest esimene käegapuutuv samm.",
         "pitfall": "Võidakse arvata, et täna jaksab kõike — ja homme jäävad järele ainult katkestatud algused. Üks, mitte kõik."
       },
-      "note": "Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpuleviimiseks."
+      "note": "Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpule viimiseks."
     },
     "venus-sextile-relationships": {
       "input": {
@@ -202,12 +202,12 @@
         "Ruumi saab mõlemale ainult siis, kui kumb nimetab oma. Ütle täna ühele lähedasele selgelt välja, mida sa praegu kõige rohkem vajad."
       ],
       "plain": {
-        "open": "Täna on hea hetk ütleda, mida suhtes ootad.",
+        "open": "Täna on hea hetk ütelda, mida suhtes ootad.",
         "tight": "Kaks vajadust tõmbavad täna vastassuundades: enda oma ja kellegi teise oma.",
         "action": "Ütle täna ühele lähedasele selgelt välja, mida sa praegu kõige rohkem vajad.",
         "pitfall": "Oma vajadus jääb kergesti selle pärast tagaplaanile, et kellegi teise oma jääks vahetus ruumi — ja siis on mõlemad poolikud."
       },
-      "note": "Ringi liikub Veenus ja seisab sinu nataalse vastaspoolel: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud."
+      "note": "Ringi liikub Veenus ja teeb vastasseisu: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud."
     },
     "mercury-square-work": {
       "input": {
@@ -291,7 +291,7 @@
         "action": "Tee täna ainult visand või mustand ja jäta vaatamine homme.",
         "pitfall": "Udu meelitab midagi kergesti lõpuni vedama, kuigi poolik mustand on täna ainus reaalne tulemus, mida pidada silmas."
       },
-      "note": "Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpuleviimine mitte."
+      "note": "Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpule viimine mitte."
     },
     "any-opposition": {
       "input": {

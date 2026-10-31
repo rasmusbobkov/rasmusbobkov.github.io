@@ -1,0 +1,6 @@
+LGPL-2.1
+
+The Estonian hunspell dictionary files et.aff and et.dic in this
+directory are redistributed under the GNU Lesser General Public License
+version 2.1. Source: wooorm/dictionaries, dictionaries/et, generated
+from http://www.meso.ee/~jjpp/speller. See README.md in this directory.
