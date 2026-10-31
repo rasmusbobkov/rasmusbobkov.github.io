@@ -58,6 +58,7 @@ const et = {
   'focus.error': 'Kolm piisab — lülita mõni enne välja.',
   'focus.save': 'Salvesta valik',
   'focus.skip': 'Jäta vahele',
+  'focus.edit': 'Fookus',
 
   // Birth form
   'form.heading': 'Sinu sünnikaart',

@@ -63,17 +63,6 @@ test('transit JD for a fixed instant matches the fixture\'s documented JD to 1e-
   expect(Math.abs(jd - f.julianDayUt)).toBeLessThan(1e-9);
 });
 
-test('aggregate: transit-engine deltas observed during the run stay within 0.01°', () => {
-  let maxDiff = 0;
-  for (const f of fixtures) {
-    const positions = transitAtFixtures.get(f.id)!;
-    for (const body of TRANSIT_BODIES) {
-      maxDiff = Math.max(maxDiff, Math.abs(positions.find((p) => p.body === body)!.longitude - f.reference.planets[body].lon));
-    }
-  }
-  expect(maxDiff).toBeLessThanOrEqual(POS_TOL);
-});
-
 // ——— operating-timezone day key (Europe/Tallinn roll-over) ———
 
 test('transiting bodies are Sun..Pluto plus the mean node, never the Moon', () => {

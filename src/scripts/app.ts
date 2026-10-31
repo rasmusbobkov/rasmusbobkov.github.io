@@ -6,7 +6,7 @@
 import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/catalogue';
 import { SIGNS, MAX_FOCUS_AREAS, FOCUS_AREAS, type BodyId, type FocusArea } from '../lib/astro-constants';
 import { computeChart, norm360, type Chart } from '../lib/chart';
-import { currentTransitReading, nearestMiss, type AspectInput, type TransitPosition } from '../lib/transits';
+import { currentTransitReading, nearestMiss, natalAspectTargets, type AspectInput, type TransitPosition } from '../lib/transits';
 import {
   selectDayReading, type DayReading,
 } from '../lib/meaning';
@@ -645,12 +645,24 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
 async function routeAfterChart(): Promise<void> {
   const focusData = loadStoredFocus();
   if (!focusData) {
-    setView('story-view', false);
-    setView('focus-setup', true);
+    showFocusSetup();
     return;
   }
   focusAreas = focusData.skipped ? [] : [...focusData.areas];
   await enterStory();
+}
+
+/** The focus setup as it is shown: current selection pre-ticked, the other
+ * story surfaces out of the way. Reopenable — the saved or skipped choice
+ * is never permanent. */
+function showFocusSetup(): void {
+  for (const box of document.querySelectorAll<HTMLInputElement>('.focus-option')) {
+    box.checked = focusAreas.includes(box.value as FocusArea);
+  }
+  setView('story-view', false);
+  setView('chart-view', false);
+  setView('focus-setup', true);
+  document.getElementById('focus-setup')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function wireFocusSetup(): void {
@@ -686,6 +698,7 @@ function wireFocusSetup(): void {
     setView('focus-setup', false);
     void enterStory();
   });
+  document.getElementById('focus-reopen')?.addEventListener('click', showFocusSetup);
 }
 
 function wireStoryControls(): void {
@@ -737,7 +750,7 @@ async function enterStory(): Promise<void> {
     dayKey = reading.dayKey;
     dayTime = reading.tallinnTime;
     lastTransitPositions = reading.positions;
-    lastNatalTargets = chart.placements.map((p) => ({ id: p.body, longitude: p.longitude }));
+    lastNatalTargets = natalAspectTargets(chart);
     renderStory();
     renderWhyPanel();
   } catch (err) {
@@ -845,8 +858,16 @@ function renderStory(): void {
 
 function renderWhyPanel(): void {
   const panel = document.getElementById('story-why-panel');
-  if (!panel || !dayReading) return;
+  if (!panel) return;
   panel.replaceChildren();
+
+  if (!dayReading) {
+    const p = document.createElement('p');
+    p.className = 'note';
+    p.textContent = t(lang, 'story.error');
+    panel.appendChild(p);
+    return;
+  }
 
   const h = document.createElement('h3');
   h.textContent = t(lang, 'story.whyHeading');
