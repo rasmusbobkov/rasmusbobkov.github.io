@@ -1,7 +1,7 @@
-# Engineering record — foundation slice
+# Engineering record
 
-Decisions and trade-offs made while building the chart foundation, so the
-next slice inherits the reasoning, not just the code.
+Decisions and trade-offs made while building, so each slice inherits the
+reasoning, not just the code. Chart foundation first, then the daily story.
 
 ## Ephemeris choice
 
@@ -157,8 +157,10 @@ action/pitfall/astroNote. No outcomes are promised — only tendencies and
 choices; the daily action is always concrete (mine, don't go, say, don't
 say, wait).
 
-**Focus setup**: one-time, four choices (work, relationships, creative,
-money), at most three, skippable. Stored beside the birth record under its
+**Focus setup**: first shown once, four choices (work, relationships,
+creative, money), at most three, skippable — but directly reopenable from
+the chart view ("Fookus"), so neither a saved nor a skipped choice locks
+the setup away. Stored beside the birth record under its
 own versioned key `firstmate-astro.focus.v1` — the birth record's
 export/import format stays untouched, so no migration exists. Reset clears
 both records.
