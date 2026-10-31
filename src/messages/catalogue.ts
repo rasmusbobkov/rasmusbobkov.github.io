@@ -23,6 +23,42 @@ const et = {
   'app.comingSoon': 'Inglise tõlge on tulemas. Seni räägib Firstmate Astro sinuga eesti keeles.',
   'misc.calculating': 'Arvutan…',
 
+  // Daily story (the landing surface)
+  'story.heading': 'Tänane päev',
+  'story.date': '{date}',
+  'story.asOf': 'Seis {time}',
+  'story.tierStory': 'Loona',
+  'story.tierPlain': 'Selgelt',
+  'story.why': 'Miks see?',
+  'story.whyHeading': 'Mis selle taga on?',
+  'story.whyClose': 'Sulge',
+  'story.openChart': 'Näita sünnikaarti',
+  'story.loading': 'Loen tänast taevast…',
+  'story.error': 'Tänast päeva ei õnnestunud arvutada. Proovi lehte värskendada.',
+  'story.plain.open': 'Avatud',
+  'story.plain.tight': 'Kitsas',
+  'story.plain.action': 'Tee täna',
+  'story.plain.pitfall': 'Kus see kergesti sassi läheb',
+  'story.quiet.tag': 'Tihi päev',
+  'story.quiet.explain': 'Täna puudutab ükski taevakeha sinu kaarti piisavalt täpselt, et sellest päriselt rääkida.',
+  'story.quiet.nearest': 'Lähim, mis orbiidi piirist välja jäi: {pair} — {degrees} kõrvale.',
+  'story.why.transit': 'Transiit',
+  'story.why.aspect': 'Nurk',
+  'story.why.orb': 'orbiit',
+  'story.why.natal': 'Sinu kaardis',
+  'story.why.quiet': 'Täna pole ükski transiit orbiidi sees. Kontrollisime kümme taevakeha, sealhulgas Kuu sõlme, sinu kaardi vastu.',
+
+  // One-time focus setup
+  'focus.heading': 'Mis su päevad rääkima hakkavad',
+  'focus.lede': 'Vali kuni kolm valdkonda, millest lood peamiselt räägivad. Seda küsitakse üks kord; sinu kaart jääb samaks.',
+  'focus.work': 'Töö ja karjäär',
+  'focus.relationships': 'Suhted ja lähedus',
+  'focus.creative': 'Loomine ja projektid',
+  'focus.money': 'Raha ja kindlus',
+  'focus.error': 'Kolm piisab — lülita mõni enne välja.',
+  'focus.save': 'Salvesta valik',
+  'focus.skip': 'Jäta vahele',
+
   // Birth form
   'form.heading': 'Sinu sünnikaart',
   'form.lede': 'Kaart arvutatakse sinu seadmes. Sünnikuupäev, -aeg ja -koht ei välju brauserist.',
@@ -182,6 +218,9 @@ const et = {
   'lang.label': 'Keel',
   'lang.et': 'Eesti',
   'lang.en': 'Inglise',
+
+  // Story tier switch
+  'story.tierSwitch': 'Kuidas täna loetud?',
 
   // Glossary
   'glossary.heading': 'Sõnastik',

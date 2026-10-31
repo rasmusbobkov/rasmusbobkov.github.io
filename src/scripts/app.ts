@@ -4,8 +4,12 @@
  * strings come from the message catalogue; nothing is hardcoded here.
  */
 import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/catalogue';
-import { SIGNS, type BodyId } from '../lib/astro-constants';
-import { computeChart, type Chart } from '../lib/chart';
+import { SIGNS, MAX_FOCUS_AREAS, FOCUS_AREAS, type BodyId, type FocusArea } from '../lib/astro-constants';
+import { computeChart, norm360, type Chart } from '../lib/chart';
+import { currentTransitReading, nearestMiss, type AspectInput, type TransitPosition } from '../lib/transits';
+import {
+  selectDayReading, type DayReading,
+} from '../lib/meaning';
 import { type BirthParts } from '../lib/birth-wheels';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import {
@@ -17,6 +21,7 @@ import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
 import {
   loadStoredBirthData, saveStoredBirthData, clearStoredBirthData,
   toStored, toBirthInput, exportJson, importJson, type StoredBirthData,
+  loadStoredFocus, saveStoredFocus, clearStoredFocus,
 } from '../lib/storage';
 import { encodeShareFragment, decodeShareFragment, type Trio } from '../lib/share';
 import { getEphemeris } from '../lib/ephemeris';
@@ -31,6 +36,18 @@ let chart: Chart | null = null;
 let birthInstant: BirthInstant | null = null;
 let placeName = '';
 let selected: Selection | null = null;
+
+// ——— daily story state ———
+let focusAreas: FocusArea[] = [];
+let tier: 'story' | 'plain' = 'story';
+let dayReading: DayReading | null = null;
+let dayKey = '';
+let dayTime = '';
+/** kept for the quiet-day "why" panel: the exact sky and targets that were read */
+let lastTransitPositions: TransitPosition[] = [];
+let lastNatalTargets: AspectInput[] = [];
+let chartRendered = false;
+let storySeq = 0;
 
 // ——— i18n plumbing ———
 function fillStaticI18n(): void {
@@ -83,6 +100,8 @@ async function boot(): Promise<void> {
 
   wireBirthWheels();
   wireBirthForm();
+  wireFocusSetup();
+  wireStoryControls();
   document.getElementById('glossary-toggle')?.addEventListener('click', () => {
     const panel = document.getElementById('glossary-panel');
     if (panel) panel.hidden = !panel.hidden;
@@ -115,6 +134,10 @@ function setLang(next: Lang): void {
   if (shareTrio) renderShareRows(shareTrio);
   if (chart && birthInstant) {
     renderChartView(chart, birthInstant);
+  }
+  if (dayReading) {
+    renderStory();
+    renderWhyPanel();
   }
 }
 
@@ -585,7 +608,7 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
     if (errorEl) errorEl.textContent = t(lang, input.timeUnknown ? 'form.error.unknownDate' : 'form.error.unknownTime');
     return false;
   }
-  setView('chart-view', true);
+  setView('story-view', true);
   const progress = document.getElementById('chart-progress');
   if (progress) progress.hidden = false;
   try {
@@ -595,15 +618,17 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
     if (seq !== chartSeq) return false;
     chart = computed;
     birthInstant = inst;
+    chartRendered = false;
     // persist locally
     const stored = toStored({ ...input, placeName });
     saveStoredBirthData(stored);
-    renderChartView(computed, inst);
+    await routeAfterChart();
     return true;
   } catch (err) {
     if (seq !== chartSeq) return false;
     console.error(err);
     setView('chart-view', false);
+    setView('story-view', false);
     setView('birth-form', true);
     restoreBirthForm(input);
     const errorEl = document.getElementById('form-error');
@@ -613,6 +638,279 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
     if (seq === chartSeq && progress) progress.hidden = true;
   }
 }
+
+// ——— daily story: the landing surface ———
+
+/** After a chart exists: the one-time focus setup, then the daily story. */
+async function routeAfterChart(): Promise<void> {
+  const focusData = loadStoredFocus();
+  if (!focusData) {
+    setView('story-view', false);
+    setView('focus-setup', true);
+    return;
+  }
+  focusAreas = focusData.skipped ? [] : [...focusData.areas];
+  await enterStory();
+}
+
+function wireFocusSetup(): void {
+  const noteEl = document.getElementById('focus-note');
+  const clearNote = () => { if (noteEl) noteEl.textContent = ''; };
+  for (const box of Array.from(document.querySelectorAll<HTMLInputElement>('.focus-option'))) {
+    box.addEventListener('change', () => {
+      const count = document.querySelectorAll<HTMLInputElement>('.focus-option:checked').length;
+      if (count > MAX_FOCUS_AREAS) {
+        box.checked = false;
+        if (noteEl) noteEl.textContent = t(lang, 'focus.error');
+      } else {
+        clearNote();
+      }
+    });
+  }
+  document.getElementById('focus-save')?.addEventListener('click', () => {
+    clearNote();
+    const areas = Array.from(document.querySelectorAll<HTMLInputElement>('.focus-option:checked'))
+      .map((b) => b.value)
+      .filter((v): v is FocusArea => (FOCUS_AREAS as readonly string[]).includes(v));
+    // never exceed the cap, whatever slipped past the change handler
+    const capped = areas.slice(0, MAX_FOCUS_AREAS);
+    saveStoredFocus({ schemaVersion: 1, areas: capped, skipped: false });
+    focusAreas = capped;
+    setView('focus-setup', false);
+    void enterStory();
+  });
+  document.getElementById('focus-skip')?.addEventListener('click', () => {
+    clearNote();
+    saveStoredFocus({ schemaVersion: 1, areas: [], skipped: true });
+    focusAreas = [];
+    setView('focus-setup', false);
+    void enterStory();
+  });
+}
+
+function wireStoryControls(): void {
+  document.getElementById('tier-story')?.addEventListener('click', () => {
+    tier = 'story';
+    paintTierSwitch();
+    renderStory();
+  });
+  document.getElementById('tier-plain')?.addEventListener('click', () => {
+    tier = 'plain';
+    paintTierSwitch();
+    renderStory();
+  });
+  document.getElementById('story-why')?.addEventListener('click', () => {
+    const panel = document.getElementById('story-why-panel');
+    if (!panel) return;
+    const opening = panel.hidden;
+    panel.hidden = !opening;
+    if (opening) renderWhyPanel();
+  });
+  document.getElementById('open-chart')?.addEventListener('click', () => {
+    setView('chart-view', true);
+    if (!chartRendered && chart && birthInstant) {
+      renderChartView(chart, birthInstant);
+      chartRendered = true;
+    }
+    document.getElementById('chart-view')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+function paintTierSwitch(): void {
+  for (const id of ['tier-story', 'tier-plain']) {
+    const btn = document.getElementById(id) as HTMLButtonElement | null;
+    if (btn) btn.setAttribute('aria-pressed', String(btn.id === `tier-${tier}`));
+  }
+}
+
+async function enterStory(): Promise<void> {
+  if (!chart) return;
+  const seq = ++storySeq;
+  setView('story-view', true);
+  paintTierSwitch();
+  try {
+    await getEphemeris(wasmUrl);
+    if (seq !== storySeq || !chart) return;
+    const reading = await currentTransitReading(new Date(), chart, wasmUrl);
+    if (seq !== storySeq) return;
+    dayReading = selectDayReading(reading.hits, focusAreas);
+    dayKey = reading.dayKey;
+    dayTime = reading.tallinnTime;
+    lastTransitPositions = reading.positions;
+    lastNatalTargets = chart.placements.map((p) => ({ id: p.body, longitude: p.longitude }));
+    renderStory();
+    renderWhyPanel();
+  } catch (err) {
+    if (seq !== storySeq) return;
+    console.error(err);
+    const c = document.getElementById('story-content');
+    if (c) {
+      c.replaceChildren();
+      const p = document.createElement('p');
+      p.className = 'note';
+      p.textContent = t(lang, 'story.error');
+      c.appendChild(p);
+    }
+  }
+}
+
+function storyParagraphsFrom(unit: DayReading['unit']): HTMLParagraphElement[] {
+  const ps: HTMLParagraphElement[] = [];
+  const push = (text: string, cls?: string) => {
+    const p = document.createElement('p');
+    if (cls) p.className = cls;
+    p.textContent = text;
+    ps.push(p);
+    return p;
+  };
+  push(unit.story.situation);
+  push(unit.story.turn);
+  push(unit.story.climax);
+  push(unit.story.meaning, 'story-final');
+  return ps;
+}
+
+function labelLine(labelKey: MessageKey, text: string, cls?: string): HTMLParagraphElement {
+  const p = document.createElement('p');
+  if (cls) p.className = cls;
+  const label = document.createElement('span');
+  label.className = 'story-line-label';
+  label.textContent = t(lang, labelKey);
+  p.appendChild(label);
+  p.appendChild(document.createTextNode(text));
+  return p;
+}
+
+function astroLineText(hit: NonNullable<DayReading['hit']>): string {
+  return `${participantName(hit.transitBody)} ${t(lang, ('aspect.' + hit.aspect) as MessageKey)} ${participantName(hit.target)} · ${t(lang, 'story.why.orb')} ${fmtDeg(hit.orbDegrees)}`;
+}
+
+function renderStory(): void {
+  const c = document.getElementById('story-content');
+  if (!c || !dayReading) return;
+
+  const dateEl = document.getElementById('story-date-text');
+  if (dateEl && dayKey) {
+    const [y, m, d] = dayKey.split('-').map(Number);
+    dateEl.textContent = fmtDateEt(y!, m!, d!);
+  }
+  const asofEl = document.getElementById('story-asof');
+  if (asofEl) asofEl.textContent = dayTime ? fmt(lang, 'story.asOf', { time: dayTime }) : '';
+
+  c.replaceChildren();
+
+  if (dayReading.quiet) {
+    const tag = document.createElement('p');
+    tag.className = 'quiet-tag';
+    tag.textContent = t(lang, 'story.quiet.tag');
+    c.appendChild(tag);
+    const explain = document.createElement('p');
+    explain.textContent = t(lang, 'story.quiet.explain');
+    c.appendChild(explain);
+    const copy = document.createElement('div');
+    copy.className = 'story-copy';
+    copy.style.marginTop = '14px';
+    for (const p of storyParagraphsFrom(dayReading.unit)) copy.appendChild(p);
+    c.appendChild(copy);
+    return;
+  }
+
+  const hit = dayReading.hit!;
+  if (tier === 'story') {
+    const copy = document.createElement('div');
+    copy.className = 'story-copy';
+    for (const p of storyParagraphsFrom(dayReading.unit)) copy.appendChild(p);
+    c.appendChild(copy);
+    return;
+  }
+
+  // plain: the same unit, astro visible — line, then open / tight / action / pitfall
+  const astro = document.createElement('p');
+  astro.className = 'astro-line';
+  astro.textContent = astroLineText(hit);
+  c.appendChild(astro);
+
+  const copy = document.createElement('div');
+  copy.className = 'story-copy';
+  copy.appendChild(labelLine('story.plain.open', dayReading.unit.open, 'story-line'));
+  copy.appendChild(labelLine('story.plain.tight', dayReading.unit.tight, 'story-line'));
+  copy.appendChild(labelLine('story.plain.action', dayReading.unit.action, 'story-line story-final'));
+  copy.appendChild(labelLine('story.plain.pitfall', dayReading.unit.pitfall, 'story-line'));
+  const note = document.createElement('p');
+  note.className = 'why-note';
+  note.textContent = dayReading.unit.astroNote;
+  copy.appendChild(note);
+  c.appendChild(copy);
+}
+
+function renderWhyPanel(): void {
+  const panel = document.getElementById('story-why-panel');
+  if (!panel || !dayReading) return;
+  panel.replaceChildren();
+
+  const h = document.createElement('h3');
+  h.textContent = t(lang, 'story.whyHeading');
+  panel.appendChild(h);
+
+  const row = (key: string, value: string) => {
+    const div = document.createElement('div');
+    div.className = 'why-row';
+    const k = document.createElement('span');
+    k.className = 'why-key';
+    k.textContent = key;
+    div.appendChild(k);
+    div.appendChild(document.createTextNode(value));
+    return div;
+  };
+
+  if (dayReading.hit) {
+    const hit = dayReading.hit;
+    panel.appendChild(row(t(lang, 'story.why.transit'), transitPlacementText(hit.transitBody, hit.transitLongitude)));
+    panel.appendChild(row(t(lang, 'story.why.aspect'), `${t(lang, ('aspect.' + hit.aspect) as MessageKey)} · ${t(lang, 'story.why.orb')} ${fmtDeg(hit.orbDegrees)}`));
+    panel.appendChild(row(t(lang, 'story.why.natal'), natalTargetText(hit.target, hit.targetLongitude, chart)));
+    const note = document.createElement('p');
+    note.className = 'why-note';
+    note.textContent = dayReading.unit.astroNote;
+    panel.appendChild(note);
+    return;
+  }
+
+  // honest quiet day: what was checked, and the nearest miss
+  const explain = document.createElement('p');
+  explain.textContent = t(lang, 'story.quiet.explain');
+  panel.appendChild(explain);
+  const miss = nearestMiss(lastTransitPositions, lastNatalTargets);
+  if (miss) {
+    const pair = `${participantName(miss.transitBody)} ${t(lang, ('aspect.' + miss.aspect) as MessageKey)} ${participantName(miss.target)}`;
+    const line = document.createElement('p');
+    line.textContent = fmt(lang, 'story.quiet.nearest', { pair, degrees: fmtDeg(miss.overBy) });
+    panel.appendChild(line);
+    const note = document.createElement('p');
+    note.className = 'why-note';
+    note.textContent = t(lang, 'story.why.quiet');
+    panel.appendChild(note);
+  }
+}
+
+const ASPECT_PARTICIPANT_BODIES = new Set(['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'meanNode']);
+
+/** "Marss, Kaksikud 12,4°" — the same wording the chart lists use. */
+function transitPlacementText(body: import('../lib/astro-constants').BodyId, longitude: number): string {
+  const sign = Math.floor(norm360(longitude) / 30) + 1;
+  return `${participantName(body)}, ${signName(sign)} ${fmtDegComma(norm360(longitude) % 30)}°`;
+}
+
+/** The natal placement a transit touches, house included when known. */
+function natalTargetText(target: string, longitude: number, c: Chart | null): string {
+  const sign = Math.floor(norm360(longitude) / 30) + 1;
+  let s = `${participantName(target)} ${signName(sign)} ${fmtDegComma(norm360(longitude) % 30)}°`;
+  if (c && ASPECT_PARTICIPANT_BODIES.has(target)) {
+    const p = c.placements.find((x) => x.body === (target as BodyId));
+    if (p?.house) s += ` · ${fmt(lang, 'house.item', { number: String(p.house) })}`;
+  }
+  return s;
+}
+
 
 // ——— chart view ———
 let chartSeq = 0;
@@ -828,6 +1126,7 @@ function wireDataActions(c: Chart): void {
   document.getElementById('reset-data')?.addEventListener('click', () => {
     if (!confirm(t(lang, 'reset.confirm'))) return;
     clearStoredBirthData();
+    clearStoredFocus();
     location.reload();
   }, { signal });
 }
