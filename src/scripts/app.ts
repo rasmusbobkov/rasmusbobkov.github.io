@@ -190,6 +190,11 @@ function wireBirthWheels(): void {
     return h > 10 ? Math.round(h) : WIRE_ITEM_PX;
   };
 
+  /** One per wheel: the id of its pending settled-scroll read timer, or
+   * absent. A wheel with a pending read is mid-gesture — commit leaves its
+   * paint to that read, which re-commits (and repaints) right after. */
+  const pendingReads = new Map<string, number>();
+
   /** Re-render one wheel's option list (day follows the month length, the
    * year wheel follows the shared bound computed at run time). */
   const renderWheel = (cfg: WheelCfg): void => {
@@ -234,6 +239,7 @@ function wireBirthWheels(): void {
     if (!valueEl) return;
     for (const el of wheel.querySelectorAll('.wheel-item[aria-selected="true"]')) {
       el.removeAttribute('aria-selected');
+      el.removeAttribute('aria-label');
     }
     valueEl.setAttribute('aria-selected', 'true');
     // the selected option reads with the whole meaning: the full date or
@@ -262,7 +268,7 @@ function wireBirthWheels(): void {
       const maxIndex = cfg.itemCount() - 1;
       const idx = Math.min(Math.max(parts[cfg.part] - cfg.firstValue, 0), maxIndex);
       parts[cfg.part] = cfg.firstValue + idx;
-      paintWheel(cfg, cfg.firstValue + idx);
+      if (!pendingReads.has(cfg.id)) paintWheel(cfg, cfg.firstValue + idx);
     }
     if (toText) {
       dateEl.value = fmtDateEt(parts.year, parts.month, parts.day);
@@ -276,19 +282,17 @@ function wireBirthWheels(): void {
     // only once scrolling settles — programmatic repositions (re-render,
     // seed) keep the position stable for the whole window, so a reset
     // scroll event can never drag the selection with it
-    let readTimer = 0;
     wheel.addEventListener('scroll', () => {
-      if (readTimer) clearTimeout(readTimer);
-      readTimer = window.setTimeout(() => {
-        readTimer = 0;
+      const prev = pendingReads.get(cfg.id);
+      if (prev) clearTimeout(prev);
+      pendingReads.set(cfg.id, window.setTimeout(() => {
+        pendingReads.delete(cfg.id);
         const item = itemPx();
         const idx = Math.round(wheel.scrollTop / item);
         const value = Math.min(Math.max(cfg.firstValue + idx, cfg.firstValue), cfg.firstValue + cfg.itemCount() - 1);
-        if (value !== parts[cfg.part]) {
-          parts[cfg.part] = value;
-          commit({ toText: true });
-        }
-      }, 140);
+        parts[cfg.part] = value;
+        commit({ toText: true });
+      }, 140));
     });
     // mouse drag (touch keeps its native flick and momentum)
     wheel.addEventListener('pointerdown', (ev) => {
