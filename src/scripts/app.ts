@@ -606,6 +606,7 @@ async function showChartFromInput(input: BirthInput): Promise<boolean> {
   const inst = resolveInstant(input);
   if (!inst) {
     setView('chart-view', false);
+    setView('story-view', false);
     setView('birth-form', true);
     restoreBirthForm(input);
     const errorEl = document.getElementById('form-error');
@@ -794,6 +795,8 @@ function renderStoryFailure(): void {
     p.textContent = t(lang, 'story.error');
     c.appendChild(p);
   }
+  const panel = document.getElementById('story-why-panel');
+  if (panel && !panel.hidden) renderWhyPanel();
 }
 
 function storyParagraphsFrom(unit: NonNullable<DayReading['unit']>): HTMLParagraphElement[] {
