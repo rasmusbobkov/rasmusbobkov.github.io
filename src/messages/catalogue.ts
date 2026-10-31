@@ -1,8 +1,7 @@
 /**
  * The single message catalogue. Estonian is the source language; English is
  * structure only for now and marked as coming. No component may hardcode
- * user-facing copy — every string lives here.
- *
+ * user-facing copy — every string lives here. *
  * Vocabulary decisions from the concept board:
  * - sünnikaart (not "horoskoop", which is reserved for sun-sign content)
  * - tõusumärk in the UI; "asendents" appears once, in the glossary
@@ -22,6 +21,45 @@ const et = {
   'app.description': 'Sinu sünnikaart, arvutatud sinu seadmes.',
   'app.comingSoon': 'Inglise tõlge on tulemas. Seni räägib Firstmate Astro sinuga eesti keeles.',
   'misc.calculating': 'Arvutan…',
+
+  // Daily story (the landing surface)
+  'story.heading': 'Tänane päev',
+  'story.asOf': 'Seis {time}',
+  'story.tierStory': 'Loona',
+  'story.tierPlain': 'Selgelt',
+  'story.why': 'Miks see?',
+  'story.whyHeading': 'Mis selle taga on?',
+  'story.whyClose': 'Sulge',
+  'story.openChart': 'Näita sünnikaarti',
+  'story.loading': 'Loen tänast taevast…',
+  'story.error': 'Tänast päeva ei õnnestunud arvutada. Proovi lehte värskendada.',
+  'story.plain.open': 'Avatud',
+  'story.plain.tight': 'Kitsas',
+  'story.plain.action': 'Tee täna',
+  'story.plain.pitfall': 'Kus see kergesti sassi läheb',
+  'story.quiet.tag': 'Tihi päev',
+  'story.quiet.explain': 'Täna puudutab ükski taevakeha sinu kaarti piisavalt täpselt, et sellest päriselt rääkida.',
+  'story.quiet.nearest': 'Lähim, mis orbiidi piirist välja jäi: {pair} — {degrees} kõrvale.',
+  'story.untold.tag': 'Lugu pole veel kirjas',
+  'story.untold.explain': 'Täna puudutab üks taevakeha sinu kaarti täpselt, aga just selle kuju lugu pole veel kirja pandud. Mis ta on ja kuhu ta sinu kaardis maandub, näed nupust "Miks see?".',
+  'story.untold.note': 'Just selle puudutuse lugu pole veel kirja pandud, seepärast ei ütle täna rohkem.',
+  'story.why.transit': 'Transiit',
+  'story.why.aspect': 'Nurk',
+  'story.why.orb': 'orbiit',
+  'story.why.natal': 'Sinu kaardis',
+  'story.why.quiet': 'Täna pole ükski transiit orbiidi sees. Kontrollisime kümme taevakeha, sealhulgas Kuu sõlme, sinu kaardi vastu.',
+
+  // One-time focus setup
+  'focus.heading': 'Mis su päevad rääkima hakkavad',
+  'focus.lede': 'Vali kuni kolm valdkonda, millest lood peamiselt räägivad. Seda küsitakse üks kord; sinu kaart jääb samaks.',
+  'focus.work': 'Töö ja karjäär',
+  'focus.relationships': 'Suhted ja lähedus',
+  'focus.creative': 'Loomine ja projektid',
+  'focus.money': 'Raha ja kindlus',
+  'focus.error': 'Kolm piisab — lülita mõni enne välja.',
+  'focus.save': 'Salvesta valik',
+  'focus.skip': 'Jäta vahele',
+  'focus.edit': 'Fookus',
 
   // Birth form
   'form.heading': 'Sinu sünnikaart',
@@ -182,6 +220,9 @@ const et = {
   'lang.label': 'Keel',
   'lang.et': 'Eesti',
   'lang.en': 'Inglise',
+
+  // Story tier switch
+  'story.tierSwitch': 'Kuidas täna loetud?',
 
   // Glossary
   'glossary.heading': 'Sõnastik',

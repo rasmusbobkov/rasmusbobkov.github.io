@@ -3,6 +3,7 @@
  * export to a JSON file, import back. Birth data stays in the browser.
  */
 import { isValidCalendarDate, type BirthInput } from './time';
+import { FOCUS_AREAS, MAX_FOCUS_AREAS, type FocusArea } from './astro-constants';
 
 export const STORAGE_KEY = 'firstmate-astro.birth.v1';
 export const STORAGE_VERSION = 1;
@@ -116,4 +117,62 @@ export function importJson(text: string): StoredBirthData | null {
   const v = parsed as Record<string, unknown>;
   if (v.app !== 'firstmate-astro' || typeof v.birth !== 'object' || v.birth === null) return null;
   return validateStored(v.birth);
+}
+
+/**
+ * Focus areas: the one-time setup selection, stored beside the birth entry
+ * in the same versioned-localStorage pattern (its own key and version so
+ * the birth record's export/import format stays untouched).
+ */
+
+export const FOCUS_STORAGE_KEY = 'firstmate-astro.focus.v1';
+export const FOCUS_STORAGE_VERSION = 1;
+
+export interface StoredFocusData {
+  schemaVersion: 1;
+  /** at most MAX_FOCUS_AREAS areas; empty when skipped */
+  areas: FocusArea[];
+  /** true when the user chose to skip the setup */
+  skipped: boolean;
+}
+
+export function validateStoredFocus(value: unknown): StoredFocusData | null {
+  if (typeof value !== 'object' || value === null) return null;
+  const v = value as Record<string, unknown>;
+  if (v.schemaVersion !== FOCUS_STORAGE_VERSION) return null;
+  if (typeof v.skipped !== 'boolean') return null;
+  if (!Array.isArray(v.areas)) return null;
+  const areas: FocusArea[] = [];
+  for (const raw of v.areas) {
+    if (typeof raw !== 'string' || !(FOCUS_AREAS as readonly string[]).includes(raw)) return null;
+    if (!areas.includes(raw as FocusArea)) areas.push(raw as FocusArea);
+  }
+  if (areas.length > MAX_FOCUS_AREAS) return null;
+  if (v.skipped && areas.length !== 0) return null;
+  return { schemaVersion: FOCUS_STORAGE_VERSION, areas, skipped: v.skipped };
+}
+
+export function loadStoredFocus(): StoredFocusData | null {
+  if (typeof localStorage === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(FOCUS_STORAGE_KEY);
+    if (!raw) return null;
+    return validateStoredFocus(JSON.parse(raw) as unknown);
+  } catch {
+    return null;
+  }
+}
+
+export function saveStoredFocus(data: StoredFocusData): void {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(data));
+  } catch { /* storage full or blocked */ }
+}
+
+export function clearStoredFocus(): void {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.removeItem(FOCUS_STORAGE_KEY);
+  } catch { /* storage unavailable */ }
 }

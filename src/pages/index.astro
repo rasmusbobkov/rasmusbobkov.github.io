@@ -59,6 +59,46 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
         <button id="shareview-cta" class="primary" data-i18n="shareview.cta">{tx('shareview.cta')}</button>
       </section>
 
+      <!-- one-time focus setup (before the first daily story) -->
+      <section id="focus-setup" hidden class="card focus-card">
+        <h2 data-i18n="focus.heading">{tx('focus.heading')}</h2>
+        <p class="note" data-i18n="focus.lede">{tx('focus.lede')}</p>
+        <div class="focus-grid">
+          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="work" /><span data-i18n="focus.work">{tx('focus.work')}</span></label>
+          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="relationships" /><span data-i18n="focus.relationships">{tx('focus.relationships')}</span></label>
+          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="creative" /><span data-i18n="focus.creative">{tx('focus.creative')}</span></label>
+          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="money" /><span data-i18n="focus.money">{tx('focus.money')}</span></label>
+        </div>
+        <p id="focus-note" class="error-line" role="alert"></p>
+        <div class="focus-actions">
+          <button id="focus-save" type="button" class="primary" data-i18n="focus.save">{tx('focus.save')}</button>
+          <button id="focus-skip" type="button" class="chip" data-i18n="focus.skip">{tx('focus.skip')}</button>
+        </div>
+      </section>
+
+      <!-- daily story: the landing surface -->
+      <section id="story-view" hidden>
+        <div class="chart-head">
+          <h2 data-i18n="story.heading">{tx('story.heading')}</h2>
+          <p class="story-date">
+            <span id="story-date-text"></span>
+            <span id="story-asof" class="note"></span>
+          </p>
+          <div class="tier-switch" role="group" aria-label={tx('story.tierSwitch')}>
+            <button id="tier-story" class="chip" data-i18n="story.tierStory">{tx('story.tierStory')}</button>
+            <button id="tier-plain" class="chip" data-i18n="story.tierPlain">{tx('story.tierPlain')}</button>
+          </div>
+        </div>
+        <div id="story-content" class="card story-card" aria-live="polite">
+          <p id="story-loading" class="note" data-i18n="story.loading">{tx('story.loading')}</p>
+        </div>
+        <div class="story-actions">
+          <button id="story-why" class="chip" data-i18n="story.why">{tx('story.why')}</button>
+          <button id="open-chart" class="chip" data-i18n="story.openChart">{tx('story.openChart')}</button>
+        </div>
+        <div id="story-why-panel" class="card why-panel" hidden></div>
+      </section>
+
       <!-- birth entry -->
       <section id="birth-form" hidden class="card birth-card">
         <h2 data-i18n="form.heading">{tx('form.heading')}</h2>
@@ -239,6 +279,9 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
             <span id="import-note" class="note"></span>
           </div>
           <div class="card">
+            <button id="focus-reopen" class="chip" data-i18n="focus.edit">{tx('focus.edit')}</button>
+          </div>
+          <div class="card">
             <button id="reset-data" class="chip" data-i18n="reset.button">{tx('reset.button')}</button>
           </div>
         </section>
@@ -295,6 +338,17 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
 <style>
   .site-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px 8px; }
+  .story-date { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex-wrap: wrap; }
+  .story-date #story-date-text { font-family: var(--display); font-style: italic; color: var(--gold); font-size: 17px; }
+  .tier-switch { display: flex; gap: 8px; margin-top: 10px; }
+  .tier-switch .chip[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
+  .story-card { max-width: 640px; }
+  .story-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .why-panel { max-width: 640px; margin-top: 14px; }
+  .why-panel h3 { margin-bottom: 10px; }
+  .focus-card { max-width: 560px; margin: 0 auto; }
+  .focus-grid { display: grid; gap: 10px; margin-top: 16px; }
+  .focus-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
   .mark { display: flex; align-items: center; gap: 12px; }
   .mark-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 22px 4px rgba(198, 161, 95, .45); }
   .mark-name { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
