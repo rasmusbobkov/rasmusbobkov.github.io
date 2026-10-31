@@ -14,7 +14,7 @@ Astro  # the product's own name (app.name); proper noun
 
 # ——— planet names ———
 Saturn  # Estonia keeps the Latin planet name in astrology (also in golden day notes); dictionary gap
-Veenus  # Estonian planet name; dictionary gap (Merkuur, Mars, Uraan, Neptuun... mostly known)
+Veenus  # Estonian planet name; dictionary gap (Merkuur, Marss, Uraan, Jupiter the checker knows; Neptuun allowlisted below)
 Neptuun  # Estonian planet name; dictionary gap
 Pluuto  # Estonian planet name; dictionary gap
 

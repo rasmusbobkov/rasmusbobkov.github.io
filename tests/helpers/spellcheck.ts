@@ -122,7 +122,9 @@ export async function loadEtChecker(): Promise<EtChecker> {
 const WORD_RE = /\p{L}[\p{L}']*/gu;
 
 export function tokenize(text: string): { word: string; index: number }[] {
-  const withoutPlaceholders = text.replace(/\{[^}]*\}/g, ' ');
+  // Each {placeholder} is blanked out with same-length spaces so token
+  // indices stay accurate against the original text.
+  const withoutPlaceholders = text.replace(/\{[^}]*\}/g, (m) => ' '.repeat(m.length));
   const out: { word: string; index: number }[] = [];
   for (const m of withoutPlaceholders.matchAll(WORD_RE)) {
     out.push({ word: m[0], index: m.index! });
