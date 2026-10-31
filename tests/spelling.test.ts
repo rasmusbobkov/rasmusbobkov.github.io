@@ -142,6 +142,7 @@ describe('estonian spellcheck corpus', () => {
     expect(offenderMessage(offenders[0]!)).toContain(path.relative(ROOT, MEANING_FILE));
   });
 
+  // Regression guard against a future dictionary/corpus change making the suite slow, not a performance target.
   test('the whole corpus check finishes in well under ten seconds', () => {
     const started = Date.now();
     for (const ref of corpus) checkText(ref.text, checker, ref);

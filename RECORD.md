@@ -256,7 +256,7 @@ commentary. The ephemeris seam and its licence posture are untouched.
 
 Estonian copy is the product, so the app now checks its own spelling:
 `tests/spelling.test.ts` runs every shipped word through the Estonian
-et_EE hunspell dictionary (282 105 entries) and fails with the file, the
+et_EE hunspell dictionary (282 173 entries) and fails with the file, the
 exact string and the offending word. Corrupted sour note from the brief
 fixed there too: shipped copy contained real spelling errors ('ütleda'
 → 'ütelda', glued 'lõpuleviimine(s)' → the EKS form 'lõpule viimine',
@@ -280,7 +280,8 @@ allowlisted.
   Pluuto), astrology vocabulary the concept board deliberately keeps
   ('trigoon', 'asendents', MC), standard Estonian words the dictionary
   gaps on ('retrograadne', 'tähelepanu', the oblique 'liiguvat'), and
-  the four English placeholder labels. The suite enforces a reason per
+  the three English placeholder labels (Planets, Houses, Aspects). The
+  suite enforces a reason per
   line and rejects allowlist entries that are neither dictionary words
   nor used by the corpus.
 - **Known limit, stated plainly**: et_EE hunspell compound rules
