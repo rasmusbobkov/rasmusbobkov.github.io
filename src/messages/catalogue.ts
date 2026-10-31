@@ -268,6 +268,11 @@ const en: Partial<Record<MessageKey, string>> = {
   'chart.aspectsHeading': 'Aspects',
 };
 
+/** The raw tables, exposed only for the content-gate tests, which scan
+ * every shipped string in one place. Components keep going through
+ * t()/fmt() — never read these directly. */
+export const rawMessages = { et, en } as const;
+
 export function t(lang: Lang, key: MessageKey): string {
   if (lang === 'en' && en[key]) return en[key] as string;
   return et[key];
