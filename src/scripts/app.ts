@@ -48,6 +48,8 @@ let lastTransitPositions: TransitPosition[] = [];
 let lastNatalTargets: AspectInput[] = [];
 let chartRendered = false;
 let storySeq = 0;
+/** the story surface currently shows the recompute failure note */
+let storyFailed = false;
 
 // ——— i18n plumbing ———
 function fillStaticI18n(): void {
@@ -138,6 +140,8 @@ function setLang(next: Lang): void {
   if (dayReading) {
     renderStory();
     renderWhyPanel();
+  } else if (storyFailed) {
+    renderStoryFailure();
   }
 }
 
@@ -751,6 +755,7 @@ async function enterStory(): Promise<void> {
     dayTime = reading.tallinnTime;
     lastTransitPositions = reading.positions;
     lastNatalTargets = natalAspectTargets(chart);
+    storyFailed = false;
     renderStory();
     renderWhyPanel();
   } catch (err) {
@@ -761,16 +766,33 @@ async function enterStory(): Promise<void> {
     dayReading = null;
     lastTransitPositions = [];
     lastNatalTargets = [];
+    storyFailed = true;
     const panel = document.getElementById('story-why-panel');
-    if (panel) panel.hidden = true;
-    const c = document.getElementById('story-content');
-    if (c) {
-      c.replaceChildren();
-      const p = document.createElement('p');
-      p.className = 'note';
-      p.textContent = t(lang, 'story.error');
-      c.appendChild(p);
+    if (panel) {
+      panel.hidden = true;
+      panel.replaceChildren();
     }
+    renderStoryFailure();
+  }
+}
+
+/** One failure surface, re-derived at render time so a language switch
+ * after a failed recompute re-localizes it: the day heading is cleared and
+ * the failure note replaces any story content. */
+function renderStoryFailure(): void {
+  dayKey = '';
+  dayTime = '';
+  const dateEl = document.getElementById('story-date-text');
+  if (dateEl) dateEl.textContent = '';
+  const asofEl = document.getElementById('story-asof');
+  if (asofEl) asofEl.textContent = '';
+  const c = document.getElementById('story-content');
+  if (c) {
+    c.replaceChildren();
+    const p = document.createElement('p');
+    p.className = 'note';
+    p.textContent = t(lang, 'story.error');
+    c.appendChild(p);
   }
 }
 
