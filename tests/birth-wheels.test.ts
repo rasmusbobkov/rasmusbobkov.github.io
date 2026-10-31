@@ -5,6 +5,7 @@
  * one shared year bound (1800..current year) that governs the parser, the
  * year wheel and import validation alike. No DOM, no ephemeris.
  */
+import { DateTime } from 'luxon';
 import { expect, test } from 'vitest';
 import {
   MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
@@ -19,13 +20,13 @@ const TALLINN = { lat: 59.437, lon: 24.7536, tz: 'Europe/Tallinn' };
 
 test('the shared bound: 1800 floor, current calendar year ceiling, nothing hardcoded', () => {
   expect(MIN_BIRTH_YEAR).toBe(1800);
-  expect(maxBirthYear()).toBe(new Date().getFullYear());
+  // the ceiling is the wall clock's calendar year, checked against Luxon's
+  // own independent reading of it, not against the implementation's formula
+  expect(maxBirthYear()).toBe(DateTime.utc().year);
   expect(isValidBirthYear(1800)).toBe(true);
   expect(isValidBirthYear(maxBirthYear())).toBe(true);
   expect(isValidBirthYear(1799)).toBe(false);
   expect(isValidBirthYear(maxBirthYear() + 1)).toBe(false);
-  // the bound tracks the wall clock, whatever today's year happens to be
-  expect(maxBirthYear()).toBe(new Date().getFullYear());
 });
 
 // ——— wheel clamping across month lengths and leap years ———

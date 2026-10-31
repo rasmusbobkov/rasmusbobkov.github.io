@@ -195,6 +195,12 @@ function wireBirthWheels(): void {
    * paint to that read, which re-commits (and repaints) right after. */
   const pendingReads = new Map<string, number>();
 
+  const cancelPendingRead = (cfg: WheelCfg): void => {
+    const timer = pendingReads.get(cfg.id);
+    if (timer) clearTimeout(timer);
+    pendingReads.delete(cfg.id);
+  };
+
   /** Re-render one wheel's option list (day follows the month length, the
    * year wheel follows the shared bound computed at run time). */
   const renderWheel = (cfg: WheelCfg): void => {
@@ -264,11 +270,12 @@ function wireBirthWheels(): void {
     parts = clampParts(parts);
     if (!isValidBirthYear(parts.year)) parts.year = Math.min(Math.max(parts.year, MIN_BIRTH_YEAR), maxBirthYear());
     for (const cfg of cfgs) {
-      if (cfg.itemCount() !== wheels.get(cfg.id)!.querySelectorAll('.wheel-item').length) renderWheel(cfg);
+      const isPending = pendingReads.has(cfg.id);
+      if (!isPending && cfg.itemCount() !== wheels.get(cfg.id)!.querySelectorAll('.wheel-item').length) renderWheel(cfg);
       const maxIndex = cfg.itemCount() - 1;
       const idx = Math.min(Math.max(parts[cfg.part] - cfg.firstValue, 0), maxIndex);
       parts[cfg.part] = cfg.firstValue + idx;
-      if (!pendingReads.has(cfg.id)) paintWheel(cfg, cfg.firstValue + idx);
+      if (!isPending) paintWheel(cfg, cfg.firstValue + idx);
     }
     if (toText) {
       dateEl.value = fmtDateEt(parts.year, parts.month, parts.day);
@@ -299,9 +306,16 @@ function wireBirthWheels(): void {
       if (ev.pointerType === 'touch') return;
       const startY = ev.clientY;
       const startScroll = wheel.scrollTop;
-      try { wheel.setPointerCapture(ev.pointerId); } catch { /* synthetic events have no captured pointer */ }
+      const pointerId = ev.pointerId;
+      let captured = false;
+      try { wheel.setPointerCapture(pointerId); captured = true; } catch { /* synthetic events have no captured pointer */ }
       const onMove = (me: PointerEvent): void => { wheel.scrollTop = startScroll - (me.clientY - startY); };
       const onUp = (): void => {
+        // release before the click fires: a click under active capture is
+        // retargeted to the wheel and never reaches the option element
+        if (captured) {
+          try { wheel.releasePointerCapture(pointerId); } catch { /* pointer already gone */ }
+        }
         wheel.removeEventListener('pointermove', onMove);
         wheel.removeEventListener('pointerup', onUp);
         wheel.removeEventListener('pointercancel', onUp);
@@ -316,6 +330,7 @@ function wireBirthWheels(): void {
       const step = wheelKeyStep(ev.key, parts[cfg.part], cfg.firstValue, cfg.firstValue + cfg.itemCount() - 1);
       if (step === null) return;
       ev.preventDefault();
+      cancelPendingRead(cfg);
       parts[cfg.part] = step;
       commit({ toText: true });
     });
@@ -325,6 +340,7 @@ function wireBirthWheels(): void {
       if (!(item instanceof HTMLElement)) return;
       const value = Number(/-opt-(\d+)$/.exec(item.id)?.[1]);
       if (!Number.isFinite(value)) return;
+      cancelPendingRead(cfg);
       parts[cfg.part] = value;
       commit({ toText: true });
     });
@@ -337,23 +353,31 @@ function wireBirthWheels(): void {
   dateEl.addEventListener('input', () => {
     const parsed = parseDateEt(dateEl.value);
     if (parsed) {
+      for (const cfg of cfgs.slice(0, 3)) cancelPendingRead(cfg);
       parts = { ...parts, ...parsed };
       commit({ toText: false });
     }
   });
   dateEl.addEventListener('change', () => {
-    if (parseDateEt(dateEl.value)) commit({ toText: true });
+    if (parseDateEt(dateEl.value)) {
+      for (const cfg of cfgs.slice(0, 3)) cancelPendingRead(cfg);
+      commit({ toText: true });
+    }
   });
   const onTimeText = () => {
     const parsed = parseTimeEt(timeEl.value);
     if (parsed) {
+      for (const cfg of cfgs.slice(3)) cancelPendingRead(cfg);
       parts = { ...parts, ...parsed };
       commit({ toText: false });
     }
   };
   timeEl.addEventListener('input', onTimeText);
   timeEl.addEventListener('change', () => {
-    if (parseTimeEt(timeEl.value)) commit({ toText: true });
+    if (parseTimeEt(timeEl.value)) {
+      for (const cfg of cfgs.slice(3)) cancelPendingRead(cfg);
+      commit({ toText: true });
+    }
   });
 
   // "I don't know my birth time" hides the time wheels with the text
@@ -364,6 +388,7 @@ function wireBirthWheels(): void {
     if (unknownEl.checked) {
       timeEl.value = '';
     } else {
+      for (const cfg of cfgs.slice(3)) cancelPendingRead(cfg);
       commit({ toText });
     }
   };
