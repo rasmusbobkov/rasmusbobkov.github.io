@@ -107,7 +107,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Saturn ja teeb ruutu: aeg nõuab täna korda, mitte kiirust — ja mis on pooleli, ei jää meenutamata.',
     story: {
       situation: 'Päev algab raskemana: tavaline rutiin, mis harilikult liugleb, nõuab täna igast sammust eraldi hinda.',
-      turn: 'Keskel päeva tuleb nähtavaks, miks üks asi nädalaid edasi ei liigu: selle lõpus ootab midagi pooleli jäänut, mis iga uue katse uuesti ukse ette jääb.',
+      turn: 'Keset päeva tuleb nähtavaks, miks üks asi nädalaid edasi ei liigu: selle lõpus ootab midagi pooleli jäänut, mis iga uue katse uuesti ukse ette jääb.',
       climax: 'Õhtul on see üks pooleli koht nii selge, et teda pole enam kuidagi mööda vaadata — kõik muu on jäänud valjuks, tema jääb kindlaks.',
       meaning: 'Kui jõud ei aita, aitab järjekord. Võta üks poolenisti pooleli olev asi ja vii see täna lõpuni. Uue alustuse jäta homme.',
     },
@@ -124,7 +124,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Saturn ja käib just üle sinu kaardi: mis on jäänud vastutamata, meenutab ennast täna kindlalt. Vastutus on valik, mida tohib ka ära anda.',
     story: {
       situation: 'Päev algab igapäevasena, kuid kuskil nurgas seisab asi, mida pole ammu puudutatud ja mis päevade kaupa vaikselt kasvab.',
-      turn: 'Keskel päeva tuleb kelleltki küsimus, mis selle asja päevavalgele toob: selle varjamine maksab nüüd rohkem kui selle ütlemine.',
+      turn: 'Keset päeva tuleb kelleltki küsimus, mis selle asja päevavalgele toob: selle varjamine maksab nüüd rohkem kui selle ütlemine.',
       climax: 'Õhtul oled sa juba ise hakanud selle üle järele mõtlema: kas ta jääb sulle või läheb kellegi teisele — ja see küsimus pole enam kuidagi kappi panna.',
       meaning: 'Tegelikult on vastutus valik, mitte pärand: kui ütled välja, mis on sinu, läheb päev kergemaks kui hirm, millega ta endale hoitakse. Võta täna kirja oma kolm praegust vastutust ja ütle millestki ühest kellelegi välja, et see on praegu sinu — või las ta sinult ära.',
     },
@@ -141,7 +141,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Saturn ja seisab sinu nataalse vastaspoolel: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist.',
     story: {
       situation: 'Päev läheb rahulikult, aga ühega lähedasest on jäänud vaikus, mis kestnud on juba päevade kaupa.',
-      turn: 'Keskel päeva kirjutad sa vastuse tema sõnumile ja jätad selle saatmata: lause jääb kuidagi kõvaks, ja sa jääd kahtlema.',
+      turn: 'Keset päeva kirjutad sa vastuse tema sõnumile ja jätad selle saatmata: lause jääb kuidagi kõvaks, ja sa jääd kahtlema.',
       climax: 'Õhtul saad aru, et vaikus polnud kellegi süü: seal vahel oli jäänud midagi, mida keegi pole julgenud välja öelda.',
       meaning: 'Kui sa selle ise välja ütled, lakkab ta kahe vahel kasvamast. Ütle täna ühele lähedasele välja, mida sa temalt konkreetselt ootad, ja kuula ära, mis ta vastab.',
     },
@@ -158,7 +158,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Jupiter ja teeb trigooni: see, mis muidu vajab palju veenmist, liigub täna sujuvalt — aeg toetab küsimusi, mida on ammu hoitud.',
     story: {
       situation: 'Päev algab tavalisest kergemana: asjad, mis muidu nõuavad pikka veenmist, liiguvad täna iseenesest.',
-      turn: 'Keskel päeva pakutakse sulle midagi suuremat, kui sa tavaliselt omale võtad.',
+      turn: 'Keset päeva pakutakse sulle midagi suuremat, kui sa tavaliselt omale võtad.',
       climax: 'Õhtul on alles ainult see üks koht, kus sa ise pead ütlema, mis edasi saab — kõik muu on täna sujuvalt maha langenud.',
       meaning: 'Nii harva küsitakse, sest küsimuses peidus on juba otsus. Küsi täna üks asi, mida sa ammu ei julge küsida, ja palu vastus kirjalikult.',
     },
@@ -175,7 +175,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Jupiter ja teeb ruutu: kõik kipub täna kasvama, ka kulud. Kasv on hea siis, kui ta on numbriga kinnitatud, mitte tundega.',
     story: {
       situation: 'Päev algab hea tujuga ja suurte mõtetega: kuidas muuta midagi väikest suuremaks.',
-      turn: 'Keskel päeva tekib ette üks suur kulutus, millel on hea põhjendus ja ühtegi numbrit enda kõrval.',
+      turn: 'Keset päeva tekib ette üks suur kulutus, millel on hea põhjendus ja ühtegi numbrit enda kõrval.',
       climax: 'Õhtul, kui numbrid on paberile kirjutatud, jäävad põhjendused kõrvale ja jääb alles ainult arv.',
       meaning: 'Numbrid rahustavad päeva jooksul: kasv on hea siis, kui ta on olemas ka paberil, mitte ainult peas. Enne kui täna midagi suuremat ostad või lubad, kirjuta numbrid paberile ja jäta otsus homme.',
     },
@@ -192,7 +192,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Marss ja teeb ruutu: jõud on täna külluses ja otsib väljapääsu — ja kui asjadele väljapääsu pole, kipub ta kellegi kallale.',
     story: {
       situation: 'Hommik on tavaline, kuid igal asjal on täna pool sammu rohkem takistust kui tavaliselt.',
-      turn: 'Keskel päeva puhkeb üks arutlus teravamini, kui oleks tarvis — ja just seal saad aru, et päeva jõud otsib valest kohast väljapääsu.',
+      turn: 'Keset päeva puhkeb üks arutlus teravamini, kui oleks tarvis — ja just seal saad aru, et päeva jõud otsib valest kohast väljapääsu.',
       climax: 'Õhtul on käeline töö tehtud ja teravus on maas: energia leidis selle, kuhu ta kuulub.',
       meaning: 'Jõud ise pole halb, halb on ainult sihtkoht. Kui täna miski kihutab vastu, tee ise üks käeline tööots tükk ära, kuhu keegi teine praegu midagi öelda ei saa.',
     },
@@ -209,8 +209,8 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpuleviimiseks.',
     story: {
       situation: 'Hommikul on peas juba mitu kohta, kus midagi uut võiks alata.',
-      turn: 'Keskel päeva tõstab üks neist ennast üle teiste — ja enne õhtut on ta juba saanud midagi käegapuutuvat tehtud.',
-      climax: 'Õhtul on käes üks algus, mis jõudnud on täna kaugele — ja teadmisega, et teised algused ootavad oma järjekorda.',
+      turn: 'Keset päeva tõstab üks neist ennast üle teiste — ja enne õhtut on ta juba saanud midagi käegapuutuvat tehtud.',
+      climax: 'Õhtul on käes üks algus, mis on täna jõudnud kaugele — ja teadmisega, et teised algused ootavad oma järjekorda.',
       meaning: 'Kerge algus on hüve ainult siis, kui ta on üks. Alusta täna seda asja, mida sa juba nädalapäevade kaupa lükkad, ja tee sellest esimene käegapuutuv samm.',
     },
   },
@@ -226,7 +226,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Veenus ja teeb sekstiili: pisike avatus jõuab täna kergesti kohale, kui teda proovitakse.',
     story: {
       situation: 'Päev möödub rahulikult, kuid ühe inimesega on jäänud vaikus, mida pole ammu kinni pandud.',
-      turn: 'Keskel päeva tuleb meelde üks soe pisike mõte tema kohta — ja ta tahab välja.',
+      turn: 'Keset päeva tuleb meelde üks soe pisike mõte tema kohta — ja ta tahab välja.',
       climax: 'Õhtul on see soe lause juba ära saadetud — ja kuigi vastust pole veel, on pärast saatmist kuidagi kergem: side ei ole kadunud, vaid ootas ainult sõna.',
       meaning: 'Väikese sõna vaheaken ei ole suureks vestluseks, aga ta on piisav, et side ei jääks jahtuma. Kirjuta täna ühele inimesele, kellega suhtes on vaikus, üks soe lause.',
     },
@@ -243,7 +243,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Veenus ja seisab sinu nataalse vastaspoolel: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud.',
     story: {
       situation: 'Päev kulgeb suhtes rahulikult, aga kusagil sees jääb tunne, et midagi omaga on jäänud sõnamata.',
-      turn: 'Keskel päeva teravneb see tunne hetkeks, kui kellegi teise vajadus tuleb vastu: mõlemad tahavad sama koha endale.',
+      turn: 'Keset päeva teravneb see tunne hetkeks, kui kellegi teise vajadus tuleb vastu: mõlemad tahavad sama koha endale.',
       climax: 'Õhtul on kogu päev jõudnud ühte kohta: kas öelda oma vajadus välja või jätta ta jälle tagaplaanile.',
       meaning: 'Ruumi saab mõlemale ainult siis, kui kumb nimetab oma. Ütle täna ühele lähedasele selgelt välja, mida sa praegu kõige rohkem vajad.',
     },
@@ -260,7 +260,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Merkuur ja teeb ruutu: sõnad kippuvad täna sassi minema, ja üle lugemine enne saatmist säästab suure osa sassisolekust.',
     story: {
       situation: 'Päev läheb sõnades edasi: kiri, vastuskiri, jälle kiri — harilik rutiin, mis pole ammu tähelepanu väärinud.',
-      turn: 'Keskel päeva avaneb, et ühele küsimusele saadetud vastus vastas hoopis teisele küsimusele.',
+      turn: 'Keset päeva avaneb, et ühele küsimusele saadetud vastus vastas hoopis teisele küsimusele.',
       climax: 'Õhtul loed sa päeva kirjad veel kord üle ja näed, kui erinevalt on küsitud ja vastatud — päeva pinge ei tulnud asjadest, vaid paarist valesti arvatud sõnast.',
       meaning: 'Sõnad on tööriistad ja tööriistad vajavad midagi üle vaadata. Enne kui täna vastused ära saadad, loe veel kord üle, mida teine tegelikult küsis, ja vasta sellele.',
     },
@@ -277,7 +277,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Uraan ja teeb ruutu: olukorrad veeretavad kergesti plaanidest teisele teele — selle jaoks töötab ainult järgmine samm, mitte terve päeva plaan.',
     story: {
       situation: 'Hommikul on plaan juba peas: millal mis teha ja mis järjekorras.',
-      turn: 'Keskel päeva tuleb midagi ootamatut, mis loob plaanis augu: üks asi saab tulema hoopis teistsugune, kui plaanis seisab.',
+      turn: 'Keset päeva tuleb midagi ootamatut, mis loob plaanis augu: üks asi saab tulema hoopis teistsugune, kui plaanis seisab.',
       climax: 'Õhtul on päev läinud teistsuguselt ja ometi on oluline töö tehtud — mitte päeva plaani järgi, vaid järgmise sammu järjekorra järgi.',
       meaning: 'Päev valib ise, kui suured on sammud. Kui täna midagi plaanitust läheb sassi, hoia kinni ainult järgmisest käegapuutuvast sammust, mitte tervest päevast plaanist.',
     },
@@ -294,7 +294,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Pluuto ja teeb trigooni: sügav muutus läheb täna kergesti ja vaikselt — aeg toetab lõplikku sulgemist, mitte kinnihoidmist.',
     story: {
       situation: 'Päev möödub tavaliselt, kuni meelest tuleb midagi vana: tellimus või lepe, mis juba ammu pole kasutuses.',
-      turn: 'Keskel päeva saadakse aru, et vana hoidmine pole andnud midagi: kasu pole, valu ka pole — ainult harilikkus.',
+      turn: 'Keset päeva saadakse aru, et vana hoidmine pole andnud midagi: kasu pole, valu ka pole — ainult harjumus.',
       climax: 'Õhtul on küsimus — kas jätta ta veel üheks ajaks — saanud selge vastuse.',
       meaning: 'See, mis ammu pole kasutuses, hoiab vaikselt kinni ega maksa hoida. Tühista täna üks tellimus või kokkulepe, mida sa pole ammu kasutanud.',
     },
@@ -311,7 +311,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpuleviimine mitte.',
     story: {
       situation: 'Päev voolab laiali: mõtted kõrvalevad ühelt asjalt teisele, ja mõnes neis on midagi meeldivat.',
-      turn: 'Keskel päeva, kui midagi pikemalt teha peaks, on selgus kadunud: eristada, mis on oluline, ei toimi.',
+      turn: 'Keset päeva, kui midagi pikemalt teha peaks, on selgus kadunud: eristada, mis on oluline, ei toimi.',
       climax: 'Õhtul on tehtud ainult visand — ja ometi on see kõige ausam, mis täna saadud.',
       meaning: 'Kui mõte ujub, ei maksa teda taga ajada: pane talle paber ette. Tee täna ainult visand või mustand ja jäta vaatamine homme.',
     },
@@ -327,7 +327,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     pitfall: 'Mõlemale tahetakse korraga jah öelda — ja õhtuks pole kumbki veel tehtud.',
     astroNote: 'Vastasseis paneb kaks õigust vastamisi: kumbki pool pole vale, ja mõlemale saab ruumi ainult vaheldumisi.',
     story: {
-      situation: 'Keskel päevast tuleb kaks asja samal ajal ette: mõlemad on tähtsad, mõlemat korraga teha ei saa.',
+      situation: 'Keset päeva tuleb kaks asja samal ajal ette: mõlemad on tähtsad, mõlemat korraga teha ei saa.',
       turn: 'Ühte sammu siia, ühte sammu sinna — ja kumbki pool pole enne päeva lõppu päriselt lõpuni jõudnud.',
       climax: 'Valiku hetk jõuab ometi: midagi peab täna lõpuni saama, ja teine peab selleks ootama.',
       meaning: 'Kui mõlemale korraga jah öelda, jäävad mõlemad pooleli; järjekorras minnes saab mõlemad tehtud. Ütle täna kellelegi välja, et üks asi jääb täna ootama, kuni teine on lõpuni viidud.',
@@ -345,9 +345,9 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     astroNote: 'Sekstiil avab väikese ukse, mida peab ise lükkama: üks pisike proov liigub täna kergesti.',
     story: {
       situation: 'Päev on tavaline ja asjad liiguvad tavapärasel rajal.',
-      turn: 'Keskel päeva tuleb ette üks tüütus, mis saab alati vana viisi järgi tehtud.',
-      climax: 'Uus viis käib kergemalt, kui vana — ja sellest piisab, et päev on pisut kergem.',
-      meaning: 'Suur muudatus algab pisikese prooviga. Proovi täna ühel tüütul asjal üht uut viisi: pisike proov, mitte suur korraldus.',
+      turn: 'Keset päeva tuleb ette üks tüütu asi, mis saab alati vana viisi järgi tehtud.',
+      climax: 'Nipp käib kergemalt, kui vana rada — ja sellest piisab, et päev on pisut kergem.',
+      meaning: 'Suur muudatus algab pisikesest proovist. Proovi täna ühel tüütul asjal üht uut viisi: pisike proov, mitte suur korraldus.',
     },
   },
 ];
