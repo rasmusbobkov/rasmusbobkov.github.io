@@ -1,0 +1,39 @@
+# ESA õigekirja lubamiste nimekiri
+#
+# This file lists every word accepted as legitimate that the committed
+# Estonian dictionary does not know. One word per line, each with a
+# short comment saying why it is legitimate: a reviewed entry, never a
+# bulk dump, and never a place to hide a real misspelling. A real
+# spelling error must never be allowlisted — fix the copy instead.
+#
+# Format: word  # reason  (full-line # comments are free)
+
+# ——— brand and app identity ———
+Firstmate  # the product's own name (app.name, share texts); proper noun, not in any Estonian dictionary
+Astro  # the product's own name (app.name); proper noun
+
+# ——— planet names ———
+Saturn  # Estonia keeps the Latin planet name in astrology (also in golden day notes); dictionary gap
+Veenus  # Estonian planet name; dictionary gap (Merkuur, Mars, Uraan, Neptuun... mostly known)
+Neptuun  # Estonian planet name; dictionary gap
+Pluuto  # Estonian planet name; dictionary gap
+
+# ——— astrology vocabulary the concept board deliberately keeps ———
+MC  # abbreviation used on its own for the Medium Coeli / 10th house point (body.mc)
+trigoon  # the board's approved Estonian astrology term for the trine ("ruut", "vastasseis" are used instead of loanwords; "trigoon" stays)
+trigooni  # partitive form of trigoon, as used in "teeb trigooni"
+asendents  # astrology term for the ascendant, used once in the glossary by voice decision
+
+# ——— standard Estonian words the dictionary misses ———
+retrograadne  # standard word (EKS: 'tavalisele liikumissuunale vastupidine') for retrograde motion; dictionary gap
+retrograadselt  # derived adverb of retrograadne (EKS-standard word); dictionary gap
+tähelepanu  # standard word (EKS headword 'tähelepanu'); dictionary gap
+liiguvat  # oblique mood of liikuma ("näib liiguvat"); dictionary only knows the participle liikuvat
+
+# ——— English placeholder copy in the en table ———
+Planets  # English label in the en table (structure only until the English translation ships)
+Houses  # English label in the en table
+Aspects  # English label in the en table
+
+# ——— technology names in export copy ———
+JSON  # the export format named in export copy ("JSON-failis")
