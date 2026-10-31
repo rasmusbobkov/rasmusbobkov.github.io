@@ -135,15 +135,21 @@ cross-check) read from the transit side at the same 0.01° tolerance.
 
 **Meaning layer** (`src/lib/meaning.ts`): a single typed unit per transit
 shape keyed by transiting body, aspect and the life domains it speaks
-into. The archetype space is the finite `MEANING_UNITS` table (15 entries:
-Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus two
-tone-generic units for opposition and sextile) plus the explicit
-`TARGET_FOCUS` map from natal target to domains. Selection ranks hits by
-tightest orb, requires a unit whose focus intersects the target's domains
-intersected with the user's chosen areas (skipping the setup steers
-nothing), prefers exact-body over generic, and falls back to the honest
-`QUIET_UNIT` when nothing matches — a quiet day is a reading, not a
-failure. No unit is ever invented. Content rules enforced by tests: story
+into. The archetype space is the finite `MEANING_UNITS` table (18 entries:
+Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus five
+tone-generic units, one per aspect kind, which describe the shape itself
+without inventing specifics) plus the explicit `TARGET_FOCUS` map from
+natal target to domains. Selection ranks hits by tightest orb, requires a
+unit whose focus intersects the target's domains intersected with the
+user's chosen areas (skipping the setup steers nothing), prefers exact-body
+over generic, and reads the day one of three ways, each saying something
+true: a hit with a unit renders today; an in-orb hit whose shape has no
+unit yet says plainly that the story for that shape is not written (the
+"Miks see?" panel still names the transit, the orb and the natal target,
+since the reveal must stay copyable to the chart); only a genuinely empty
+sky — no pair inside any aspect window — reads as the honest `QUIET_UNIT`,
+so the sky is never described as quiet while something is in orb. No unit
+is ever invented. Content rules enforced by tests: story
 fields contain no astrological vocabulary (Unicode-boundary stem scan,
 because JS `\b` breaks on Estonian vowels), the story's final paragraph
 contains the unit's action verbatim, and every unit carries open/tight/
@@ -164,9 +170,13 @@ about what the aspect does. On a quiet day the same control reports
 honestly: nothing is in orb, what was checked, and the nearest miss with
 its distance from the orb window.
 
-Trade-off: with 15 units, most days resolve to a transit-specific story,
-but some shapes (a Sun square, a node trine) still read as a quiet day —
-that is the honest degradation the brief asks for, not a gap.
+Trade-off: with 18 units, most days resolve to a transit-specific story,
+and the five shape-generic units carry the rare shapes without one (a
+focus-mismatched specific unit gets its aspect's generic story, so focus
+steering stays on the specific units); only an empty sky reads as a quiet
+day. The story-not-written state is deliberately kept rare by the generic
+fallbacks, and when it happens it names the real transit instead of
+pretending none exists.
 
 **Out of scope, unchanged**: tier-3 animation, payments, accounts, English
 copy, synastry, notifications, transit-to-transit and retrograde-station

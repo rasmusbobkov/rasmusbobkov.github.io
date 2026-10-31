@@ -64,12 +64,16 @@ export interface QuietUnit {
 
 export type DayUnit = MeaningUnit | QuietUnit;
 
-export interface DayReading {
-  readonly unit: DayUnit;
-  /** the hit the unit was chosen for; null on a quiet day */
-  readonly hit: TransitHit | null;
-  readonly quiet: boolean;
-}
+/**
+ * The day reads one of three ways, each saying something true about the
+ * sky: a unit is present (the daily story), or the day's shape has no
+ * story yet (unit null, the hit still named in the reveal panel), or the
+ * sky is genuinely empty (the quiet unit, the only day that says so).
+ */
+export type DayReading =
+  | { readonly unit: DayUnit; readonly hit: TransitHit; readonly quiet: false }
+  | { readonly unit: null; readonly hit: TransitHit; readonly quiet: false }
+  | { readonly unit: QuietUnit; readonly hit: null; readonly quiet: true };
 
 /**
  * Which life domains each natal target speaks into: the explicit finite
@@ -350,6 +354,57 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
       meaning: 'Suur muudatus algab pisikesest proovist. Proovi täna ühel tüütul asjal üht uut viisi: pisike proov, mitte suur korraldus.',
     },
   },
+  {
+    id: 'any-conjunction',
+    transitBody: 'any',
+    aspect: 'conjunction',
+    focus: [],
+    open: 'Täna jäävad kaks asja ühte kohta: hea hetk panna mõlemad paberile ja otsustada, kumb alustab.',
+    tight: 'Ühes kohas katavad kaks asja kindlalt üksteist: tundub üks ülesanne, tegelikult on neid kaks.',
+    action: 'Kirjuta täna paberile, millised kaks asja ühte kohta jäävad, ja otsusta, kumb neist täna alustab.',
+    pitfall: 'Üks asi jääb teise varju ja vaikselt tegemata: ühes kohas mahub korraga edasi ainult üks.',
+    astroNote: 'Konjunktsioon paneb mõjutused ühte kohta: nad töötavad koos, kui kumbki saab omale nime ja järje.',
+    story: {
+      situation: 'Kaks asja jäävad täna omadega ühte kohta, ja esialgu tundub see üks asi, mitte kaks.',
+      turn: 'Keset päeva on just selles ühes kohas midagi pidevalt sassi, sest kaks asja tahavad sinna korraga.',
+      climax: 'Enne õhtu jõudmist on tehtud ainult üks ja teine on jäänud ootama: järjekorda pole keegi välja öelnud.',
+      meaning: 'Järjekorra võib täna ise ette võtta. Kirjuta täna paberile, millised kaks asja ühte kohta jäävad, ja otsusta, kumb neist täna alustab.',
+    },
+  },
+  {
+    id: 'any-trine',
+    transitBody: 'any',
+    aspect: 'trine',
+    focus: [],
+    open: 'Osad asjad liiguvad täna kergemini kui muud: hea hetk võtta ette just see, mis sulle harilikult raske tundub.',
+    tight: 'Kergel päeval jääb kerge kergesti kasutamata: ta töötab ainult siis, kui üks asi saab päriselt edasi.',
+    action: 'Võta täna ette see asi, mis sulle harilikult raske tundub, ja tee selle esimene samm lõpuni.',
+    pitfall: 'Kerge meelitab korraga käima rohkem asju, kui jaksad: nii jäävad tehtud ainult need, mis ise edasi liikusid.',
+    astroNote: 'Trigoon annab sujuvuse: see, mis muidu jõudu nõuab, liigub täna iseenesest — kui talle üks konkreetne asi ette pannakse.',
+    story: {
+      situation: 'Päev algab kergelt: esimene asi, mida puudutad, ei seisa vastu.',
+      turn: 'Keset päeva saad aru, et just üks asi liigub täna eriti kergelt — ja just see on jäänud sulle ammu raskeks.',
+      climax: 'Enne õhtut on see ammu raske asi jõudnud päriselt edasi, sest kergus töötas täna tema poolt, mitte vastu.',
+      meaning: 'Kergus on täna just ühe asja juures. Võta täna ette see asi, mis sulle harilikult raske tundub, ja tee selle esimene samm lõpuni.',
+    },
+  },
+  {
+    id: 'any-square',
+    transitBody: 'any',
+    aspect: 'square',
+    focus: [],
+    open: 'Üks asi seisab täna otse vastu: hea hetk vaadata, kus ta täpselt kinni jääb, ja just selle kohta samm alla kirjutada.',
+    tight: 'Vastu seisvad kohad ei anna järele enne, kui sa neile otseselt vaatad: kõrvale jäämine toob selle homme samale kohale tagasi.',
+    action: 'Kirjuta täna paberile, mis selle asja järgmiseks sammuks nõutav on, ja tee sellest esimene tükk ära.',
+    pitfall: 'Vastu seisvatest asjadest on täna kerge panna süü teisele inimesele: kibedus kasvab, aga asi ei nõua jõudu, vaid ühte selgemat sammu.',
+    astroNote: 'Ruut toob pinge: ta tõmbab tähelepanu ja nõuab rohkem õppimist — kinni jääv asi vajab selgemat sammu, mitte kiiremat.',
+    story: {
+      situation: 'Päevas on üks koht, kus asi korduvalt kinni jääb, ja päeva sõnum tuleb täna just sellelt kohalt.',
+      turn: 'Keset päeva on selge, et sellele kohale ei saa enam kõrvale jätta: ta tuleb iga sammu vahele.',
+      climax: 'Enne õhtut jääb alles ainult see üks koht, ja sellest, mida ta päriselt nõuab, pole enam midagi järele arvata.',
+      meaning: 'Kinni jääv koht ei nõua jõudu, vaid ühte selget kirjet. Kirjuta täna paberile, mis selle asja järgmiseks sammuks nõutav on, ja tee sellest esimene tükk ära.',
+    },
+  },
 ];
 
 export const QUIET_UNIT: QuietUnit = {
@@ -407,8 +462,9 @@ function compareHits(a: TransitHit, b: TransitHit): number {
 
 /**
  * The day's single reading: ranked hits, first one with a matching unit
- * wins; when nothing matches — or the sky is simply quiet — the honest
- * quiet unit, never an invented one. "Mitte iga päev ei ole draama."
+ * wins; a hit with no unit at all says only that the story for this shape
+ * is not written yet; the quiet unit is reserved for a genuinely empty
+ * sky — never for a hit that is in orb. "Mitte iga päev ei ole draama."
  */
 export function selectDayReading(
   hits: readonly TransitHit[],
@@ -419,5 +475,6 @@ export function selectDayReading(
     const unit = unitForHit(hit, focusAreas);
     if (unit) return { unit, hit, quiet: false };
   }
+  if (ranked.length > 0) return { unit: null, hit: ranked[0]!, quiet: false };
   return { unit: QUIET_UNIT, hit: null, quiet: true };
 }

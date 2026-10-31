@@ -756,6 +756,13 @@ async function enterStory(): Promise<void> {
   } catch (err) {
     if (seq !== storySeq) return;
     console.error(err);
+    // a failed recompute invalidates the previous reading: nothing stale
+    // may remain reachable from the "Miks see?" panel or a language switch
+    dayReading = null;
+    lastTransitPositions = [];
+    lastNatalTargets = [];
+    const panel = document.getElementById('story-why-panel');
+    if (panel) panel.hidden = true;
     const c = document.getElementById('story-content');
     if (c) {
       c.replaceChildren();
@@ -767,7 +774,7 @@ async function enterStory(): Promise<void> {
   }
 }
 
-function storyParagraphsFrom(unit: DayReading['unit']): HTMLParagraphElement[] {
+function storyParagraphsFrom(unit: NonNullable<DayReading['unit']>): HTMLParagraphElement[] {
   const ps: HTMLParagraphElement[] = [];
   const push = (text: string, cls?: string) => {
     const p = document.createElement('p');
@@ -828,7 +835,20 @@ function renderStory(): void {
     return;
   }
 
-  const hit = dayReading.hit!;
+  if (!dayReading.unit) {
+    // a transit is in orb, but its shape has no story yet: say that and
+    // nothing more — the reveal panel below names the actual transit
+    const tag = document.createElement('p');
+    tag.className = 'quiet-tag';
+    tag.textContent = t(lang, 'story.untold.tag');
+    c.appendChild(tag);
+    const explain = document.createElement('p');
+    explain.textContent = t(lang, 'story.untold.explain');
+    c.appendChild(explain);
+    return;
+  }
+
+  const hit = dayReading.hit;
   if (tier === 'story') {
     const copy = document.createElement('div');
     copy.className = 'story-copy';
@@ -891,7 +911,9 @@ function renderWhyPanel(): void {
     panel.appendChild(row(t(lang, 'story.why.natal'), natalTargetText(hit.target, hit.targetLongitude, chart)));
     const note = document.createElement('p');
     note.className = 'why-note';
-    note.textContent = dayReading.unit.astroNote;
+    note.textContent = dayReading.unit
+      ? dayReading.unit.astroNote
+      : t(lang, 'story.untold.note');
     panel.appendChild(note);
     return;
   }

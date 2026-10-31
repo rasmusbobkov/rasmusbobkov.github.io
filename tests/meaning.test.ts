@@ -1,7 +1,8 @@
 /**
  * MEANING LAYER — the single source both renderings read. Tested:
- *  - unit selection incl. the focus-area filter and the honest no-match
- *    fallback (the quiet day);
+ *  - unit selection incl. the focus-area filter, the generic per-aspect
+ *    fallback and the honest day states (unit present, story-not-written,
+ *    quiet day);
  *  - the tier-2 guarantee: no planet, sign, house or aspect name ever
  *    appears in anything the story tier renders;
  *  - story structure: four paragraphs, closing with the action of the
@@ -115,20 +116,32 @@ describe('story tier carries no astrology vocabulary', () => {
 test('a transit shape whose body has no unit falls back to the generic tone unit', () => {
   const r = selectDayReading([hit('uranus', 'opposition', 'mc')], []);
   expect(r.quiet).toBe(false);
-  expect(r.unit.id).toBe('any-opposition');
+  expect(r.unit!.id).toBe('any-opposition');
 });
 
-test('a transit shape with no unit at all falls back to the honest quiet unit', () => {
-  const r = selectDayReading([hit('sun', 'square', 'sun')], []);
-  expect(r.quiet).toBe(true);
-  expect(r.unit).toBe(QUIET_UNIT);
-  expect(r.hit).toBeNull();
+test('a shape whose specific units all fail the focus falls back to the generic shape unit', () => {
+  // all specific sextile units belong to relationships; a money-focused
+  // user must not get that story, and the day must not read as quiet —
+  // the domain-free shape-generic sextile unit carries it instead
+  const r = selectDayReading([hit('sun', 'sextile', 'sun')], ['money']);
+  expect(r.quiet).toBe(false);
+  expect(r.unit!.id).toBe('any-sextile');
+});
+
+test('every aspect kind has a shape-generic unit: an in-orb day is never quiet', () => {
+  for (const aspect of ['conjunction', 'sextile', 'square', 'trine', 'opposition'] as const) {
+    const r = selectDayReading([hit('sun', aspect, 'sun')], ['money']);
+    expect(r.quiet, aspect).toBe(false);
+    expect(r.hit, aspect).not.toBeNull();
+    expect(r.unit!.aspect, aspect).toBe(aspect);
+  }
 });
 
 test('no hits at all also reads as a quiet day', () => {
   const r = selectDayReading([], []);
   expect(r.quiet).toBe(true);
   expect(r.unit).toBe(QUIET_UNIT);
+  expect(r.hit).toBeNull();
 });
 
 test('tightest orb wins when several hits have units', () => {
@@ -137,7 +150,7 @@ test('tightest orb wins when several hits have units', () => {
     [hit('jupiter', 'trine', 'sun', 3), hit('venus', 'sextile', 'moon', 1)],
     [],
   );
-  expect(r.unit.id).toBe('venus-sextile-relationships');
+  expect(r.unit!.id).toBe('venus-sextile-relationships');
   expect(r.hit!.transitBody).toBe('venus');
 });
 
@@ -145,27 +158,29 @@ test('the focus selection steers which unit is chosen', () => {
   // venus sextile against a natal moon could serve relationships or money;
   // the user chose relationships -> the relationship unit
   const r = selectDayReading([hit('venus', 'sextile', 'moon', 1)], ['relationships']);
-  expect(r.unit.id).toBe('venus-sextile-relationships');
+  expect(r.unit!.id).toBe('venus-sextile-relationships');
 });
 
 test('units bound to a focus area the user did not choose do not win', () => {
-  // saturn conjunction to a natal sun serves work only;
-  // a user focused on money gets the quiet fallback, not the wrong story
+  // saturn conjunction to a natal sun serves work only; a user focused on
+  // money must not get the work story — the shape-generic unit carries
+  // the day instead, never a false "nothing is in orb"
   const r = selectDayReading([hit('saturn', 'conjunction', 'sun')], ['money']);
-  expect(r.quiet).toBe(true);
+  expect(r.quiet).toBe(false);
+  expect(r.unit!.id).toBe('any-conjunction');
 });
 
 test('skipping the setup steers nothing: empty focus accepts any domain', () => {
   const r = selectDayReading([hit('saturn', 'conjunction', 'mc', 1)], []);
   expect(r.quiet).toBe(false);
-  expect(r.unit.id).toBe('saturn-conjunction-work');
+  expect(r.unit!.id).toBe('saturn-conjunction-work');
 });
 
 test('the same sky always picks the same story (deterministic)', () => {
   const hits = [hit('venus', 'sextile', 'moon', 1), hit('jupiter', 'trine', 'sun', 2)];
   const once = selectDayReading(hits, []);
   const twice = selectDayReading(hits, []);
-  expect(once.unit.id).toBe(twice.unit.id);
+  expect(once.unit!.id).toBe(twice.unit!.id);
   expect(once.hit).toEqual(twice.hit);
 });
 
