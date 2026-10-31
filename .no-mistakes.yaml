@@ -1,0 +1,12 @@
+# Canonical commands for the no-mistakes gate.
+#
+# The pipeline runs these directly instead of asking an agent to invent a way to
+# test the change. Without them the test step falls back to an agent, which has
+# several times produced no usable output and parked the run as inconclusive.
+#
+# These values are read from the default branch only (trusted copy), so a change
+# to this file takes effect once it lands on main.
+commands:
+  prepare: "npm ci"
+  lint: "npm run check"
+  test: "npm test"
