@@ -8,7 +8,7 @@
 import { expect, test } from 'vitest';
 import {
   MIN_BIRTH_YEAR, clampDay, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
-  isValidBirthYear, maxBirthYear, monthName, timeWheelText, wheelKeyStep,
+  isValidBirthYear, maxBirthYear, monthName, SEED_BIRTH_ENTRY, timeWheelText, wheelKeyStep,
 } from '../src/lib/birth-wheels';
 import { fmtDateEt, fmtTime } from '../src/lib/format';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput } from '../src/lib/time';
@@ -172,6 +172,39 @@ test('a 40px item on a 360px viewport settles like the 44px default, not against
   // stable above the real-height floor: commit, narrow viewport included
   expect(isSettledItemPx(44, 44)).toBe(true);
   expect(isSettledItemPx(40, 40)).toBe(true);
+});
+
+// ——— the fresh-form seed is the documented example, part for part ———
+
+/** What an untouched fresh form renders after the seed paints: the wheels
+ * hold the seed parts and both text fallbacks are written from them — the
+ * same chain app.ts and index.astro read from the one shared constant. */
+function freshFormSeed(): { wheels: string[]; dateText: string; timeText: string } {
+  const parts = SEED_BIRTH_ENTRY;
+  return {
+    wheels: [String(parts.day), monthName('et', parts.month), String(parts.year),
+      String(parts.hour), String(parts.minute)],
+    dateText: fmtDateEt(parts.year, parts.month, parts.day),
+    timeText: fmtTime(parts.hour, parts.minute) ?? '',
+  };
+}
+
+test('the fresh form seeds 14.03.1991 14:30 — never a fallen-back minute "00" or day "01"', () => {
+  const seed = freshFormSeed();
+  // five wheels, part for part
+  expect(seed.wheels).toEqual(['14', 'märts', '1991', '14', '30']);
+  // both text fallbacks agree with the wheels from the first paint
+  expect(seed.dateText).toBe('14.03.1991');
+  expect(seed.timeText).toBe('14:30');
+  // the seed contract itself: minute 30 (not 0) and day 14 (not 1) are the
+  // values every seed source — SSR markup, readInitial fallback and the
+  // shared constant — must carry
+  expect(SEED_BIRTH_ENTRY.minute).toBe(30);
+  expect(SEED_BIRTH_ENTRY.day).toBe(14);
+  expect(SEED_BIRTH_ENTRY.hour).toBe(14);
+  // the seed is inside the shared bound so no clamping alters it
+  expect(isValidBirthYear(SEED_BIRTH_ENTRY.year)).toBe(true);
+  expect(clampParts({ ...SEED_BIRTH_ENTRY })).toEqual(SEED_BIRTH_ENTRY);
 });
 
 // ——— the wheels feed the same resolveInstant gate ———

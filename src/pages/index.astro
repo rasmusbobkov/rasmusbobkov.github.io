@@ -6,14 +6,15 @@
  * on switch).
  */
 import { t, DEFAULT_LANG } from '../messages/catalogue';
-import { MIN_BIRTH_YEAR, maxBirthYear, monthName } from '../lib/birth-wheels';
+import { MIN_BIRTH_YEAR, maxBirthYear, monthName, SEED_BIRTH_ENTRY } from '../lib/birth-wheels';
 import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
 
-// Default birth entry = the example value the form has always shown; the
-// wheels and the text fields agree on it from the first paint.
-const seed = { day: 14, month: 3, year: 1991, hour: 14, minute: 30 };
+// Default birth entry: the example value the form has always shown; the
+// wheels and the text fields agree on it from the first paint — the same
+// constant app.ts seeds the client state from, not a second copy.
+const seed = SEED_BIRTH_ENTRY;
 
 // The one shared year bound: floor 1800, ceiling = the current calendar
 // year, computed at runtime — the same bound the parser and import

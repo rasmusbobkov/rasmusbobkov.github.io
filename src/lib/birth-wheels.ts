@@ -89,6 +89,11 @@ export function wheelKeyStep(
   }
 }
 
+/** The documented fresh-form birth entry: the example value the form has
+ * always shown. The wheels, the text fields and the SSR markup all seed
+ * from this, so an untouched form reads 14.03.1991 from the first paint. */
+export const SEED_BIRTH_ENTRY = { day: 14, month: 3, year: 1991, hour: 14, minute: 30 } as const;
+
 /** Estonian month names, lowercase nominative as in "14. märts 1991". */
 export function monthName(lang: Lang, month: number): string {
   return t(lang, ('form.month.' + month) as MessageKey);

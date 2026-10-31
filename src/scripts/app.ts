@@ -10,7 +10,7 @@ import { type BirthParts } from '../lib/birth-wheels';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
 import {
   MIN_BIRTH_YEAR, clampParts, dateWheelText, daysInMonth, isSettledItemPx,
-  isValidBirthYear, maxBirthYear, monthName, timeWheelText, wheelKeyStep,
+  isValidBirthYear, maxBirthYear, monthName, SEED_BIRTH_ENTRY, timeWheelText, wheelKeyStep,
 } from '../lib/birth-wheels';
 import { searchPlaces, type Place } from '../lib/places';
 import { fmtDegComma, fmtDeg, fmtDateEt, fmtTime } from '../lib/format';
@@ -174,11 +174,11 @@ function wireBirthWheels(): void {
     return m ? Math.max(0, Number(m[1])) : fallback;
   };
   let parts: BirthParts = {
-    day: readInitial(cfgs[0], 14),
-    month: readInitial(cfgs[1], 3),
-    year: readInitial(cfgs[2], 1991),
-    hour: readInitial(cfgs[3], 14),
-    minute: readInitial(cfgs[4], 30),
+    day: readInitial(cfgs[0], SEED_BIRTH_ENTRY.day),
+    month: readInitial(cfgs[1], SEED_BIRTH_ENTRY.month),
+    year: readInitial(cfgs[2], SEED_BIRTH_ENTRY.year),
+    hour: readInitial(cfgs[3], SEED_BIRTH_ENTRY.hour),
+    minute: readInitial(cfgs[4], SEED_BIRTH_ENTRY.minute),
   };
 
   const itemId = (cfg: WheelCfg, value: number): string => `${cfg.id}-opt-${value}`;
@@ -218,6 +218,12 @@ function wireBirthWheels(): void {
       frag.appendChild(pad);
     }
     wheel.replaceChildren(frag);
+    // Replacing children resets scrollTop to 0; that fires a scroll event
+    // which would read item 0 and drag the selection down with it. Keep
+    // the position the (clamped) selection says, so the seed survives the
+    // rebuild deterministically.
+    const value = Math.min(Math.max(parts[cfg.part], cfg.firstValue), cfg.firstValue + count - 1);
+    wheel.scrollTop = (value - cfg.firstValue) * itemPx();
   };
 
   /** Paint one wheel: selection flags, the whole-meaning text on the
@@ -266,12 +272,15 @@ function wireBirthWheels(): void {
 
   for (const cfg of cfgs) {
     const wheel = wheels.get(cfg.id)!;
-    // scroll -> selection: the item in the centre band is the value
-    let raf = 0;
+    // scroll -> selection: the item in the centre band is the value, read
+    // only once scrolling settles — programmatic repositions (re-render,
+    // seed) keep the position stable for the whole window, so a reset
+    // scroll event can never drag the selection with it
+    let readTimer = 0;
     wheel.addEventListener('scroll', () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
+      if (readTimer) clearTimeout(readTimer);
+      readTimer = window.setTimeout(() => {
+        readTimer = 0;
         const item = itemPx();
         const idx = Math.round(wheel.scrollTop / item);
         const value = Math.min(Math.max(cfg.firstValue + idx, cfg.firstValue), cfg.firstValue + cfg.itemCount() - 1);
@@ -279,7 +288,7 @@ function wireBirthWheels(): void {
           parts[cfg.part] = value;
           commit({ toText: true });
         }
-      });
+      }, 140);
     });
     // mouse drag (touch keeps its native flick and momentum)
     wheel.addEventListener('pointerdown', (ev) => {
