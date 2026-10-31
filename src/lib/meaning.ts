@@ -142,7 +142,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     tight: 'Vahemaa on täna tunda: kiirendada lähedust, mis ise ei liigu, ei õnnestu.',
     action: 'Ütle täna ühele lähedasele välja, mida sa temalt konkreetselt ootad, ja kuula ära, mis ta vastab.',
     pitfall: 'Vahemaa võib tunduda lahkumisena ja selle eest on kergesti rünnatud. Tegelikult on see lihtsalt hetk, kus mõlemad inimesed vajavad endale ruumi.',
-    astroNote: 'Ringi liikub Saturn ja seisab sinu nataalse vastaspoolel: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist.',
+    astroNote: 'Ringi liikub Saturn ja teeb vastasseisu: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist.',
     story: {
       situation: 'Päev läheb rahulikult, aga ühega lähedasest on jäänud vaikus, mis kestnud on juba päevade kaupa.',
       turn: 'Keset päeva kirjutad sa vastuse tema sõnumile ja jätad selle saatmata: lause jääb kuidagi kõvaks, ja sa jääd kahtlema.',
@@ -210,7 +210,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     tight: 'Algus on täna nii kerge, et ta võib jääda ainult alguseks: kolm asja käima, ükski edasi.',
     action: 'Alusta täna seda asja, mida sa juba nädalapäevade kaupa lükkad, ja tee sellest esimene käegapuutuv samm.',
     pitfall: 'Võidakse arvata, et täna jaksab kõike — ja homme jäävad järele ainult katkestatud algused. Üks, mitte kõik.',
-    astroNote: 'Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpuleviimiseks.',
+    astroNote: 'Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpule viimiseks.',
     story: {
       situation: 'Hommikul on peas juba mitu kohta, kus midagi uut võiks alata.',
       turn: 'Keset päeva tõstab üks neist ennast üle teiste — ja enne õhtut on ta juba saanud midagi käegapuutuvat tehtud.',
@@ -240,11 +240,11 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     transitBody: 'venus',
     aspect: 'opposition',
     focus: ['relationships'],
-    open: 'Täna on hea hetk ütleda, mida suhtes ootad.',
+    open: 'Täna on hea hetk ütelda, mida suhtes ootad.',
     tight: 'Kaks vajadust tõmbavad täna vastassuundades: enda oma ja kellegi teise oma.',
     action: 'Ütle täna ühele lähedasele selgelt välja, mida sa praegu kõige rohkem vajad.',
     pitfall: 'Oma vajadus jääb kergesti selle pärast tagaplaanile, et kellegi teise oma jääks vahetus ruumi — ja siis on mõlemad poolikud.',
-    astroNote: 'Ringi liikub Veenus ja seisab sinu nataalse vastaspoolel: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud.',
+    astroNote: 'Ringi liikub Veenus ja teeb vastasseisu: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud.',
     story: {
       situation: 'Päev kulgeb suhtes rahulikult, aga kusagil sees jääb tunne, et midagi omaga on jäänud sõnamata.',
       turn: 'Keset päeva teravneb see tunne hetkeks, kui kellegi teise vajadus tuleb vastu: mõlemad tahavad sama koha endale.',
@@ -312,7 +312,7 @@ export const MEANING_UNITS: readonly MeaningUnit[] = [
     tight: 'Mõte ujub täna: selgust on vähe ja valmisversioon kipub hapuks jääma.',
     action: 'Tee täna ainult visand või mustand ja jäta vaatamine homme.',
     pitfall: 'Udu meelitab midagi kergesti lõpuni vedama, kuigi poolik mustand on täna ainus reaalne tulemus, mida pidada silmas.',
-    astroNote: 'Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpuleviimine mitte.',
+    astroNote: 'Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpule viimine mitte.',
     story: {
       situation: 'Päev voolab laiali: mõtted kõrvalevad ühelt asjalt teisele, ja mõnes neis on midagi meeldivat.',
       turn: 'Keset päeva, kui midagi pikemalt teha peaks, on selgus kadunud: eristada, mis on oluline, ei toimi.',
