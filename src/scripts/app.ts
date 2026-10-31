@@ -385,8 +385,6 @@ function wireBirthWheels(): void {
     commit({ toText: false });
   };
 
-  renderWheel(cfgs[0]);
-  renderWheel(cfgs[2]);
   commit({ toText: true });
   applyUnknown({ toText: false });
 
@@ -404,6 +402,8 @@ function wireBirthWheels(): void {
     if (height === 0) { settling = false; return; }
     if (isSettledItemPx(lastMeasured, height)) {
       settling = false;
+      for (const timer of pendingReads.values()) clearTimeout(timer);
+      pendingReads.clear();
       commit({ toText: false });
       return;
     }
@@ -536,8 +536,8 @@ function restoreBirthForm(input: BirthInput & { placeName?: string }): void {
       day: input.day,
       month: input.month,
       year: input.year,
-      hour: input.hour ?? 12,
-      minute: input.minute ?? 0,
+      hour: input.hour ?? SEED_BIRTH_ENTRY.hour,
+      minute: input.minute ?? SEED_BIRTH_ENTRY.minute,
     },
     input.timeUnknown,
   );

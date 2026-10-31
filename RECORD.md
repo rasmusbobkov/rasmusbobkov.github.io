@@ -101,7 +101,10 @@ moves the wheels and never alters the meaning.
 
 Trade-off: wheels and text fields are initialised from the example the form
 always showed (14.03.1991, 14:30) and agree from first paint — the value is
-never hidden, as a placeholder never was.
+never hidden, as a placeholder never was. A restored entry with an unknown
+time keeps that same example behind its hidden wheels: unchecking the
+unknown-time box proposes 14:30, exactly what the fresh form would show —
+not an arbitrary noon.
 
 The submit path is structurally untouched: submit keeps parsing the
 dd.mm.yyyy / HH:MM fields, so DST-gap rejection and the fall-back note are
