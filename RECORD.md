@@ -110,3 +110,64 @@ The submit path is structurally untouched: submit keeps parsing the
 dd.mm.yyyy / HH:MM fields, so DST-gap rejection and the fall-back note are
 exactly what they were; tests/birth-wheels.test.ts re-proves both through
 the wheel path alongside clamping, keyboard movement and two-way sync.
+
+## Daily story slice (astro-story)
+
+The app's meaning is reversed here: the chart wheel is no longer the entry
+point. The daily story is the landing surface; the wheel is the depth layer
+reachable underneath it. One day, one transit, three readings: the story
+tier (four paragraphs — situation, turn, climax, meaning — with no planet, sign,
+house or aspect ever named), the plain tier (the same unit with the astro
+line, what is open, what is tight, the action, the pitfall), and the chart
+itself. Both tiers read the same typed meaning unit, so they cannot drift.
+
+**Transit engine** (`src/lib/transits.ts`): geocentric ecliptic longitudes
+of Sun…Pluto plus the mean node — the Moon is deliberately not a transiting
+body, because a monthly circuit would drown every day — compared against
+the natal chart (all bodies plus Asc/MC when the birth time is known) with
+the five major aspects at transit orbs: conjunction/opposition ±8°,
+square/trine ±6°, sextile ±4°; Asc/MC keep the natal engine's 60%
+tightening. Transits are computed for the device's current moment, with
+Europe/Tallinn as the operating timezone that names the day. The
+correctness gate reuses the committed natal fixtures: the same five
+externally validated instants (Swiss Ephemeris C 2.10.03 + JPL Horizons Sun
+cross-check) read from the transit side at the same 0.01° tolerance.
+
+**Meaning layer** (`src/lib/meaning.ts`): a single typed unit per transit
+shape keyed by transiting body, aspect and the life domains it speaks
+into. The archetype space is the finite `MEANING_UNITS` table (15 entries:
+Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus two
+tone-generic units for opposition and sextile) plus the explicit
+`TARGET_FOCUS` map from natal target to domains. Selection ranks hits by
+tightest orb, requires a unit whose focus intersects the target's domains
+intersected with the user's chosen areas (skipping the setup steers
+nothing), prefers exact-body over generic, and falls back to the honest
+`QUIET_UNIT` when nothing matches — a quiet day is a reading, not a
+failure. No unit is ever invented. Content rules enforced by tests: story
+fields contain no astrological vocabulary (Unicode-boundary stem scan,
+because JS `\b` breaks on Estonian vowels), the story's final paragraph
+contains the unit's action verbatim, and every unit carries open/tight/
+action/pitfall/astroNote. No outcomes are promised — only tendencies and
+choices; the daily action is always concrete (mine, don't go, say, don't
+say, wait).
+
+**Focus setup**: one-time, four choices (work, relationships, creative,
+money), at most three, skippable. Stored beside the birth record under its
+own versioned key `firstmate-astro.focus.v1` — the birth record's
+export/import format stays untouched, so no migration exists. Reset clears
+both records.
+
+**"Miks see?" reveal**: one button under either tier opens the transit
+(body, its sign and degree), the aspect with its orb, the natal placement
+it touches (sign, degree, house when known) and the unit's plain sentence
+about what the aspect does. On a quiet day the same control reports
+honestly: nothing is in orb, what was checked, and the nearest miss with
+its distance from the orb window.
+
+Trade-off: with 15 units, most days resolve to a transit-specific story,
+but some shapes (a Sun square, a node trine) still read as a quiet day —
+that is the honest degradation the brief asks for, not a gap.
+
+**Out of scope, unchanged**: tier-3 animation, payments, accounts, English
+copy, synastry, notifications, transit-to-transit and retrograde-station
+commentary. The ephemeris seam and its licence posture are untouched.
