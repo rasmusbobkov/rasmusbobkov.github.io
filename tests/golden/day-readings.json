@@ -1,22 +1,26 @@
 // GOLDEN COPY SET — the pinned day readings.
 //
-// Each entry below is REAL shipped copy — exactly the strings the app
-// renders for that unit's day view on its fixed input (see the test),
-// not a generated placeholder.
+// Two blocks, two owners:
 //
-// status: "provisional" — this unit's text has NOT yet been through a
-//   captain-owned edit. Snapshotted here so any voice drift is caught,
-//   and never a claim of approval.
-// status: "approved" — only write this after the captain has reviewed
-//   the exact strings, recording the approving review in the companion
-//   README.md. Never pre-mark.
+// "entries" — each unit's REAL shipped copy, exactly the strings the
+//   app renders for that unit's day view on its fixed input (see the
+//   test), not a generated placeholder. Hand-edit only with the
+//   captain's reviewed copy change; the re-pin run regenerates it.
+//
+// "approvals" — the review status of each entry's text, owned by the
+//   captain and preserved VERBATIM by the re-pin run (it never
+//   regenerates or rewrites this block):
+//   status: "provisional" — this entry's text has NOT yet been through
+//     a captain-owned edit; a claim it never makes on its own.
+//   status: "approved" — written only by the captain's own hand edit
+//     after reviewing the exact strings, with the approving date in
+//     approvedOn and the review noted in README.md. Never pre-mark.
 //
 // Re-pin after a reviewed copy change:
 //   GOLDEN_UPDATE=1 npm test -- --run tests/content-golden.test.ts
 {
   "entries": {
     "saturn-square-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "saturn",
         "aspect": "square",
@@ -38,7 +42,6 @@
       "note": "Ringi liikub Saturn ja teeb ruutu: aeg nõuab täna korda, mitte kiirust — ja mis on pooleli, ei jää meenutamata."
     },
     "saturn-conjunction-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "saturn",
         "aspect": "conjunction",
@@ -60,7 +63,6 @@
       "note": "Ringi liikub Saturn ja käib just üle sinu kaardi: mis on jäänud vastutamata, meenutab ennast täna kindlalt. Vastutus on valik, mida tohib ka ära anda."
     },
     "saturn-opposition-relationships": {
-      "status": "provisional",
       "input": {
         "transitBody": "saturn",
         "aspect": "opposition",
@@ -82,7 +84,6 @@
       "note": "Ringi liikub Saturn ja seisab sinu nataalse vastaspoolel: nähtavaks saab, kus suhtes on jäänud midagi lausumata, ja aeg ei salli täna kiirustamist."
     },
     "jupiter-trine-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "jupiter",
         "aspect": "trine",
@@ -104,7 +105,6 @@
       "note": "Ringi liikub Jupiter ja teeb trigooni: see, mis muidu vajab palju veenmist, liigub täna sujuvalt — aeg toetab küsimusi, mida on ammu hoitud."
     },
     "jupiter-square-money": {
-      "status": "provisional",
       "input": {
         "transitBody": "jupiter",
         "aspect": "square",
@@ -126,7 +126,6 @@
       "note": "Ringi liikub Jupiter ja teeb ruutu: kõik kipub täna kasvama, ka kulud. Kasv on hea siis, kui ta on numbriga kinnitatud, mitte tundega."
     },
     "mars-square-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "mars",
         "aspect": "square",
@@ -148,7 +147,6 @@
       "note": "Ringi liikub Marss ja teeb ruutu: jõud on täna külluses ja otsib väljapääsu — ja kui asjadele väljapääsu pole, kipub ta kellegi kallale."
     },
     "mars-conjunction-creative": {
-      "status": "provisional",
       "input": {
         "transitBody": "mars",
         "aspect": "conjunction",
@@ -170,7 +168,6 @@
       "note": "Ringi liikub Marss ja käib just üle sinu kaardi: saadaval on rohkesti jõudu esimesteks sammudeks, mitte nii palju lõpuleviimiseks."
     },
     "venus-sextile-relationships": {
-      "status": "provisional",
       "input": {
         "transitBody": "venus",
         "aspect": "sextile",
@@ -192,7 +189,6 @@
       "note": "Ringi liikub Veenus ja teeb sekstiili: pisike avatus jõuab täna kergesti kohale, kui teda proovitakse."
     },
     "venus-opposition-relationships": {
-      "status": "provisional",
       "input": {
         "transitBody": "venus",
         "aspect": "opposition",
@@ -214,7 +210,6 @@
       "note": "Ringi liikub Veenus ja seisab sinu nataalse vastaspoolel: suhe ja sinu oma vajadus seisavad täna vastamisi, ja mõlemale saab ruumi, kui vajadus on nimetatud."
     },
     "mercury-square-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "mercury",
         "aspect": "square",
@@ -236,7 +231,6 @@
       "note": "Ringi liikub Merkuur ja teeb ruutu: sõnad kippuvad täna sassi minema, ja üle lugemine enne saatmist säästab suure osa sassisolekust."
     },
     "uranus-square-work": {
-      "status": "provisional",
       "input": {
         "transitBody": "uranus",
         "aspect": "square",
@@ -258,7 +252,6 @@
       "note": "Ringi liikub Uraan ja teeb ruutu: olukorrad veeretavad kergesti plaanidest teisele teele — selle jaoks töötab ainult järgmine samm, mitte terve päeva plaan."
     },
     "pluto-trine-money": {
-      "status": "provisional",
       "input": {
         "transitBody": "pluto",
         "aspect": "trine",
@@ -280,7 +273,6 @@
       "note": "Ringi liikub Pluuto ja teeb trigooni: sügav muutus läheb täna kergesti ja vaikselt — aeg toetab lõplikku sulgemist, mitte kinnihoidmist."
     },
     "neptune-square-creative": {
-      "status": "provisional",
       "input": {
         "transitBody": "neptune",
         "aspect": "square",
@@ -302,7 +294,6 @@
       "note": "Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpuleviimine mitte."
     },
     "any-opposition": {
-      "status": "provisional",
       "input": {
         "transitBody": "uranus",
         "aspect": "opposition",
@@ -324,7 +315,6 @@
       "note": "Vastasseis paneb kaks õigust vastamisi: kumbki pool pole vale, ja mõlemale saab ruumi ainult vaheldumisi."
     },
     "any-sextile": {
-      "status": "provisional",
       "input": {
         "transitBody": "sun",
         "aspect": "sextile",
@@ -346,7 +336,6 @@
       "note": "Sekstiil avab väikese ukse, mida peab ise lükkama: üks pisike proov liigub täna kergesti."
     },
     "any-conjunction": {
-      "status": "provisional",
       "input": {
         "transitBody": "sun",
         "aspect": "conjunction",
@@ -368,7 +357,6 @@
       "note": "Konjunktsioon paneb mõjutused ühte kohta: nad töötavad koos, kui kumbki saab omale nime ja järje."
     },
     "any-trine": {
-      "status": "provisional",
       "input": {
         "transitBody": "sun",
         "aspect": "trine",
@@ -390,7 +378,6 @@
       "note": "Trigoon annab sujuvuse: see, mis muidu jõudu nõuab, liigub täna iseenesest — kui talle üks konkreetne asi ette pannakse."
     },
     "any-square": {
-      "status": "provisional",
       "input": {
         "transitBody": "sun",
         "aspect": "square",
@@ -412,7 +399,6 @@
       "note": "Ruut toob pinge: ta tõmbab tähelepanu ja nõuab rohkem õppimist — kinni jääv asi vajab selgemat sammu, mitte kiiremat."
     },
     "quiet": {
-      "status": "provisional",
       "input": {
         "transitBody": "none"
       },
@@ -429,6 +415,65 @@
         "pitfall": ""
       },
       "note": ""
+    }
+  },
+  "approvals": {
+    "saturn-square-work": {
+      "status": "provisional"
+    },
+    "saturn-conjunction-work": {
+      "status": "provisional"
+    },
+    "saturn-opposition-relationships": {
+      "status": "provisional"
+    },
+    "jupiter-trine-work": {
+      "status": "provisional"
+    },
+    "jupiter-square-money": {
+      "status": "provisional"
+    },
+    "mars-square-work": {
+      "status": "provisional"
+    },
+    "mars-conjunction-creative": {
+      "status": "provisional"
+    },
+    "venus-sextile-relationships": {
+      "status": "provisional"
+    },
+    "venus-opposition-relationships": {
+      "status": "provisional"
+    },
+    "mercury-square-work": {
+      "status": "provisional"
+    },
+    "uranus-square-work": {
+      "status": "provisional"
+    },
+    "pluto-trine-money": {
+      "status": "provisional"
+    },
+    "neptune-square-creative": {
+      "status": "provisional"
+    },
+    "any-opposition": {
+      "status": "provisional"
+    },
+    "any-sextile": {
+      "status": "provisional"
+    },
+    "any-conjunction": {
+      "status": "provisional"
+    },
+    "any-trine": {
+      "status": "provisional"
+    },
+    "any-square": {
+      "status": "provisional"
+    },
+    "quiet": {
+      "status": "provisional"
     }
   }
 }

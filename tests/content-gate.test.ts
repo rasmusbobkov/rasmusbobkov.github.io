@@ -112,13 +112,17 @@ describe('banned vocabulary: the shipped voice is clean', () => {
   test('the whole catalogue (et + en) is free of banned vocabulary', () => {
     // the en table repeats et keys, so an en hit must be located after
     // `const en`, not at its Estonian twin
-    const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en') ?? 1;
+    const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en');
+    expect(
+      enTableLine,
+      'catalogue.ts must declare the en table — an en hit is located from there, so a missing needle would silently point en hits at their Estonian twins',
+    ).not.toBeNull();
     const dirty = allCatalogueStrings()
       .filter((s) => bannedOffenders(s.text).length > 0)
       .map(
         (s) =>
           `${CATALOGUE_FILE}:${
-            lineOf(ROOT, CATALOGUE_FILE, `'${s.key}':`, s.lang === 'en' ? enTableLine : 1) ?? '?'
+            lineOf(ROOT, CATALOGUE_FILE, `'${s.key}':`, s.lang === 'en' ? enTableLine! : 1) ?? '?'
           } [${s.key}] ${s.text}`,
       );
     expect(dirty, 'banned vocabulary found in catalogue').toEqual([]);
@@ -321,11 +325,12 @@ test('the hit provenance locator lands in the table the hit came from', () => {
   // 'chart.planetsHeading' is declared in both tables; searching from the
   // en table's start must skip its Estonian twin and hit the en line
   const etLine = lineOf(ROOT, CATALOGUE_FILE, `'chart.planetsHeading':`);
-  const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en') ?? 1;
-  const enLine = lineOf(ROOT, CATALOGUE_FILE, `'chart.planetsHeading':`, enTableLine);
+  const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en');
+  expect(enTableLine, 'en table declaration').not.toBeNull();
+  const enLine = lineOf(ROOT, CATALOGUE_FILE, `'chart.planetsHeading':`, enTableLine!);
   expect(etLine, 'et declaration').not.toBeNull();
   expect(enLine, 'en declaration').not.toBeNull();
-  expect(enTableLine).toBeGreaterThan(etLine!);
-  expect(enLine!).toBeGreaterThan(enTableLine);
+  expect(enTableLine!).toBeGreaterThan(etLine!);
+  expect(enLine!).toBeGreaterThan(enTableLine!);
   expect(enLine!).toBeGreaterThan(etLine!);
 });

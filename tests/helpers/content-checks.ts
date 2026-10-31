@@ -42,8 +42,8 @@ export const BANNED_PROMISE: readonly BannedPattern[] = [
   {
     id: 'predict-juhtub',
     why: 'prediction that something happens — the story only states tendencies',
-    re: /(?<![\p{L}\p{N}])(?:juhtub|juhtuvad)(?![\p{L}\p{N}])/u,
-    example: 'Täna juhtub midagi suurt, mida ei oska ära arvata.',
+    re: /(?<![\p{L}\p{N}])(?:juhtub|juhtuvad)(?![\p{L}\p{N}])/iu,
+    example: 'Juhtub nii, et täna juhtub midagi suurt, mida ei oska ära arvata.',
   },
   {
     id: 'predict-onnestub',
