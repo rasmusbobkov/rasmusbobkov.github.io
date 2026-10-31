@@ -54,13 +54,13 @@ const EN = rawMessages.en;
 
 // ——— the strings the app can ever show ———
 
-/** All catalogue strings, both languages: [key, text]. */
-function allCatalogueStrings(): { key: string; text: string }[] {
+/** All catalogue strings, both languages: [lang, key, text]. */
+function allCatalogueStrings(): { lang: 'et' | 'en'; key: string; text: string }[] {
   return [
-    ...Object.entries(ET).map(([key, text]) => ({ key, text })),
+    ...Object.entries(ET).map(([key, text]) => ({ lang: 'et' as const, key, text })),
     ...Object.entries(EN)
       .filter(([, text]) => text != null)
-      .map(([key, text]) => ({ key: `${key}`, text: text as string })),
+      .map(([key, text]) => ({ lang: 'en' as const, key: `${key}`, text: text as string })),
   ];
 }
 
@@ -110,11 +110,16 @@ describe('banned vocabulary proven on bait: every pattern fails on its own examp
 
 describe('banned vocabulary: the shipped voice is clean', () => {
   test('the whole catalogue (et + en) is free of banned vocabulary', () => {
+    // the en table repeats et keys, so an en hit must be located after
+    // `const en`, not at its Estonian twin
+    const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en') ?? 1;
     const dirty = allCatalogueStrings()
       .filter((s) => bannedOffenders(s.text).length > 0)
       .map(
         (s) =>
-          `${CATALOGUE_FILE}:${lineOf(ROOT, CATALOGUE_FILE, `'${s.key}':`) ?? '?'} [${s.key}] ${s.text}`,
+          `${CATALOGUE_FILE}:${
+            lineOf(ROOT, CATALOGUE_FILE, `'${s.key}':`, s.lang === 'en' ? enTableLine : 1) ?? '?'
+          } [${s.key}] ${s.text}`,
       );
     expect(dirty, 'banned vocabulary found in catalogue').toEqual([]);
   });
@@ -310,4 +315,17 @@ test('the hit provenance locator points at the real line of the banned string', 
   const line = lineOf(ROOT, CATALOGUE_FILE, `'form.date.placeholder':`);
   expect(line, 'catalogue.ts line of form.date.placeholder').not.toBeNull();
   expect(line!).toBeGreaterThan(1);
+});
+
+test('the hit provenance locator lands in the table the hit came from', () => {
+  // 'chart.planetsHeading' is declared in both tables; searching from the
+  // en table's start must skip its Estonian twin and hit the en line
+  const etLine = lineOf(ROOT, CATALOGUE_FILE, `'chart.planetsHeading':`);
+  const enTableLine = lineOf(ROOT, CATALOGUE_FILE, 'const en') ?? 1;
+  const enLine = lineOf(ROOT, CATALOGUE_FILE, `'chart.planetsHeading':`, enTableLine);
+  expect(etLine, 'et declaration').not.toBeNull();
+  expect(enLine, 'en declaration').not.toBeNull();
+  expect(enTableLine).toBeGreaterThan(etLine!);
+  expect(enLine!).toBeGreaterThan(enTableLine);
+  expect(enLine!).toBeGreaterThan(etLine!);
 });

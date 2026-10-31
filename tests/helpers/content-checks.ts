@@ -300,9 +300,18 @@ export const CATALOGUE_FILE = 'src/messages/catalogue.ts';
 export const MEANING_FILE = 'src/lib/meaning.ts';
 
 /** Best-effort 1-based line of a needle inside a source file, so a hit
- * reports file, line and the exact string, not just the string. */
-export function lineOf(root: string, file: string, needle: string): number | null {
+ * reports file, line and the exact string, not just the string. When
+ * `fromLine` is given (1-based), only lines from there on are searched —
+ * a needle that occurs in several tables (same key in et and en) is then
+ * located in the table the hit came from. */
+export function lineOf(
+  root: string,
+  file: string,
+  needle: string,
+  fromLine?: number,
+): number | null {
   const lines = fs.readFileSync(path.join(root, file), 'utf8').split('\n');
-  const idx = lines.findIndex((l) => l.includes(needle));
+  const start = Math.max(0, (fromLine ?? 1) - 1);
+  const idx = lines.findIndex((l, i) => i >= start && l.includes(needle));
   return idx === -1 ? null : idx + 1;
 }
