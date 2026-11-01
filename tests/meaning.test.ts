@@ -189,6 +189,25 @@ test('skipping the setup never reports a day outside focus', () => {
   expect(hitMissesFocus(hit('saturn', 'square', 'sun'), [])).toBe(false);
 });
 
+test('an in-focus hit wins even when a tighter hit misses the chosen area', () => {
+  // the shipped promise is that a day touching a chosen area speaks to it,
+  // so the tighter saturn square (work only) must not swallow the day when
+  // a looser venus sextile carries the reader's relationships focus
+  const hits = [hit('saturn', 'square', 'sun', 1), hit('venus', 'sextile', 'moon', 2)];
+  const r = selectDayReading(hits, ['relationships']);
+  expect(r.unit!.id).toBe('venus-sextile-relationships');
+  expect(r.hit!.transitBody).toBe('venus');
+  expect(hitMissesFocus(r.hit!, ['relationships'])).toBe(false);
+});
+
+test('no in-focus hit in orb: the tightest global hit carries the out-of-focus day', () => {
+  const hits = [hit('saturn', 'square', 'sun', 1), hit('venus', 'sextile', 'moon', 2)];
+  const r = selectDayReading(hits, ['money']);
+  expect(r.hit!.transitBody).toBe('saturn');
+  expect(r.unit!.id).toBe('any-square');
+  expect(hitMissesFocus(r.hit!, ['money'])).toBe(true);
+});
+
 test('the same sky always picks the same story (deterministic)', () => {
   const hits = [hit('venus', 'sextile', 'moon', 1), hit('jupiter', 'trine', 'sun', 2)];
   const once = selectDayReading(hits, []);

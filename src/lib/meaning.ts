@@ -476,17 +476,28 @@ function compareHits(a: TransitHit, b: TransitHit): number {
 }
 
 /**
- * The day's single reading: ranked hits, first one with a matching unit
- * wins; a hit with no unit at all says only that the story for this shape
- * is not written yet; the quiet unit is reserved for a genuinely empty
- * sky — never for a hit that is in orb. "Mitte iga päev ei ole draama."
+ * The day's single reading: hits that touch a chosen focus area are read
+ * before hits that miss them, tightest orb first inside each group, so the
+ * shipped promise — the day speaks to the chosen areas whenever the sky
+ * touches one — holds even when a tighter transit sits outside them. Only
+ * when no in-orb hit touches a chosen area does the global tightest hit
+ * carry the day, and the focus line says so. A hit with no unit at all
+ * says only that the story for this shape is not written yet; the quiet
+ * unit is reserved for a genuinely empty sky — never for a hit that is in
+ * orb. "Mitte iga päev ei ole draama."
  */
 export function selectDayReading(
   hits: readonly TransitHit[],
   focusAreas: readonly FocusArea[],
 ): DayReading {
   const ranked = [...hits].sort(compareHits);
-  for (const hit of ranked) {
+  const order = focusAreas.length > 0
+    ? [
+        ...ranked.filter((h) => !hitMissesFocus(h, focusAreas)),
+        ...ranked.filter((h) => hitMissesFocus(h, focusAreas)),
+      ]
+    : ranked;
+  for (const hit of order) {
     const unit = unitForHit(hit, focusAreas);
     if (unit) return { unit, hit, quiet: false };
   }

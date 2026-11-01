@@ -39,7 +39,7 @@ let selected: Selection | null = null;
 
 // ——— daily story state ———
 let focusAreas: FocusArea[] = [];
-let tier: 'story' | 'plain' = 'story';
+let tier: 'story' | 'plain' = 'plain';
 let dayReading: DayReading | null = null;
 let dayKey = '';
 let dayTime = '';
@@ -142,6 +142,8 @@ function setLang(next: Lang): void {
     renderWhyPanel();
   } else if (storyFailed) {
     renderStoryFailure();
+  } else {
+    paintStoryHead();
   }
   paintWhyToggle();
 }
@@ -793,18 +795,12 @@ async function enterStory(): Promise<void> {
 }
 
 /** One failure surface, re-derived at render time so a language switch
- * after a failed recompute re-localizes it: the day heading is cleared and
- * the failure note replaces any story content. */
+ * after a failed recompute re-localizes it: the heading follows the active
+ * tier and the failure note replaces any story content. */
 function renderStoryFailure(): void {
   dayKey = '';
   dayTime = '';
-  const titleEl = document.getElementById('story-title');
-  if (titleEl) titleEl.textContent = t(lang, 'story.heading');
-  const focusEl = document.getElementById('story-focus-note');
-  if (focusEl) {
-    focusEl.hidden = true;
-    focusEl.textContent = '';
-  }
+  paintStoryHead();
   const dateEl = document.getElementById('story-date-text');
   if (dateEl) dateEl.textContent = '';
   const asofEl = document.getElementById('story-asof');
@@ -879,10 +875,10 @@ function paintStoryHead(): void {
 }
 
 function renderStory(): void {
+  paintStoryHead();
+
   const c = document.getElementById('story-content');
   if (!c || !dayReading) return;
-
-  paintStoryHead();
 
   const dateEl = document.getElementById('story-date-text');
   if (dateEl && dayKey) {
