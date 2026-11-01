@@ -104,8 +104,9 @@ never counts as done:
    house or aspect name — now also their everyday synonyms
    (`taevakeha`, `tähtkuju`, `horoskoop`, `sodiaak`) and the
    grade-inflected stems (`ruud`) the pure stem list missed.
-   Tier-1 names aspects only in the approved terms
-   (konjunktsioon, sekstiil, ruut, trigoon, vastasseis) and rejects
+   The unit's non-story fields (`open`, `tight`, `action`, `pitfall`,
+   plus the reveal-only `astroNote`) name aspects only in the approved
+   terms (konjunktsioon, sekstiil, ruut, trigoon, vastasseis) and reject
    kvadratuur, kvadraat and opositsioon; the catalogue's own
    `aspect.*` messages are pinned to those terms.
 4. **Length/readability.** Stated bounds per story paragraph: 7–50
@@ -244,8 +245,8 @@ export/import format stays untouched, so no migration exists. Reset clears
 both records.
 
 **"Miks see?" reveal**: one button under either tier opens the transit
-(body, its sign, degree and house when known), the aspect with its orb, the
-natal placement it touches (sign, degree, house when known), the unit's
+(body, its sign and degree), the aspect with its orb, the natal placement it
+touches (sign, degree, house when known), the unit's
 plain-language astroNote and, in one short block, the matching aspect and
 house meanings. A small dial places the two points against each other. On a
 quiet day the same control reports

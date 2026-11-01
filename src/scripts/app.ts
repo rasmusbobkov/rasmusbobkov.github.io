@@ -993,7 +993,8 @@ function targetHouse(target: string): number | null {
 }
 
 /** The reveal sheet: the one surface that names the real transit, its
- * aspect, orb and house, plus the unit's plain-language note. */
+ * aspect and orb, the natal house it lands in, plus the unit's
+ * plain-language note. */
 function renderWhyPanel(): void {
   const panel = document.getElementById('story-why-panel');
   if (!panel) return;
