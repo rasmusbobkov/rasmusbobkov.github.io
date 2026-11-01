@@ -185,11 +185,13 @@ the wheel path alongside clamping, keyboard movement and two-way sync.
 
 The app's meaning is reversed here: the chart wheel is no longer the entry
 point. The daily story is the landing surface; the wheel is the depth layer
-reachable underneath it. One day, one transit, three readings: the story
-tier (four paragraphs — situation, turn, climax, meaning — with no planet, sign,
-house or aspect ever named), the plain tier (the same unit with the astro
-line, what is open, what is tight, the action, the pitfall), and the chart
-itself. Both tiers read the same typed meaning unit, so they cannot drift.
+reachable underneath it. One day, one transit, four screens: the plain tier
+("Täna": what is open, what is tight, the action in its own emphasis box and
+the pitfall, with no astrology at all), the story tier ("Lugu": the same
+unit's four paragraphs — situation, turn, climax, meaning — with no planet,
+sign, house or aspect ever named), the "Miks see?" reveal (the only surface
+that names the real transit) and the one-time focus setup. Both tiers read
+the same typed meaning unit, so they cannot drift.
 
 **Transit engine** (`src/lib/transits.ts`): geocentric ecliptic longitudes
 of Sun…Pluto plus the mean node — the Moon is deliberately not a transiting
@@ -230,15 +232,19 @@ say, wait).
 **Focus setup**: first shown once, four choices (work, relationships,
 creative, money), at most three, skippable — but directly reopenable from
 the chart view ("Fookus"), so neither a saved nor a skipped choice locks
-the setup away. Stored beside the birth record under its
+the setup away. When the day's chosen hit touches none of the chosen
+domains, the reading says so plainly instead of inventing relevance.
+Stored beside the birth record under its
 own versioned key `firstmate-astro.focus.v1` — the birth record's
 export/import format stays untouched, so no migration exists. Reset clears
 both records.
 
 **"Miks see?" reveal**: one button under either tier opens the transit
-(body, its sign and degree), the aspect with its orb, the natal placement
-it touches (sign, degree, house when known) and the unit's plain sentence
-about what the aspect does. On a quiet day the same control reports
+(body, its sign, degree and house when known), the aspect with its orb, the
+natal placement it touches (sign, degree, house when known), the unit's
+plain-language astroNote and, in one short block, the matching aspect and
+house meanings. A small dial places the two points against each other. On a
+quiet day the same control reports
 honestly: nothing is in orb, what was checked, and the nearest miss with
 its distance from the orb window.
 

@@ -8,10 +8,10 @@
  * One unit carries: what today is open for, what is tight, one concrete
  * action, where this tends to go wrong, the astrology behind it, and the
  * four-part story (situation, turn, climax, meaning) whose final paragraph
- * is the action. Tier 1 (plain) renders the astro-free fields with the
- * astro line composed at render time from the real transit hit; tier 2
- * (story) renders only the four paragraphs. Because both read the same
- * unit, the tiers cannot drift apart.
+ * is the action. Tier 1 (plain) renders only the astro-free fields; the
+ * "Miks see?" reveal names the real transit hit and carries the astroNote.
+ * Tier 2 (story) renders only the four paragraphs. Because both read the
+ * same unit, the tiers cannot drift apart.
  *
  * Content rules: no results are promised — not profit, not health, not
  * luck — only tendencies and choices. The story paragraphs contain no
@@ -451,6 +451,21 @@ export function unitForHit(
   if (matched.length === 0) return null;
   matched.sort((a, b) => unitRank(a) - unitRank(b));
   return matched[0]!;
+}
+
+/**
+ * Whether the day's transit lands outside every focus area the reader
+ * chose. Stored per unit rather than derived from the chosen unit's domain:
+ * a generic unit can be shown without implying it belongs to the chosen
+ * area. With no focus (setup skipped) nothing is steered, so nothing is
+ * outside. The app says this plainly instead of selling relevance.
+ */
+export function hitMissesFocus(
+  hit: TransitHit,
+  focusAreas: readonly FocusArea[],
+): boolean {
+  if (focusAreas.length === 0) return false;
+  return !TARGET_FOCUS[hit.target].some((f) => focusAreas.includes(f));
 }
 
 /** Tightest orb first; ties break in the fixed transit-body order, so the

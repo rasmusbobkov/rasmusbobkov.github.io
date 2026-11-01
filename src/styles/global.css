@@ -241,20 +241,40 @@ label { display: block; font-size: 12px; letter-spacing: .12em; text-transform: 
 
 /* story tier: four paragraphs read as one prose block */
 .story-copy { max-width: 58ch; }
-.story-copy p { margin: 0 0 12px; line-height: 1.62; font-size: 15.5px; min-width: 0; overflow-wrap: break-word; }
+.story-copy > p:first-child { margin-top: 16px; }
+.story-copy p { margin: 0 0 12px; line-height: 1.66; font-size: 15.5px; min-width: 0; overflow-wrap: break-word; }
 .story-copy p:last-child { margin-bottom: 0; }
 .story-copy .story-final { font-family: var(--display); font-style: italic; color: var(--gold); }
 
-/* plain tier: labelled lines, astro line on top */
-.astro-line { font-family: var(--mono); font-size: 12.5px; color: var(--gold); letter-spacing: .06em; margin-bottom: 14px; min-width: 0; overflow-wrap: break-word; }
-.story-line-label { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; display: block; margin-bottom: 2px; }
-.story-line + .story-line { margin-top: 16px; }
+/* plain tier: labelled blocks, the same unit, no astrology */
+.day-date { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin: 0 0 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+.day-date .note { letter-spacing: .02em; text-transform: none; color: var(--faint); }
+.day-title { margin: 0 0 12px; font-family: var(--display); font-size: 26px; font-weight: 330; line-height: 1.16; letter-spacing: -.015em; color: var(--paper); }
+.day-block { border-top: 1px solid var(--line); padding-top: 12px; min-width: 0; }
+.day-block + .day-block { margin-top: 16px; }
+.day-label { margin: 0 0 6px; font-family: var(--body); font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.day-text { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--paper); overflow-wrap: break-word; }
+.day-act { margin-top: 16px; padding: 13px 15px; background: var(--gold-dim); border: 1px solid rgba(198, 161, 95, .32); border-radius: 12px; }
+.day-act .day-label { margin-bottom: 7px; color: var(--gold); opacity: .85; }
+.day-act p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--paper); }
+.day-act + .day-block { margin-top: 16px; }
+.quiet-action { margin-top: 16px; }
 
 /* quiet day */
 .quiet-tag { font-family: var(--mono); font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
 
-/* "Miks see?" reveal rows: label above value, real gap between them */
-.why-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px 0; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; min-width: 0; color: var(--paper); }
-.why-row:last-of-type { border-bottom: 0; }
-.why-row .why-key { color: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; min-width: 0; overflow-wrap: break-word; }
-.why-note { margin-top: 10px; color: var(--muted); font-size: 14px; min-width: 0; overflow-wrap: break-word; }
+/* "Miks see?" reveal: the only surface that names the real transit */
+.why-sheet .day-date { margin-bottom: 6px; }
+.why-dial { display: block; width: 150px; height: 150px; margin: 12px auto 4px; }
+.why-dial-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.why-dial-ring-inner { stroke: rgba(241, 233, 218, .08); }
+.why-dial-line { stroke: var(--gold); stroke-width: 1.4; }
+.why-dial-node { fill: var(--ink-3); stroke-width: 1.6; }
+.why-dial-transit { stroke: var(--gold); }
+.why-dial-natal { stroke: var(--sage); }
+.why-dial-center { fill: var(--paper); }
+.why-meta { margin: 0 0 12px; font-family: var(--mono); font-size: 11px; line-height: 1.6; color: var(--faint); overflow-wrap: break-word; }
+.why-note { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; line-height: 1.62; min-width: 0; overflow-wrap: break-word; }
+.why-block { border-top: 1px solid var(--line); padding-top: 12px; }
+.why-plain { margin: 0 0 6px; color: var(--muted); font-size: 13.5px; line-height: 1.55; overflow-wrap: break-word; }
+.why-plain:last-child { margin-bottom: 0; }
