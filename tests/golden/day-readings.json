@@ -293,6 +293,258 @@
       },
       "note": "Ringi liikub Neptuun ja teeb ruutu: piirid hägustuvad täna ning selgusetus on osa päevast — alustus toimib, lõpule viimine mitte."
     },
+    "mercury-trine-home-family": {
+      "input": {
+        "transitBody": "mercury",
+        "aspect": "trine",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommik algab nii nagu ikka: kohv, uks, keegi ütleb midagi kõrvalt ja sina vastad juba pooleldi järgmisele asjale mõeldes.",
+        "Keset päeva jääb üks lause õhku rippuma. Mitte suur, mitte kuri – lihtsalt öeldud nii, et ta jääb kõrva. See tuleb meelde uuesti alles siis, kui oled juba teise tuppa läinud.",
+        "Õhtul tuleb see tagasi, kui kodu on vaiksem. Ja siis on näha, et see polnud küsimus sinu kohta, vaid palve: „kas sa näed mind täna?”",
+        "Vaikne vastus loeb rohkem kui pikk selgitus. Küsi üks küsimus ja jää vastust ootama."
+      ],
+      "plain": {
+        "open": "Täna on kodus midagi lihtsat ja olulist: keegi ootab sinult tähelepanu, mitte lahendust.",
+        "tight": "Väike hetk on täna tähtsam kui suur vestlus: suured sõnad katavad ta kergesti ära.",
+        "action": "Küsi üks küsimus ja jää vastust ootama.",
+        "pitfall": "Väike küsimus kipub saama vastuseks nimekirja lahendustest — ja see, kes ootas kuulamist, jääb oma murega üksi."
+      },
+      "note": "Ringi liigub Merkuur ja teeb trigooni: kodu ja lähedased on täna pehmes valguses, kus väike tähelepanu jõuab kohale enne suurt sõna."
+    },
+    "saturn-square-home-family": {
+      "input": {
+        "transitBody": "saturn",
+        "aspect": "square",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommik on tavaline, aga üks väike asi kodus jääb silma: midagi on paigast ära ja keegi pole seda veel sõnades välja öelnud.",
+        "Keset päeva tuleb see teemaks korraks ja läheb siis kiiresti edasi — just nii, et kumbki ei tea, kas sellest sai kokkulepe või mitte.",
+        "Õhtul, kui kodu rahuneb, on see üks lause ikka alles: kas te mõtlesite sama asja või rääkisite kahest eri asjast.",
+        "Kokkulepe, mis jääb ütlemata, jääb ka täitmata. Ütle üks kokkulepe selgelt välja ja kontrolli, kas te mõtlesite sama asja."
+      ],
+      "plain": {
+        "open": "Kodus nõuab üks asi korra: mis on kokku lepitud, tuleb täna välja öelda, mitte vaikselt kanda.",
+        "tight": "Kokkulepe, mida pole sõnades, venib täna iga tunniga suuremaks, kui ta tegelikult on.",
+        "action": "Ütle üks kokkulepe selgelt välja ja kontrolli, kas te mõtlesite sama asja.",
+        "pitfall": "Vaikselt kandmine tundub täna viisakamana kui ütlemine — ja just seepärast kasvab sellest päeva lõpuks suurem asi kui alguses."
+      },
+      "note": "Ringi liigub Saturn ja teeb ruutu: kodu korras ja rutiinis tuleb nähtavale see, mis on kokku leppimata jäänud."
+    },
+    "venus-opposition-home-family": {
+      "input": {
+        "transitBody": "venus",
+        "aspect": "opposition",
+        "target": "saturn",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Päev algab kodus rahulikult, aga üks teema jääb õhku: keegi tahab sellest rääkida teisiti, kui sina seda mäletad.",
+        "Keset päeva tuleb see teema uuesti lauale ja sina hakkad vastama enne, kui teine on lõpetanud — see on harjumus, mitte halb tahtmine.",
+        "Õhtul on selge, et te rääkisite kahest eri asjast: üks rääkis sellest, mis toimus, teine sellest, mida ta selle juures tundis.",
+        "Kaks vaadet mahuvad ühte ruumi ainult siis, kui kumbki saab lõpetada. Hoia vastus tagasi, kuni teine on lõpetanud."
+      ],
+      "plain": {
+        "open": "Keegi lähedane tahab täna sinuga teisiti: kuula enne, kui ütled, kuidas asjad on.",
+        "tight": "Kaks vaadet samale kodusele asjale tõmbavad täna eri suunda: kumbki pole vale, aga korraga ei mahu mõlemad kõnelema.",
+        "action": "Hoia vastus tagasi, kuni teine on lõpetanud.",
+        "pitfall": "Oma vaade tuleb kergesti välja enne, kui teine on lõpetanud — ja siis jääb kõlama ainult üks pool."
+      },
+      "note": "Ringi liigub Veenus ja teeb vastasseisu: kodu ja läheduse juures seisavad täna vastamisi kaks vajadust, ja mõlemale saab ruumi, kui neid nimetada."
+    },
+    "mercury-sextile-home-family": {
+      "input": {
+        "transitBody": "mercury",
+        "aspect": "sextile",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul on kodus mitu väikest asja, mille kohta keegi arvab, et teine teab juba, kuidas need käivad.",
+        "Keset päeva selgub, et üks neist asjadest on jäänud kokku leppimata: kumbki on seda teisiti teinud ja mõlemad on õigustanud end harjumusega.",
+        "Õhtul on see üks asi nii lihtne, et seda saab korraga öelda — ja just sellepärast on kahju, et ta nädalaid sõnatuks jäi.",
+        "Väike asi, mis on sõnades, lakkab olemast vaikne ootus. Kirjuta täna üks kodune kokkulepe paberile ja pane see nähtavale kohale."
+      ],
+      "plain": {
+        "open": "Täna on kodus hea hetk üks tavaline asi sõnades selgeks teha: kes mida teeb ja millal.",
+        "tight": "Pisiasi jääb täna lihtsalt meelde tuletada: suurem jutt läheb kergesti üle selle, mis päriselt vaja on.",
+        "action": "Kirjuta täna üks kodune kokkulepe paberile ja pane see nähtavale kohale.",
+        "pitfall": "Hea vestlus jääb kergesti ainult vestluseks: kui kokkulepet kuhugi ei pane, ei mäleta seda homme keegi ühtemoodi."
+      },
+      "note": "Ringi liigub Merkuur ja teeb sekstiili: sõnad liiguvad kodus täna kergesti, ja väike kirjalik kokkulepe jõuab kohale enne, kui ta meelest läheb."
+    },
+    "jupiter-opposition-home-family": {
+      "input": {
+        "transitBody": "jupiter",
+        "aspect": "opposition",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul on kodus juttu suuremast asjast: reisist, kolimisest või plaanist, mis muudaks mitut asja korraga.",
+        "Keset päeva on see plaan juba nii suur, et tavalised kodused asjad tunduvad selle kõrval väikestena — ja ometi on just nemad need, mis homme alles jäävad.",
+        "Õhtul jääb õhku küsimus, kas suur plaan on otsus või soov: üks neist tahab kuupäeva, teine ainult ruumi.",
+        "Suur asi mahub ellu siis, kui ta ei nõua kõike korraga. Ütle täna ühe suure plaani kohta välja, millal ta päriselt algab — või jäta ta teadlikult ootama."
+      ],
+      "plain": {
+        "open": "Kodus on täna ruumi rohkem kui tavaliselt: üks suurem mõte mahub jutte, mida muidu ei alustataks.",
+        "tight": "Suur plaan kipub täna kodu väiksemaks tegema: kõik, mis juba olemas, jääb justkui ootama, kuni suurem asi algab.",
+        "action": "Ütle täna ühe suure plaani kohta välja, millal ta päriselt algab — või jäta ta teadlikult ootama.",
+        "pitfall": "Suur tulevikuplaan neelab kergesti selle, mis on kodus juba olemas: tähelepanu läheb sinna, mis tuleb, mitte sinna, mis on."
+      },
+      "note": "Ringi liigub Jupiter ja teeb vastasseisu: kodu ja suurem tulevik seisavad täna vastamisi — mõlemale jätkub ruumi, kui suurus on välja öeldud."
+    },
+    "mars-sextile-home-family": {
+      "input": {
+        "transitBody": "mars",
+        "aspect": "sextile",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul jääb kodus silma üks väike asi, mis on juba tükk aega pisut häirinud: uks, riiul või asi, mida iga päev mööda lähed.",
+        "Keset päeva tuleb hetk, kus selle asja saaks ära teha — ja just siis tuleb meelde veel kaks asja, mis võiks ka ära teha.",
+        "Õhtul on kaks neist kolmest pooleli ja üks päriselt tehtud: just see üks, millega algas.",
+        "Väike töö lõpeb siis, kui ta jääb väikeseks. Tee täna ära üks kodune parandus, mis võtab vähem kui pool tundi."
+      ],
+      "plain": {
+        "open": "Täna saab kodus ühe väikese asja korda teha: midagi, mis on juba tükk aega pisut häirinud.",
+        "tight": "Jõudu on täna väikeseks tööks, mitte suureks ümberkorralduseks: üks asi korraga ja asi saab tehtud.",
+        "action": "Tee täna ära üks kodune parandus, mis võtab vähem kui pool tundi.",
+        "pitfall": "Väike parandus paisub kergesti suureks projektiks: kui alustad kolme asjaga, ei lõpeta täna ühtegi."
+      },
+      "note": "Ringi liigub Marss ja teeb sekstiili: jõud on täna väikeseks, käeliseks sammuks kodus — mitte suureks ümberehituseks."
+    },
+    "mars-conjunction-body-health": {
+      "input": {
+        "transitBody": "mars",
+        "aspect": "conjunction",
+        "target": "saturn",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommik on tavaline, aga keha ei ole veel päris ärganud. Õlg on pisut jäik, samm lühem kui eile, ja sa teed selle olematuks juba trepist alla minnes.",
+        "Päeval tuleb see tagasi ühes kohas, kus sa ei saa jätkata: seal, kus pead seisma ja ootama. Mitte valu – lihtsalt märk, et keegi on juba tükk aega vaikselt palunud pausi.",
+        "Õhtul, kui päev on läbi, on valik väike ja selge: kas lähed edasi nimekirjaga või annad veerand tundi sellele, mis hoiab sind püsti.",
+        "Jõud ei ole täna kogus, vaid jaotus. Tee üks paus enne, kui tunned, et seda on vaja."
+      ],
+      "plain": {
+        "open": "Keha annab täna märku, mille peale sa tavaliselt ei kuula: väike pinge, mis tahab peatust, mitte plaani.",
+        "tight": "Jõudu on täna palju ja ta otsib väljapääsu: kui päev on ainult nimekiri, leiab ta ise koha, kus end välja elada.",
+        "action": "Tee üks paus enne, kui tunned, et seda on vaja.",
+        "pitfall": "Väike pinge tehakse kergesti olematuks ja järgmine märk tuleb alles siis, kui päev on juba läbi."
+      },
+      "note": "Ringi liigub Marss ja käib üle sinu kaardi: keha jõud on täna nähtav ja otsib sihti — paus enne, mitte pärast, hoiab ta suunatud."
+    },
+    "saturn-opposition-body-health": {
+      "input": {
+        "transitBody": "saturn",
+        "aspect": "opposition",
+        "target": "mars",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommik algab tavaliselt, aga keha ärkab aeglasemalt kui päev: esimene samm on raskem ja sa teed selle endale selgeks juba enne ukse avamist.",
+        "Keset päeva tuleb koht, kus tavaliselt pressid edasi — ja täna on keha juba enne seda otsustanud, et sellest saab piir.",
+        "Õhtul on nimekiri lühem, kui hommikul plaanisid, ja see ei tundu enam kaotusena: just see lühem nimekiri hoidis alles jõu, mida homme uuesti vaja läheb.",
+        "Piir ei ole täna takistus, vaid info selle kohta, kui palju üks päev mahutab. Jäta üks asi teadlikult tegemata."
+      ],
+      "plain": {
+        "open": "Jõud on täna piiratud ja see on informatsioon, mitte takistus: tee üks asi, mitte kolm.",
+        "tight": "Keha ei anna täna rohkem, kui tal on: kui pressid edasi, võtab ta selle tagasi hiljem.",
+        "action": "Jäta üks asi teadlikult tegemata.",
+        "pitfall": "Piiratud jõud tundub täna isikliku puudusena — ja siis tehakse selle peale veel üks asi, et seda mitte tunda."
+      },
+      "note": "Ringi liigub Saturn ja teeb vastasseisu: keha piir seisab täna päevaplaani vastas — piir on informatsioon, mitte karistus."
+    },
+    "neptune-square-body-health": {
+      "input": {
+        "transitBody": "neptune",
+        "aspect": "square",
+        "target": "saturn",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommik algab väikese võlgnevusega: uni jäi lühikeseks ja keha teab seda enne, kui mõte sellest aru saab.",
+        "Keset päeva liigub meeleolu samas taktis kehaga: üks väike takistus võtab rohkem ruumi, kui ta ise on.",
+        "Õhtul on valik lihtne: kas venitad päeva veel natuke või lõpetad ta enne, kui väsimus otsustab sinu eest.",
+        "Uinumine on päeva viimane samm, mitte jäänuk. Pane täna magamaminek kalendrisse, nagu kohtumise."
+      ],
+      "plain": {
+        "open": "Keha ja meeleolu liiguvad täna koos: kui uni jääb lühikeseks, kannab seda terve päev.",
+        "tight": "Päev tahab oma rütmi: kui ta venib üle õhtu, tuleb hommik raskemana, kui keha on valmis kandma.",
+        "action": "Pane täna magamaminek kalendrisse, nagu kohtumise.",
+        "pitfall": "Väsimus otsitakse kergesti süüst väljaspool: veel üks asi, veel üks ekraan — ja magamine jääb viimaseks reale."
+      },
+      "note": "Ringi liigub Neptuun ja teeb ruutu: tunne ja keha liiguvad täna samas rütmis, ja uni on see koht, kus rütm päriselt paika saab."
+    },
+    "venus-trine-body-health": {
+      "input": {
+        "transitBody": "venus",
+        "aspect": "trine",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul on keha tavaline, aga selles on üks väike koht, mis tahaks pisut teistmoodi: soojemat, kergemat või aeglasemat.",
+        "Keset päeva tuleb hetk, kus selle koha peale saaks korraks peatuda — ja just siis tuleb meelde kõik muu, mis veel tegemata.",
+        "Õhtul on see väike hetk jäänud tulemata, kuigi ta oleks mahtunud päeva kahe asja vahele.",
+        "Väike mõnu ei võta päevalt midagi ära, vaid annab sellele teise mõõdu. Pane täna enne õhtut üks väike mõnu kehale kalendrisse."
+      ],
+      "plain": {
+        "open": "Täna on kehal hea hetk väikeseks mõnuks: see, mis teeb oleku kergemaks, ei pea olema suur ega kallis.",
+        "tight": "Mõnu kipub jääma viimaseks asjaks päevas: kui ta sinna jääb, ei jõua ta kunagi.",
+        "action": "Pane täna enne õhtut üks väike mõnu kehale kalendrisse.",
+        "pitfall": "Väike mõnu lükkub kergesti edasi, sest ta tundub liiga väike, et päeva mahtuda — ja nii jääb ta sootuks tulemata."
+      },
+      "note": "Ringi liigub Veenus ja teeb trigooni: keha ja meeled on täna pehmes kooskõlas, kus väike mõnu loeb rohkem kui suur plaan."
+    },
+    "mercury-conjunction-body-health": {
+      "input": {
+        "transitBody": "mercury",
+        "aspect": "conjunction",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul on kehal mitu väikest märki, mida sa tavaliselt ei pane tähele: kuidas sa istud, kus käsi puhkab, kus hingamine jääb lühemaks.",
+        "Keset päeva jääb üks neist märkidest silma ja sa hakkad sellele kohe seletust otsima — nii nagu alati, kui keha midagi ütleb.",
+        "Õhtul on see märk ikka alles, aga ta on nüüd lihtsalt märk: sa tead, kus ta on, ja ei pea talle veel nime panema.",
+        "Nimetamine ei pea olema seletus; mõnikord piisab, kui märk saab koha. Kirjuta täna üles see, mida keha päeva jooksul märkab, ja nimeta üks koht, kus on hea."
+      ],
+      "plain": {
+        "open": "Täna on hea hetk panna sõnadesse see, mida keha juba märkab: kus on pingul ja kus on vaba.",
+        "tight": "Märk jääb täna kergesti märkamata, sest päev räägib kõvemini kui keha.",
+        "action": "Kirjuta täna üles see, mida keha päeva jooksul märkab, ja nimeta üks koht, kus on hea.",
+        "pitfall": "Märkamine muutub kergesti looks: üks väike aisting saab endale põhjuse ja lahenduse, kuigi keegi ei küsinud."
+      },
+      "note": "Ringi liigub Merkuur ja käib üle sinu kaardi: keha märgid ja sõnad jõuavad täna kokku — nimetamine aitab neid enne suuremaks minemist näha."
+    },
+    "neptune-opposition-body-health": {
+      "input": {
+        "transitBody": "neptune",
+        "aspect": "opposition",
+        "target": "moon",
+        "orbDegrees": 2
+      },
+      "story": [
+        "Hommikul on keha nagu pool sammu päevast maas: silmad avanevad aeglaselt ja mõte otsib taga seda, mis eile oli lihtne.",
+        "Keset päeva on üks asi korraga juba palju: sa loed sama lauset kaks korda ja mõtled, kas viga on sinus või päevas.",
+        "Õhtul on udu ikka alles, aga sa oled lõpetanud selle vastu võitlemise: päev on lühem ja kergem, kui ta lubas.",
+        "Udu ei ole viga, vaid ilmateade, millega saab arvestada. Jäta täna üks asi homseks ja ütle seda kellelegi välja."
+      ],
+      "plain": {
+        "open": "Täna on kehal raske päeva tempoga sammu pidada: udu on suurem kui jõud, ja see on päeva info, mitte sinu viga.",
+        "tight": "Selgus tuleb täna hiljem või üldse mitte: kui ootad, et enne tegutsemist saab kõik selgeks, jääb tegemata.",
+        "action": "Jäta täna üks asi homseks ja ütle seda kellelegi välja.",
+        "pitfall": "Udu kipub saama süüks: endale või kellelegi teisele — kuigi keha palub lihtsalt vähem korraga."
+      },
+      "note": "Ringi liigub Neptuun ja teeb vastasseisu: keha ja päeva nõudmised seisavad täna udus vastamisi — vähem korraga on täna rohkem."
+    },
     "any-opposition": {
       "input": {
         "transitBody": "uranus",
@@ -455,6 +707,42 @@
       "status": "provisional"
     },
     "neptune-square-creative": {
+      "status": "provisional"
+    },
+    "mercury-trine-home-family": {
+      "status": "provisional"
+    },
+    "saturn-square-home-family": {
+      "status": "provisional"
+    },
+    "venus-opposition-home-family": {
+      "status": "provisional"
+    },
+    "mercury-sextile-home-family": {
+      "status": "provisional"
+    },
+    "jupiter-opposition-home-family": {
+      "status": "provisional"
+    },
+    "mars-sextile-home-family": {
+      "status": "provisional"
+    },
+    "mars-conjunction-body-health": {
+      "status": "provisional"
+    },
+    "saturn-opposition-body-health": {
+      "status": "provisional"
+    },
+    "neptune-square-body-health": {
+      "status": "provisional"
+    },
+    "venus-trine-body-health": {
+      "status": "provisional"
+    },
+    "mercury-conjunction-body-health": {
+      "status": "provisional"
+    },
+    "neptune-opposition-body-health": {
       "status": "provisional"
     },
     "any-opposition": {

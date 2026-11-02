@@ -5,11 +5,11 @@
  * fixed inputs, so a generator change that alters the voice fails until
  * reviewed."
  *
- * One golden entry per day unit (18 meaning units + the honest quiet
+ * One golden entry per day unit (30 meaning units + the honest quiet
  * unit): the day view strings each unit renders — the tier-2 story (four
  * paragraphs), the tier-1 plain lines, and the astro note — produced
  * from a fixed, synthetic transit input (never the device clock, no
- * ephemeris, no network). Nineteen story texts plus nineteen plain
+ * ephemeris, no network). Thirty-one story texts plus thirty-one plain
  * renderings is the golden set.
  *
  * Every golden entry is anchored to REAL copy that shipped in the app —
@@ -78,6 +78,20 @@ const FIXED_INPUTS: { readonly [id: string]: TransitHit | null } = {
   'uranus-square-work': hitOf('uranus', 'square', 'sun'),
   'pluto-trine-money': hitOf('pluto', 'trine', 'venus'),
   'neptune-square-creative': hitOf('neptune', 'square', 'moon'),
+  // the two domains added after the first four: each fixed input lands the
+  // hit on a natal target that carries the domain but not the older unit
+  'mercury-trine-home-family': hitOf('mercury', 'trine', 'moon'),
+  'saturn-square-home-family': hitOf('saturn', 'square', 'moon'),
+  'venus-opposition-home-family': hitOf('venus', 'opposition', 'saturn'),
+  'mercury-sextile-home-family': hitOf('mercury', 'sextile', 'moon'),
+  'jupiter-opposition-home-family': hitOf('jupiter', 'opposition', 'moon'),
+  'mars-sextile-home-family': hitOf('mars', 'sextile', 'moon'),
+  'mars-conjunction-body-health': hitOf('mars', 'conjunction', 'saturn'),
+  'saturn-opposition-body-health': hitOf('saturn', 'opposition', 'mars'),
+  'neptune-square-body-health': hitOf('neptune', 'square', 'saturn'),
+  'venus-trine-body-health': hitOf('venus', 'trine', 'moon'),
+  'mercury-conjunction-body-health': hitOf('mercury', 'conjunction', 'moon'),
+  'neptune-opposition-body-health': hitOf('neptune', 'opposition', 'moon'),
   // the five shape-generic units: bodies with no specific unit of that shape
   'any-opposition': hitOf('uranus', 'opposition', 'sun'),
   'any-sextile': hitOf('sun', 'sextile', 'sun'),
@@ -171,15 +185,19 @@ function parseGolden(text: string): GoldenDoc {
   return { entries: parsed.entries, approvals: parsed.approvals ?? {} };
 }
 
-/** The approvals the re-pin run must carry over: read from the pinned
- * file, or all-provisional when the file does not exist yet. */
+/** The approvals the re-pin run must carry over: a record already in the
+ * pinned file survives verbatim, units new to the file start provisional,
+ * and a record for a unit that no longer renders is dropped — a re-pin
+ * never approves anything. */
 function currentApprovals(): GoldenApprovals {
-  if (!fs.existsSync(GOLDEN_FILE)) {
-    return Object.fromEntries(
-      UNITS.map((u) => [u.id, { status: 'provisional' }] as const),
-    );
+  const stored = fs.existsSync(GOLDEN_FILE)
+    ? parseGolden(fs.readFileSync(GOLDEN_FILE, 'utf8')).approvals
+    : {};
+  const approvals: GoldenApprovals = {};
+  for (const u of UNITS) {
+    approvals[u.id] = stored[u.id] ?? { status: 'provisional' };
   }
-  return parseGolden(fs.readFileSync(GOLDEN_FILE, 'utf8')).approvals;
+  return approvals;
 }
 
 /** The full golden file: regenerated entries plus the preserved

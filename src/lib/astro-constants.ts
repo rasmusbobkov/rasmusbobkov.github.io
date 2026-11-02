@@ -73,13 +73,27 @@ export const ASPECTS: readonly AspectDef[] = [
 export type HouseNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 /**
- * The four life domains the daily story speaks about. The user picks at
+ * The six life domains the daily story speaks about. The user picks at
  * most three once, in a setup step; the choice steers which meaning unit
- * is chosen for the day. It never changes the chart.
+ * is chosen for the day. It never changes the chart. The first four ids
+ * shipped before the home and body domains and keep their meaning.
  */
-export type FocusArea = 'work' | 'relationships' | 'creative' | 'money';
+export type FocusArea =
+  | 'work'
+  | 'relationships'
+  | 'creative'
+  | 'money'
+  | 'home-family'
+  | 'body-health';
 
-export const FOCUS_AREAS: readonly FocusArea[] = ['work', 'relationships', 'creative', 'money'];
+export const FOCUS_AREAS: readonly FocusArea[] = [
+  'work',
+  'relationships',
+  'creative',
+  'money',
+  'home-family',
+  'body-health',
+];
 
 /** The most focus areas a single setup may select. */
 export const MAX_FOCUS_AREAS = 3;

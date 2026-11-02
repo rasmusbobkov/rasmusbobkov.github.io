@@ -137,6 +137,12 @@ export const BANNED_CLAIMS: readonly BannedPattern[] = [
     re: /(?<![\p{L}\p{N}])soovitame\s+(?:ravi|ravida)(?![\p{L}\p{N}])/iu,
     example: 'Soovitame ravi hoopis homme alustada.',
   },
+  {
+    id: 'claim-diagnosis',
+    why: 'diagnosis language — the body reading notices and names, it never diagnoses',
+    re: /(?<![\p{L}\p{N}])diagnoos[a-zõäöüšž]*(?![\p{L}\p{N}])/iu,
+    example: 'Diagnoosin täna sinu pinge ära.',
+  },
 ];
 
 export const BANNED_ALL: readonly BannedPattern[] = [...BANNED_PROMISE, ...BANNED_CLAIMS];
