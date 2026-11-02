@@ -87,7 +87,8 @@ never counts as done:
    `õnnestub`, `kindlasti`, `garanteeritud`, `paratamatult`,
    `lubame`, and outcome-shaped `saad` …) plus money/health claim
    patterns (`raha tuleb sinuni`, `haigus taandub`, `paraned`,
-   `tervendad`, `soovitame ravi` …). Every regex is Unicode-boundary
+   `tervendad`, `soovitame ravi`, `diagnoosin` …): the body reading
+   notices and names, it never diagnoses. Every regex is Unicode-boundary
    wrapped (`(?<![\p{L}\p{N}])…(?![\p{L}\p{N}])`), because plain `\b`
    breaks on Estonian vowels — the array module's own comment already
    said so. Composition beats stems: `saad aru`, `ei õnnestunud`,
@@ -115,8 +116,8 @@ never counts as done:
    touch-ups — the reviewed corpus spans 8–45 words, 19–83 syllables).
 
 **Goldens** (`tests/golden/day-readings.json`,
-`tests/content-golden.test.ts`): nineteen pinned day readings —
-18 meaning units + the quiet unit — each snapshotting the unit's full
+`tests/content-golden.test.ts`): thirty-one pinned day readings —
+30 meaning units + the quiet unit — each snapshotting the unit's full
 day-view copy (story paragraphs, plain-tier lines, astro note) from a
 fixed synthetic transit input (no clock, no ephemeris, no network), so
 unit-selection changes fail the pin before the voice can. Every entry
@@ -208,11 +209,13 @@ cross-check) read from the transit side at the same 0.01° tolerance.
 
 **Meaning layer** (`src/lib/meaning.ts`): a single typed unit per transit
 shape keyed by transiting body, aspect and the life domains it speaks
-into. The archetype space is the finite `MEANING_UNITS` table (18 entries:
-Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus five
-tone-generic units, one per aspect kind, which describe the shape itself
-without inventing specifics) plus the explicit `TARGET_FOCUS` map from
-natal target to domains. Selection prefers a hit whose target domain
+into. The archetype space is the finite `MEANING_UNITS` table (30 entries:
+Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus
+five tone-generic units, one per aspect kind, which describe the shape
+itself without inventing specifics) plus the explicit `TARGET_FOCUS` map
+from natal target to domains. Home and body are reached the same way as
+the original four: through which natal target the shape touches, never
+through a new transiting body. Selection prefers a hit whose target domain
 intersects the user's chosen areas and ranks those by tightest orb, so a
 day that touches a chosen area always speaks to it; only when no in-orb
 hit touches a chosen area does the global tightest hit carry the day, and
@@ -234,8 +237,12 @@ action/pitfall/astroNote. No outcomes are promised — only tendencies and
 choices; the daily action is always concrete (mine, don't go, say, don't
 say, wait).
 
-**Focus setup**: first shown once, four choices (work, relationships,
-creative, money), at most three, skippable — but directly reopenable from
+**Focus setup**: first shown once, six choices (work, relationships,
+creative, money, home and family, body and health) as one two-column
+grid, each card carrying a one-line hint of what the area covers
+(`focus.<area>.hint` in the catalogue) so home stays distinct from
+relationships and body from work at a glance; at most three,
+skippable — but directly reopenable from
 the chart view ("Fookus"), so neither a saved nor a skipped choice locks
 the setup away. When the day's chosen hit touches none of the chosen
 domains, the reading says so plainly instead of inventing relevance.
@@ -253,7 +260,7 @@ quiet day the same control reports
 honestly: nothing is in orb, what was checked, and the nearest miss with
 its distance from the orb window.
 
-Trade-off: with 18 units, most days resolve to a transit-specific story,
+Trade-off: with 30 units, most days resolve to a transit-specific story,
 and the five shape-generic units carry the rare shapes without one (a
 focus-mismatched specific unit gets its aspect's generic story, so focus
 steering stays on the specific units); only an empty sky reads as a quiet

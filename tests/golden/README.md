@@ -1,7 +1,7 @@
 # Golden copy set — the pinned voice
 
 `tests/golden/day-readings.json` pins the day-view copy: one entry per
-day unit (the 18 transit-shape meaning units plus the honest quiet
+day unit (the 30 transit-shape meaning units plus the honest quiet
 unit). Each entry snapshots the strings the app renders for that unit's
 **fixed input** — a synthetic transit hit defined in
 `tests/content-golden.test.ts` (never the device clock, no ephemeris,

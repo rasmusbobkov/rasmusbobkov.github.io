@@ -9,11 +9,12 @@
  *    same unit (never a separate content set);
  *  - focus storage round-trip and validation.
  */
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { MEANING_UNITS, QUIET_UNIT, hitMissesFocus, selectDayReading, type DayUnit } from '../src/lib/meaning';
-import type { AspectKind, FocusArea } from '../src/lib/astro-constants';
+import { FOCUS_AREAS, type AspectKind, type FocusArea } from '../src/lib/astro-constants';
 import type { AspectParticipant, TransitBody, TransitHit } from '../src/lib/transits';
-import { validateStoredFocus } from '../src/lib/storage';
+import { FOCUS_STORAGE_KEY, loadStoredFocus, saveStoredFocus, validateStoredFocus } from '../src/lib/storage';
+import { rawMessages } from '../src/messages/catalogue';
 
 // a hit factory without ephemeris values: selection never reads longitudes
 function hit(transitBody: TransitBody, aspect: AspectKind, target: AspectParticipant, orb = 2): TransitHit {
@@ -31,12 +32,37 @@ function hit(transitBody: TransitBody, aspect: AspectKind, target: AspectPartici
 
 // ——— content structure ———
 
-test('the meaning table has at least twelve units covering all four focus areas', () => {
-  expect(MEANING_UNITS.length).toBeGreaterThanOrEqual(12);
-  const touches = new Set<FocusArea>();
-  for (const u of MEANING_UNITS) for (const f of u.focus) touches.add(f);
-  for (const f of ['work', 'relationships', 'creative', 'money'] as const) {
-    expect(touches.has(f), `coverage of ${f}`).toBe(true);
+const PINNED_AREAS = [
+  'work',
+  'relationships',
+  'creative',
+  'money',
+  'home-family',
+  'body-health',
+] as const satisfies readonly FocusArea[];
+
+test('the meaning table pins all six focus areas and ships both new domains at depth', () => {
+  expect(FOCUS_AREAS).toEqual(PINNED_AREAS);
+  expect(MEANING_UNITS.length).toBeGreaterThanOrEqual(30);
+  const counts = new Map<FocusArea, number>();
+  for (const u of MEANING_UNITS) {
+    for (const f of u.focus) counts.set(f, (counts.get(f) ?? 0) + 1);
+  }
+  for (const area of PINNED_AREAS) {
+    expect(counts.get(area) ?? 0, `coverage of ${area}`).toBeGreaterThanOrEqual(1);
+  }
+  // the two domains added in this slice ship at the same depth as the
+  // longest-served originals: at least six units each
+  for (const area of ['home-family', 'body-health'] as const) {
+    expect(counts.get(area) ?? 0, `depth of ${area}`).toBeGreaterThanOrEqual(6);
+  }
+});
+
+test('every focus area has a setup label and hint in the catalogue', () => {
+  const catalogue = rawMessages.et as Record<string, string>;
+  for (const area of FOCUS_AREAS) {
+    expect(catalogue[`focus.${area}`], `label for ${area}`).toBeTruthy();
+    expect(catalogue[`focus.${area}.hint`], `hint for ${area}`).toBeTruthy();
   }
 });
 
@@ -161,6 +187,23 @@ test('the focus selection steers which unit is chosen', () => {
   expect(r.unit!.id).toBe('venus-sextile-relationships');
 });
 
+test('home-family and body-health steer selection like the original four', () => {
+  const home = selectDayReading([hit('mercury', 'trine', 'moon', 1)], ['home-family']);
+  expect(home.unit!.id).toBe('mercury-trine-home-family');
+  expect(home.unit!.focus).toContain('home-family');
+
+  const body = selectDayReading([hit('mercury', 'conjunction', 'moon', 1)], ['body-health']);
+  expect(body.unit!.id).toBe('mercury-conjunction-body-health');
+  expect(body.unit!.focus).toContain('body-health');
+});
+
+test('a home unit does not win when only body-health is chosen', () => {
+  // saturn square to a natal moon carries both home and body readings, but
+  // the chosen body domain must not silently receive the home story
+  const r = selectDayReading([hit('saturn', 'square', 'moon', 1)], ['body-health']);
+  expect(r.unit!.id).toBe('any-square');
+});
+
 test('units bound to a focus area the user did not choose do not win', () => {
   // saturn conjunction to a natal sun serves work only; a user focused on
   // money must not get the work story — the shape-generic unit carries
@@ -225,4 +268,35 @@ test('focus storage validates, deduplicates and caps at three', () => {
   expect(validateStoredFocus({ schemaVersion: 1, areas: ['work'], skipped: true })).toBeNull();
   expect(validateStoredFocus({ schemaVersion: 1, areas: ['nope'], skipped: false })).toBeNull();
   expect(validateStoredFocus({ schemaVersion: 2, areas: [], skipped: true })).toBeNull();
+});
+
+test('focus storage round-trips both new ids and keeps pre-change records valid', () => {
+  const memory = new Map<string, string>();
+  vi.stubGlobal('localStorage', {
+    getItem: (key: string) => memory.get(key) ?? null,
+    setItem: (key: string, value: string) => { memory.set(key, value); },
+    removeItem: (key: string) => { memory.delete(key); },
+  });
+  try {
+    saveStoredFocus({ schemaVersion: 1, areas: ['home-family', 'body-health'], skipped: false });
+    expect(loadStoredFocus()).toEqual({
+      schemaVersion: 1,
+      areas: ['home-family', 'body-health'],
+      skipped: false,
+    });
+
+    // a record written before the two new areas existed still validates
+    memory.set(FOCUS_STORAGE_KEY, JSON.stringify({
+      schemaVersion: 1,
+      areas: ['work', 'relationships'],
+      skipped: false,
+    }));
+    expect(loadStoredFocus()).toEqual({
+      schemaVersion: 1,
+      areas: ['work', 'relationships'],
+      skipped: false,
+    });
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });
