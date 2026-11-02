@@ -1,3 +1,9 @@
+## Naming
+
+`firstmate_astro` is an Estonian-first astrology app built with the Astro web
+framework; "astro" in tool names, scripts and the docs below means the framework,
+not the product domain.
+
 ## Development
 
 When starting the dev server, use background mode:
