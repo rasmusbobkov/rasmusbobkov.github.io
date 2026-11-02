@@ -104,8 +104,9 @@ never counts as done:
    house or aspect name — now also their everyday synonyms
    (`taevakeha`, `tähtkuju`, `horoskoop`, `sodiaak`) and the
    grade-inflected stems (`ruud`) the pure stem list missed.
-   Tier-1 names aspects only in the approved terms
-   (konjunktsioon, sekstiil, ruut, trigoon, vastasseis) and rejects
+   The unit's non-story fields (`open`, `tight`, `action`, `pitfall`,
+   plus the reveal-only `astroNote`) name aspects only in the approved
+   terms (konjunktsioon, sekstiil, ruut, trigoon, vastasseis) and reject
    kvadratuur, kvadraat and opositsioon; the catalogue's own
    `aspect.*` messages are pinned to those terms.
 4. **Length/readability.** Stated bounds per story paragraph: 7–50
@@ -185,11 +186,13 @@ the wheel path alongside clamping, keyboard movement and two-way sync.
 
 The app's meaning is reversed here: the chart wheel is no longer the entry
 point. The daily story is the landing surface; the wheel is the depth layer
-reachable underneath it. One day, one transit, three readings: the story
-tier (four paragraphs — situation, turn, climax, meaning — with no planet, sign,
-house or aspect ever named), the plain tier (the same unit with the astro
-line, what is open, what is tight, the action, the pitfall), and the chart
-itself. Both tiers read the same typed meaning unit, so they cannot drift.
+reachable underneath it. One day, one transit, four screens: the plain tier
+("Täna": what is open, what is tight, the action in its own emphasis box and
+the pitfall, with no astrology at all), the story tier ("Lugu": the same
+unit's four paragraphs — situation, turn, climax, meaning — with no planet,
+sign, house or aspect ever named), the "Miks see?" reveal (the only surface
+that names the real transit) and the one-time focus setup. Both tiers read
+the same typed meaning unit, so they cannot drift.
 
 **Transit engine** (`src/lib/transits.ts`): geocentric ecliptic longitudes
 of Sun…Pluto plus the mean node — the Moon is deliberately not a transiting
@@ -209,10 +212,14 @@ into. The archetype space is the finite `MEANING_UNITS` table (18 entries:
 Saturn/Jupiter/Mars/Venus/Mercury/Uranus/Pluto/Neptune shapes plus five
 tone-generic units, one per aspect kind, which describe the shape itself
 without inventing specifics) plus the explicit `TARGET_FOCUS` map from
-natal target to domains. Selection ranks hits by tightest orb, requires a
-unit whose focus intersects the target's domains intersected with the
-user's chosen areas (skipping the setup steers nothing), prefers exact-body
-over generic, and reads the day one of three ways, each saying something
+natal target to domains. Selection prefers a hit whose target domain
+intersects the user's chosen areas and ranks those by tightest orb, so a
+day that touches a chosen area always speaks to it; only when no in-orb
+hit touches a chosen area does the global tightest hit carry the day, and
+the focus line then says so plainly. A unit's focus must intersect the
+target's domains intersected with the chosen areas, or be domain-free
+(skipping the setup steers nothing), exact-body beats generic, and the day
+reads one of three ways, each saying something
 true: a hit with a unit renders today; an in-orb hit whose shape has no
 unit yet says plainly that the story for that shape is not written (the
 "Miks see?" panel still names the transit, the orb and the natal target,
@@ -230,15 +237,19 @@ say, wait).
 **Focus setup**: first shown once, four choices (work, relationships,
 creative, money), at most three, skippable — but directly reopenable from
 the chart view ("Fookus"), so neither a saved nor a skipped choice locks
-the setup away. Stored beside the birth record under its
+the setup away. When the day's chosen hit touches none of the chosen
+domains, the reading says so plainly instead of inventing relevance.
+Stored beside the birth record under its
 own versioned key `firstmate-astro.focus.v1` — the birth record's
 export/import format stays untouched, so no migration exists. Reset clears
 both records.
 
 **"Miks see?" reveal**: one button under either tier opens the transit
-(body, its sign and degree), the aspect with its orb, the natal placement
-it touches (sign, degree, house when known) and the unit's plain sentence
-about what the aspect does. On a quiet day the same control reports
+(body, its sign and degree), the aspect with its orb, the natal placement it
+touches (sign, degree, house when known), the unit's
+plain-language astroNote and, in one short block, the matching aspect and
+house meanings. A small dial places the two points against each other. On a
+quiet day the same control reports
 honestly: nothing is in orb, what was checked, and the nearest miss with
 its distance from the orb window.
 

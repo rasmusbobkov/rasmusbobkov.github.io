@@ -46,6 +46,6 @@ as the basis.
 `tests/content-gate.test.ts` runs the mechanical voice rules over the
 same corpus: banned promise/certainty/money/health vocabulary, story
 shape (four paragraphs, imperative close, per-paragraph word and
-syllable bounds), tier-2 astrological containment, and tier-1 approved
-aspect terms. The goldens pin the exact wording; the gate pins the
-rules the wording must obey.
+syllable bounds), tier-2 astrological containment, and the approved
+aspect terms in the unit's non-story fields. The goldens pin the exact
+wording; the gate pins the rules the wording must obey.

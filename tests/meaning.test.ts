@@ -10,7 +10,7 @@
  *  - focus storage round-trip and validation.
  */
 import { describe, expect, test } from 'vitest';
-import { MEANING_UNITS, QUIET_UNIT, selectDayReading, type DayUnit } from '../src/lib/meaning';
+import { MEANING_UNITS, QUIET_UNIT, hitMissesFocus, selectDayReading, type DayUnit } from '../src/lib/meaning';
 import type { AspectKind, FocusArea } from '../src/lib/astro-constants';
 import type { AspectParticipant, TransitBody, TransitHit } from '../src/lib/transits';
 import { validateStoredFocus } from '../src/lib/storage';
@@ -174,6 +174,38 @@ test('skipping the setup steers nothing: empty focus accepts any domain', () => 
   const r = selectDayReading([hit('saturn', 'conjunction', 'mc', 1)], []);
   expect(r.quiet).toBe(false);
   expect(r.unit!.id).toBe('saturn-conjunction-work');
+});
+
+test('a hit outside every chosen focus area is reported as outside focus', () => {
+  // saturn to the natal sun speaks work only; a money-focused reader must
+  // be told the day is not about their choice instead of sold the work story
+  const h = hit('saturn', 'conjunction', 'sun');
+  expect(hitMissesFocus(h, ['money'])).toBe(true);
+  expect(hitMissesFocus(h, ['work'])).toBe(false);
+  expect(hitMissesFocus(h, ['money', 'work'])).toBe(false);
+});
+
+test('skipping the setup never reports a day outside focus', () => {
+  expect(hitMissesFocus(hit('saturn', 'square', 'sun'), [])).toBe(false);
+});
+
+test('an in-focus hit wins even when a tighter hit misses the chosen area', () => {
+  // the shipped promise is that a day touching a chosen area speaks to it,
+  // so the tighter saturn square (work only) must not swallow the day when
+  // a looser venus sextile carries the reader's relationships focus
+  const hits = [hit('saturn', 'square', 'sun', 1), hit('venus', 'sextile', 'moon', 2)];
+  const r = selectDayReading(hits, ['relationships']);
+  expect(r.unit!.id).toBe('venus-sextile-relationships');
+  expect(r.hit!.transitBody).toBe('venus');
+  expect(hitMissesFocus(r.hit!, ['relationships'])).toBe(false);
+});
+
+test('no in-focus hit in orb: the tightest global hit carries the out-of-focus day', () => {
+  const hits = [hit('saturn', 'square', 'sun', 1), hit('venus', 'sextile', 'moon', 2)];
+  const r = selectDayReading(hits, ['money']);
+  expect(r.hit!.transitBody).toBe('saturn');
+  expect(r.unit!.id).toBe('any-square');
+  expect(hitMissesFocus(r.hit!, ['money'])).toBe(true);
 });
 
 test('the same sky always picks the same story (deterministic)', () => {

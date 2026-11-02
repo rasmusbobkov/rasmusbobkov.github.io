@@ -60,43 +60,50 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
       </section>
 
       <!-- one-time focus setup (before the first daily story) -->
-      <section id="focus-setup" hidden class="card focus-card">
-        <h2 data-i18n="focus.heading">{tx('focus.heading')}</h2>
+      <section id="focus-setup" hidden class="focus-card" aria-labelledby="focus-heading">
+        <p class="day-date" data-i18n="focus.eyebrow">{tx('focus.eyebrow')}</p>
+        <h2 id="focus-heading" class="day-title" data-i18n="focus.heading">{tx('focus.heading')}</h2>
         <p class="note" data-i18n="focus.lede">{tx('focus.lede')}</p>
-        <div class="focus-grid">
-          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="work" /><span data-i18n="focus.work">{tx('focus.work')}</span></label>
-          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="relationships" /><span data-i18n="focus.relationships">{tx('focus.relationships')}</span></label>
-          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="creative" /><span data-i18n="focus.creative">{tx('focus.creative')}</span></label>
-          <label class="checkbox-row"><input type="checkbox" class="focus-option" value="money" /><span data-i18n="focus.money">{tx('focus.money')}</span></label>
+        <div class="focus-chips" role="group" aria-labelledby="focus-heading">
+          <label class="focus-chip"><input type="checkbox" class="focus-option" value="work" /><span data-i18n="focus.work">{tx('focus.work')}</span></label>
+          <label class="focus-chip"><input type="checkbox" class="focus-option" value="relationships" /><span data-i18n="focus.relationships">{tx('focus.relationships')}</span></label>
+          <label class="focus-chip"><input type="checkbox" class="focus-option" value="creative" /><span data-i18n="focus.creative">{tx('focus.creative')}</span></label>
+          <label class="focus-chip"><input type="checkbox" class="focus-option" value="money" /><span data-i18n="focus.money">{tx('focus.money')}</span></label>
         </div>
         <p id="focus-note" class="error-line" role="alert"></p>
+        <div class="day-block focus-how">
+          <h4 class="day-label" data-i18n="focus.howHeading">{tx('focus.howHeading')}</h4>
+          <p class="day-text" data-i18n="focus.how">{tx('focus.how')}</p>
+        </div>
+        <p class="note focus-storage" data-i18n="focus.storage">{tx('focus.storage')}</p>
         <div class="focus-actions">
           <button id="focus-save" type="button" class="primary" data-i18n="focus.save">{tx('focus.save')}</button>
-          <button id="focus-skip" type="button" class="chip" data-i18n="focus.skip">{tx('focus.skip')}</button>
+          <button id="focus-skip" type="button" class="ghost" data-i18n="focus.skip">{tx('focus.skip')}</button>
         </div>
       </section>
 
       <!-- daily story: the landing surface -->
-      <section id="story-view" hidden>
-        <div class="chart-head">
-          <h2 data-i18n="story.heading">{tx('story.heading')}</h2>
-          <p class="story-date">
+      <section id="story-view" hidden class="story-view">
+        <div class="story-head">
+          <p class="day-date">
             <span id="story-date-text"></span>
             <span id="story-asof" class="note"></span>
           </p>
+          <h2 id="story-title" class="day-title" data-i18n="story.heading">{tx('story.heading')}</h2>
           <div class="tier-switch" role="group" aria-label={tx('story.tierSwitch')}>
-            <button id="tier-story" class="chip" data-i18n="story.tierStory">{tx('story.tierStory')}</button>
-            <button id="tier-plain" class="chip" data-i18n="story.tierPlain">{tx('story.tierPlain')}</button>
+            <button id="tier-plain" class="chip" aria-pressed="true" data-i18n="story.tierPlain">{tx('story.tierPlain')}</button>
+            <button id="tier-story" class="chip" aria-pressed="false" data-i18n="story.tierStory">{tx('story.tierStory')}</button>
           </div>
         </div>
-        <div id="story-content" class="card story-card" aria-live="polite">
+        <div id="story-content" class="story-body" aria-live="polite">
           <p id="story-loading" class="note" data-i18n="story.loading">{tx('story.loading')}</p>
         </div>
+        <p id="story-focus-note" class="story-focus-note" aria-live="polite" hidden></p>
         <div class="story-actions">
-          <button id="story-why" class="chip" data-i18n="story.why">{tx('story.why')}</button>
-          <button id="open-chart" class="chip" data-i18n="story.openChart">{tx('story.openChart')}</button>
+          <button id="story-why" class="ghost" aria-expanded="false" aria-controls="story-why-panel" data-i18n="story.why">{tx('story.why')}</button>
+          <button id="open-chart" class="ghost" data-i18n="story.openChart">{tx('story.openChart')}</button>
         </div>
-        <div id="story-why-panel" class="card why-panel" hidden></div>
+        <div id="story-why-panel" class="why-sheet" hidden></div>
       </section>
 
       <!-- birth entry -->
@@ -338,17 +345,32 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
 <style>
   .site-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px 8px; }
-  .story-date { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex-wrap: wrap; }
-  .story-date #story-date-text { font-family: var(--display); font-style: italic; color: var(--gold); font-size: 17px; }
-  .tier-switch { display: flex; gap: 8px; margin-top: 10px; }
-  .tier-switch .chip[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); }
-  .story-card { max-width: 640px; }
-  .story-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-  .why-panel { max-width: 640px; margin-top: 14px; }
-  .why-panel h3 { margin-bottom: 10px; }
-  .focus-card { max-width: 560px; margin: 0 auto; }
-  .focus-grid { display: grid; gap: 10px; margin-top: 16px; }
-  .focus-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .story-view, .focus-card { max-width: 440px; margin: 0 auto; background: var(--ink-2); border: 1px solid var(--line); border-radius: 24px; padding: 24px 22px 26px; }
+  .story-head { min-width: 0; }
+  .tier-switch { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; margin-top: 4px; }
+  .tier-switch .chip { border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-family: var(--body); font-size: 12.5px; letter-spacing: .01em; padding: 5px 15px; }
+  .tier-switch .chip[aria-pressed="true"] { background: var(--gold-dim); color: var(--paper); }
+  .story-actions { display: flex; gap: 8px; margin-top: 18px; }
+  .story-actions .ghost { flex: 1 1 0; }
+  .story-focus-note { margin: 16px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--faint); }
+  .why-sheet { margin-top: 16px; background: var(--ink-3); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+  .focus-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .focus-chip { position: relative; display: inline-flex; margin: 0; }
+  .focus-chip input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .focus-chip span { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-family: var(--body); font-size: 13px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+  .focus-chip input:checked + span { border-color: rgba(198, 161, 95, .55); background: var(--gold-dim); color: var(--paper); }
+  .focus-chip input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .focus-how { margin-top: 20px; }
+  .focus-how .day-text { color: var(--muted); font-size: 13.5px; }
+  .focus-storage { margin-top: 14px; }
+  .focus-actions { display: flex; gap: 8px; margin-top: 18px; }
+  .focus-actions .primary { flex: 1.4; }
+  .focus-actions .ghost { flex: 1; }
+  button.ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); border-radius: 10px; padding: 10px 16px; font-size: 13px; }
+  button.ghost:hover { color: var(--paper); border-color: rgba(198, 161, 95, .55); }
+  @media (max-width: 480px) {
+    .story-view, .focus-card { border-radius: 20px; padding: 20px 18px 22px; }
+  }
   .mark { display: flex; align-items: center; gap: 12px; }
   .mark-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 22px 4px rgba(198, 161, 95, .45); }
   .mark-name { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--faint); }
@@ -382,6 +404,7 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
   .lists li:last-child { border-bottom: 0; }
   .data-panel { display: grid; gap: 14px; }
   @media (min-width: 880px) { .data-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .glossary { max-width: 440px; margin-left: auto; margin-right: auto; }
   .glossary dl { margin: 14px 0 0; display: grid; gap: 8px 18px; }
   @media (min-width: 700px) { .glossary dl { grid-template-columns: max-content minmax(0, 1fr); } }
   .glossary dt { font-family: var(--display); font-style: italic; color: var(--gold); }

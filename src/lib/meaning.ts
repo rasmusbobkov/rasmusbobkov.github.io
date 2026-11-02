@@ -8,10 +8,10 @@
  * One unit carries: what today is open for, what is tight, one concrete
  * action, where this tends to go wrong, the astrology behind it, and the
  * four-part story (situation, turn, climax, meaning) whose final paragraph
- * is the action. Tier 1 (plain) renders the astro-free fields with the
- * astro line composed at render time from the real transit hit; tier 2
- * (story) renders only the four paragraphs. Because both read the same
- * unit, the tiers cannot drift apart.
+ * is the action. Tier 1 (plain) renders only the astro-free fields; the
+ * "Miks see?" reveal names the real transit hit and carries the astroNote.
+ * Tier 2 (story) renders only the four paragraphs. Because both read the
+ * same unit, the tiers cannot drift apart.
  *
  * Content rules: no results are promised — not profit, not health, not
  * luck — only tendencies and choices. The story paragraphs contain no
@@ -453,6 +453,21 @@ export function unitForHit(
   return matched[0]!;
 }
 
+/**
+ * Whether the day's transit lands outside every focus area the reader
+ * chose. Stored per unit rather than derived from the chosen unit's domain:
+ * a generic unit can be shown without implying it belongs to the chosen
+ * area. With no focus (setup skipped) nothing is steered, so nothing is
+ * outside. The app says this plainly instead of selling relevance.
+ */
+export function hitMissesFocus(
+  hit: TransitHit,
+  focusAreas: readonly FocusArea[],
+): boolean {
+  if (focusAreas.length === 0) return false;
+  return !TARGET_FOCUS[hit.target].some((f) => focusAreas.includes(f));
+}
+
 /** Tightest orb first; ties break in the fixed transit-body order, so the
  * same sky always picks the same story. */
 function compareHits(a: TransitHit, b: TransitHit): number {
@@ -461,17 +476,28 @@ function compareHits(a: TransitHit, b: TransitHit): number {
 }
 
 /**
- * The day's single reading: ranked hits, first one with a matching unit
- * wins; a hit with no unit at all says only that the story for this shape
- * is not written yet; the quiet unit is reserved for a genuinely empty
- * sky — never for a hit that is in orb. "Mitte iga päev ei ole draama."
+ * The day's single reading: hits that touch a chosen focus area are read
+ * before hits that miss them, tightest orb first inside each group, so the
+ * shipped promise — the day speaks to the chosen areas whenever the sky
+ * touches one — holds even when a tighter transit sits outside them. Only
+ * when no in-orb hit touches a chosen area does the global tightest hit
+ * carry the day, and the focus line says so. A hit with no unit at all
+ * says only that the story for this shape is not written yet; the quiet
+ * unit is reserved for a genuinely empty sky — never for a hit that is in
+ * orb. "Mitte iga päev ei ole draama."
  */
 export function selectDayReading(
   hits: readonly TransitHit[],
   focusAreas: readonly FocusArea[],
 ): DayReading {
   const ranked = [...hits].sort(compareHits);
-  for (const hit of ranked) {
+  const order = focusAreas.length > 0
+    ? [
+        ...ranked.filter((h) => !hitMissesFocus(h, focusAreas)),
+        ...ranked.filter((h) => hitMissesFocus(h, focusAreas)),
+      ]
+    : ranked;
+  for (const hit of order) {
     const unit = unitForHit(hit, focusAreas);
     if (unit) return { unit, hit, quiet: false };
   }

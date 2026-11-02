@@ -8,7 +8,7 @@ import { SIGNS, MAX_FOCUS_AREAS, FOCUS_AREAS, type BodyId, type FocusArea } from
 import { computeChart, norm360, type Chart } from '../lib/chart';
 import { currentTransitReading, nearestMiss, natalAspectTargets, type AspectInput, type TransitPosition } from '../lib/transits';
 import {
-  selectDayReading, type DayReading,
+  selectDayReading, hitMissesFocus, type DayReading,
 } from '../lib/meaning';
 import { type BirthParts } from '../lib/birth-wheels';
 import { parseDateEt, parseDatePartsEt, parseTimeEt, resolveInstant, type BirthInput, type BirthInstant } from '../lib/time';
@@ -39,7 +39,7 @@ let selected: Selection | null = null;
 
 // ——— daily story state ———
 let focusAreas: FocusArea[] = [];
-let tier: 'story' | 'plain' = 'story';
+let tier: 'story' | 'plain' = 'plain';
 let dayReading: DayReading | null = null;
 let dayKey = '';
 let dayTime = '';
@@ -142,7 +142,10 @@ function setLang(next: Lang): void {
     renderWhyPanel();
   } else if (storyFailed) {
     renderStoryFailure();
+  } else {
+    paintStoryHead();
   }
+  paintWhyToggle();
 }
 
 // ——— birth form ———
@@ -722,7 +725,11 @@ function wireStoryControls(): void {
     if (!panel) return;
     const opening = panel.hidden;
     panel.hidden = !opening;
-    if (opening) renderWhyPanel();
+    if (opening) {
+      renderWhyPanel();
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    paintWhyToggle();
   });
   document.getElementById('open-chart')?.addEventListener('click', () => {
     setView('chart-view', true);
@@ -739,6 +746,16 @@ function paintTierSwitch(): void {
     const btn = document.getElementById(id) as HTMLButtonElement | null;
     if (btn) btn.setAttribute('aria-pressed', String(btn.id === `tier-${tier}`));
   }
+}
+
+/** One control for both states: it asks the question while the sheet is
+ * closed and offers the way back while it is open. */
+function paintWhyToggle(): void {
+  const btn = document.getElementById('story-why');
+  const panel = document.getElementById('story-why-panel');
+  if (!btn || !panel) return;
+  btn.textContent = t(lang, panel.hidden ? 'story.why' : 'story.whyClose');
+  btn.setAttribute('aria-expanded', String(!panel.hidden));
 }
 
 async function enterStory(): Promise<void> {
@@ -778,11 +795,12 @@ async function enterStory(): Promise<void> {
 }
 
 /** One failure surface, re-derived at render time so a language switch
- * after a failed recompute re-localizes it: the day heading is cleared and
- * the failure note replaces any story content. */
+ * after a failed recompute re-localizes it: the heading follows the active
+ * tier and the failure note replaces any story content. */
 function renderStoryFailure(): void {
   dayKey = '';
   dayTime = '';
+  paintStoryHead();
   const dateEl = document.getElementById('story-date-text');
   if (dateEl) dateEl.textContent = '';
   const asofEl = document.getElementById('story-asof');
@@ -797,6 +815,7 @@ function renderStoryFailure(): void {
   }
   const panel = document.getElementById('story-why-panel');
   if (panel && !panel.hidden) renderWhyPanel();
+  paintWhyToggle();
 }
 
 function storyParagraphsFrom(unit: NonNullable<DayReading['unit']>): HTMLParagraphElement[] {
@@ -815,22 +834,49 @@ function storyParagraphsFrom(unit: NonNullable<DayReading['unit']>): HTMLParagra
   return ps;
 }
 
-function labelLine(labelKey: MessageKey, text: string, cls?: string): HTMLParagraphElement {
-  const p = document.createElement('p');
-  if (cls) p.className = cls;
-  const label = document.createElement('span');
-  label.className = 'story-line-label';
+function dayBlock(labelKey: MessageKey, text: string): HTMLDivElement {
+  const block = document.createElement('div');
+  block.className = 'day-block';
+  const label = document.createElement('h4');
+  label.className = 'day-label';
   label.textContent = t(lang, labelKey);
-  p.appendChild(label);
-  p.appendChild(document.createTextNode(text));
-  return p;
+  block.appendChild(label);
+  const p = document.createElement('p');
+  p.className = 'day-text';
+  p.textContent = text;
+  block.appendChild(p);
+  return block;
 }
 
-function astroLineText(hit: NonNullable<DayReading['hit']>): string {
-  return `${participantName(hit.transitBody)} ${t(lang, ('aspect.' + hit.aspect) as MessageKey)} ${participantName(hit.target)} · ${t(lang, 'story.why.orb')} ${fmtDeg(hit.orbDegrees)}`;
+/** The day's one action gets the mock's emphasis box, kicker inside it. */
+function actionBlock(text: string): HTMLDivElement {
+  const act = document.createElement('div');
+  act.className = 'day-act';
+  const label = document.createElement('h4');
+  label.className = 'day-label';
+  label.textContent = t(lang, 'story.plain.action');
+  act.appendChild(label);
+  const p = document.createElement('p');
+  p.textContent = text;
+  act.appendChild(p);
+  return act;
+}
+
+/** Heading, tier and the honest focus line share one render path so a
+ * language switch or a tier toggle cannot leave stale text behind. */
+function paintStoryHead(): void {
+  const titleEl = document.getElementById('story-title');
+  if (titleEl) titleEl.textContent = t(lang, tier === 'story' ? 'story.tierStory' : 'story.heading');
+  const noteEl = document.getElementById('story-focus-note');
+  if (!noteEl) return;
+  const misses = dayReading !== null && !dayReading.quiet && hitMissesFocus(dayReading.hit, focusAreas);
+  noteEl.hidden = !misses;
+  noteEl.textContent = misses ? t(lang, 'story.focus.none') : '';
 }
 
 function renderStory(): void {
+  paintStoryHead();
+
   const c = document.getElementById('story-content');
   if (!c || !dayReading) return;
 
@@ -852,11 +898,17 @@ function renderStory(): void {
     const explain = document.createElement('p');
     explain.textContent = t(lang, 'story.quiet.explain');
     c.appendChild(explain);
-    const copy = document.createElement('div');
-    copy.className = 'story-copy';
-    copy.style.marginTop = '14px';
-    for (const p of storyParagraphsFrom(dayReading.unit)) copy.appendChild(p);
-    c.appendChild(copy);
+    if (tier === 'story') {
+      const copy = document.createElement('div');
+      copy.className = 'story-copy';
+      copy.style.marginTop = '14px';
+      for (const p of storyParagraphsFrom(dayReading.unit)) copy.appendChild(p);
+      c.appendChild(copy);
+    } else {
+      const action = actionBlock(dayReading.unit.action);
+      action.classList.add('quiet-action');
+      c.appendChild(action);
+    }
     return;
   }
 
@@ -873,7 +925,6 @@ function renderStory(): void {
     return;
   }
 
-  const hit = dayReading.hit;
   if (tier === 'story') {
     const copy = document.createElement('div');
     copy.className = 'story-copy';
@@ -882,25 +933,68 @@ function renderStory(): void {
     return;
   }
 
-  // plain: the same unit, astro visible — line, then open / tight / action / pitfall
-  const astro = document.createElement('p');
-  astro.className = 'astro-line';
-  astro.textContent = astroLineText(hit);
-  c.appendChild(astro);
-
+  // plain: the same unit, astro-free — open / tight / action / pitfall.
+  // The reveal is the only surface that names the sky behind it.
   const copy = document.createElement('div');
-  copy.className = 'story-copy';
-  copy.appendChild(labelLine('story.plain.open', dayReading.unit.open, 'story-line'));
-  copy.appendChild(labelLine('story.plain.tight', dayReading.unit.tight, 'story-line'));
-  copy.appendChild(labelLine('story.plain.action', dayReading.unit.action, 'story-line story-final'));
-  copy.appendChild(labelLine('story.plain.pitfall', dayReading.unit.pitfall, 'story-line'));
-  const note = document.createElement('p');
-  note.className = 'why-note';
-  note.textContent = dayReading.unit.astroNote;
-  copy.appendChild(note);
+  copy.className = 'day-copy';
+  copy.appendChild(dayBlock('story.plain.open', dayReading.unit.open));
+  copy.appendChild(dayBlock('story.plain.tight', dayReading.unit.tight));
+  copy.appendChild(actionBlock(dayReading.unit.action));
+  copy.appendChild(dayBlock('story.plain.pitfall', dayReading.unit.pitfall));
   c.appendChild(copy);
 }
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/** Schematic of the real hit: the transiting body on the outer ring in
+ * gold, the natal point it touches in sage, joined across the circle. The
+ * two angles are the bodies' longitudes, the same convention as the wheel. */
+function whyDial(hit: NonNullable<DayReading['hit']>): SVGSVGElement {
+  const svg = document.createElementNS(SVG_NS, 'svg') as SVGSVGElement;
+  svg.setAttribute('viewBox', '0 0 150 150');
+  svg.setAttribute('class', 'why-dial');
+  svg.setAttribute('aria-hidden', 'true');
+
+  const circle = (cx: number, cy: number, r: number, cls: string): SVGCircleElement => {
+    const node = document.createElementNS(SVG_NS, 'circle') as SVGCircleElement;
+    node.setAttribute('cx', String(cx));
+    node.setAttribute('cy', String(cy));
+    node.setAttribute('r', String(r));
+    node.setAttribute('class', cls);
+    svg.appendChild(node);
+    return node;
+  };
+  const at = (longitude: number): readonly [number, number] => {
+    const rad = ((norm360(longitude) - 90) * Math.PI) / 180;
+    return [75 + 66 * Math.cos(rad), 75 + 66 * Math.sin(rad)];
+  };
+
+  circle(75, 75, 66, 'why-dial-ring');
+  circle(75, 75, 44, 'why-dial-ring why-dial-ring-inner');
+  const [tx, ty] = at(hit.transitLongitude);
+  const [nx, ny] = at(hit.targetLongitude);
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.setAttribute('x1', String(tx));
+  line.setAttribute('y1', String(ty));
+  line.setAttribute('x2', String(nx));
+  line.setAttribute('y2', String(ny));
+  line.setAttribute('class', 'why-dial-line');
+  svg.appendChild(line);
+  circle(tx, ty, 6.5, 'why-dial-node why-dial-transit');
+  circle(nx, ny, 6.5, 'why-dial-node why-dial-natal');
+  circle(75, 75, 3, 'why-dial-center');
+  return svg;
+}
+
+/** The natal house the transit lands in, when the birth time is known. */
+function targetHouse(target: string): number | null {
+  if (!chart || !ASPECT_PARTICIPANT_BODIES.has(target)) return null;
+  return chart.placements.find((p) => p.body === (target as BodyId))?.house ?? null;
+}
+
+/** The reveal sheet: the one surface that names the real transit, its
+ * aspect and orb, the natal house it lands in, plus the unit's
+ * plain-language note. */
 function renderWhyPanel(): void {
   const panel = document.getElementById('story-why-panel');
   if (!panel) return;
@@ -914,50 +1008,77 @@ function renderWhyPanel(): void {
     return;
   }
 
-  const h = document.createElement('h3');
-  h.textContent = t(lang, 'story.whyHeading');
-  panel.appendChild(h);
+  const eyebrow = document.createElement('p');
+  eyebrow.className = 'day-date';
+  eyebrow.textContent = t(lang, 'story.why');
+  panel.appendChild(eyebrow);
 
-  const row = (key: string, value: string) => {
-    const div = document.createElement('div');
-    div.className = 'why-row';
-    const k = document.createElement('span');
-    k.className = 'why-key';
-    k.textContent = key;
-    div.appendChild(k);
-    div.appendChild(document.createTextNode(value));
-    return div;
-  };
-
-  if (dayReading.hit) {
-    const hit = dayReading.hit;
-    panel.appendChild(row(t(lang, 'story.why.transit'), transitPlacementText(hit.transitBody, hit.transitLongitude)));
-    panel.appendChild(row(t(lang, 'story.why.aspect'), `${t(lang, ('aspect.' + hit.aspect) as MessageKey)} · ${t(lang, 'story.why.orb')} ${fmtDeg(hit.orbDegrees)}`));
-    panel.appendChild(row(t(lang, 'story.why.natal'), natalTargetText(hit.target, hit.targetLongitude, chart)));
-    const note = document.createElement('p');
-    note.className = 'why-note';
-    note.textContent = dayReading.unit
-      ? dayReading.unit.astroNote
-      : t(lang, 'story.untold.note');
-    panel.appendChild(note);
+  if (!dayReading.hit) {
+    const h = document.createElement('h3');
+    h.className = 'day-title';
+    h.textContent = t(lang, 'story.quiet.tag');
+    panel.appendChild(h);
+    const explain = document.createElement('p');
+    explain.className = 'why-note';
+    explain.textContent = t(lang, 'story.quiet.explain');
+    panel.appendChild(explain);
+    const miss = nearestMiss(lastTransitPositions, lastNatalTargets);
+    if (miss) {
+      const pair = `${participantName(miss.transitBody)} ${t(lang, ('aspect.' + miss.aspect) as MessageKey)} ${participantName(miss.target)}`;
+      const line = document.createElement('p');
+      line.className = 'why-meta';
+      line.textContent = fmt(lang, 'story.quiet.nearest', { pair, degrees: fmtDeg(miss.overBy) });
+      panel.appendChild(line);
+      const note = document.createElement('p');
+      note.className = 'why-plain';
+      note.textContent = t(lang, 'story.why.quiet');
+      panel.appendChild(note);
+    }
     return;
   }
 
-  // honest quiet day: what was checked, and the nearest miss
-  const explain = document.createElement('p');
-  explain.textContent = t(lang, 'story.quiet.explain');
-  panel.appendChild(explain);
-  const miss = nearestMiss(lastTransitPositions, lastNatalTargets);
-  if (miss) {
-    const pair = `${participantName(miss.transitBody)} ${t(lang, ('aspect.' + miss.aspect) as MessageKey)} ${participantName(miss.target)}`;
-    const line = document.createElement('p');
-    line.textContent = fmt(lang, 'story.quiet.nearest', { pair, degrees: fmtDeg(miss.overBy) });
-    panel.appendChild(line);
-    const note = document.createElement('p');
-    note.className = 'why-note';
-    note.textContent = t(lang, 'story.why.quiet');
-    panel.appendChild(note);
+  const hit = dayReading.hit;
+  const h = document.createElement('h3');
+  h.className = 'day-title';
+  h.textContent = `${participantName(hit.transitBody)} ${t(lang, ('aspect.' + hit.aspect) as MessageKey)} ${participantName(hit.target)}`;
+  panel.appendChild(h);
+
+  panel.appendChild(whyDial(hit));
+
+  const meta = document.createElement('p');
+  meta.className = 'why-meta';
+  meta.textContent = [
+    transitPlacementText(hit.transitBody, hit.transitLongitude),
+    natalTargetText(hit.target, hit.targetLongitude, chart),
+    `${t(lang, 'story.why.orb')} ${fmtDeg(hit.orbDegrees)}`,
+  ].join(' · ');
+  panel.appendChild(meta);
+
+  const note = document.createElement('p');
+  note.className = 'why-note';
+  note.textContent = dayReading.unit ? dayReading.unit.astroNote : t(lang, 'story.untold.note');
+  panel.appendChild(note);
+
+  if (!dayReading.unit) return;
+
+  const block = document.createElement('div');
+  block.className = 'why-block';
+  const heading = document.createElement('h4');
+  heading.className = 'day-label';
+  heading.textContent = t(lang, 'story.whyHeading');
+  block.appendChild(heading);
+  const aspectLine = document.createElement('p');
+  aspectLine.className = 'why-plain';
+  aspectLine.textContent = t(lang, ('aspect.meaning.' + hit.aspect) as MessageKey);
+  block.appendChild(aspectLine);
+  const house = targetHouse(hit.target);
+  if (house !== null) {
+    const houseLine = document.createElement('p');
+    houseLine.className = 'why-plain';
+    houseLine.textContent = t(lang, ('house.meaning.' + house) as MessageKey);
+    block.appendChild(houseLine);
   }
+  panel.appendChild(block);
 }
 
 const ASPECT_PARTICIPANT_BODIES = new Set(['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'meanNode']);
