@@ -4,6 +4,9 @@ Decisions and trade-offs made while building, so each slice inherits the
 reasoning, not just the code. Chart foundation first, then the daily story,
 then the content gate over the voice.
 
+Settled decisions are indexed in [`docs/decisions/index.md`](docs/decisions/index.md);
+this record keeps the slice-by-slice history behind them.
+
 ## Ephemeris choice
 
 The brief named "Swiss Ephemeris compiled to WebAssembly (a maintained port

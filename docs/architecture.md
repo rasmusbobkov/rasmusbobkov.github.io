@@ -18,7 +18,7 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 | Build | `npm run build` |
 | Docs only | `npm run docs:check` |
 
-`npm test` is the real gate: chart and transit fixtures, privacy scan, content gate, golden copy, Estonian spelling and the docs check all run under Vitest. Nothing here talks to a server, so the same commands work offline.
+`npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy and the Estonian spelling checks. Nothing here talks to a server, so the same commands work offline.
 
 ## Map
 
@@ -67,7 +67,6 @@ Every `- path` line is checked by `scripts/check-project-docs.sh`, so a stale en
 - path `.github`
 - path `.gitignore`
 - path `.no-mistakes.yaml`
-- path `.opencode`
 - path `.vscode`
 - path `AGENTS.md`
 - path `README.md`

@@ -12,12 +12,16 @@ landing surface; the chart wheel is the depth layer underneath it.
   *maja*, *ruut*, *vastasseis*, *trigoon*; technical loanwords live in the
   glossary.
 
+Architecture, the invariants tied to tests and the decision log live in
+[`docs/`](docs/README.md); the build history stays in `RECORD.md`.
+
 ## Run
 
 ```
 npm install            # use --legacy-peer-deps if npm's resolver balks on vitest peers
 npm run dev            # astro dev --background; stop/status/logs via npm run dev:<cmd>
-npm test               # correctness, privacy, story-content and Estonian-spelling gates
+npm test               # docs shape check, then correctness, privacy, story-content and spelling gates
+npm run docs:check     # documentation shape check only; npm test runs it first through pretest
 npm run build          # static output into dist/
 ```
 
@@ -27,7 +31,9 @@ npm run build          # static output into dist/
 - **Swiss Ephemeris compiled to WebAssembly** (`@swisseph/browser`), running on
   the built-in **Moshier** ephemeris — no ephemeris files are fetched, ever.
   The ephemeris payload is ≈ 0.2 MB gzipped, far under the 2.5 MB budget; the
-  accuracy trade-off is documented in `RECORD.md` and asserted by tests.
+  trade-offs behind that choice are recorded in
+  [`docs/decisions/0002-swiss-ephemeris-wasm-and-agpl.md`](docs/decisions/0002-swiss-ephemeris-wasm-and-agpl.md)
+  and asserted by tests.
 - **Luxon** (timezone offsets from the IANA tz data built into the browser) for
   historical timezone resolution — correct across Estonia's Moscow-time era.
 - Fonts are self-hosted; no third-party requests of any kind.

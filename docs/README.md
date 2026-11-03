@@ -16,4 +16,4 @@ Rules for keeping this set true:
 - `architecture.md` stays one page.
 - `invariants.md` holds at most about ten rules, because every entry costs every session that reads it.
 - Each decision record is one page named `NNNN-title.md` with context, decision, and consequence.
-- Never hand-edit a block marked `fm:generated`; refresh it with the tool that wrote it instead.
+- Never hand-edit a block marked `fm:generated`; regenerate it with the tool that wrote it when that tool is available, and otherwise correct only the stale line and re-run the checker.
