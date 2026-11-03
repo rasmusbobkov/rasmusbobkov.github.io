@@ -4,7 +4,7 @@ Rules that must never break, each with a stable id and a `verify:` pointer to a 
 Every rule here costs every session that reads it, so keep this list at most about ten entries and delete a rule when it stops being true.
 When no test can assert a rule, say so with `manual:` and the reason a human check is the only evidence.
 
-- PRIV-1: Birth data never leaves the device — application source and the built output contain no network API and no remote URL. verify: tests/privacy.test.ts
+- PRIV-1: Birth data never leaves the device — our own source references no network API and no remote URL, and the built output is re-scanned whenever `dist/` exists. The vendored Swiss Ephemeris chunk is the one exemption: it carries an unreachable CDN constant, and its file loaders are never called. verify: tests/privacy.test.ts
 - PRIV-2: Nothing is persisted server-side because there is no server: the build is static output only, with no API routes or SSR. manual: no test can prove the absence of a backend; the deployment target is reviewed by a human against `astro.config.mjs` (`output: 'static'`).
 - EPH-1: Natal positions, house cusps and the Asc/MC are deterministic and stay within 0.01°/0.05° of the committed Swiss Ephemeris C references. verify: tests/chart-fixtures.test.ts
 - TRANS-1: The transit engine reads the same fixture instants from the transit side and stays within the same 0.01° tolerance. verify: tests/transits.test.ts
