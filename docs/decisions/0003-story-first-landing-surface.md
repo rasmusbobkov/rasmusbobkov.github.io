@@ -6,7 +6,7 @@ The first slice was a competent chart viewer: enter a birth time, see a wheel. T
 
 ## Decision
 
-Make the daily story the landing surface. For the current moment (device clock, `Europe/Tallinn` as the operating timezone) the app computes a real transit against the stored natal chart and renders one day's unit in two tiers: a plain tier with no astrology vocabulary, and a four-paragraph story tier. A "Miks see?" reveal is the only place that names the transiting body, aspect, orb and natal placement. The wheel and the chart lists remain available as the depth layer underneath.
+Make the daily story the landing surface. For the current moment (device clock, `Europe/Tallinn` as the operating timezone) the app computes a real transit against the natal chart it recomputes from the stored birth record and renders one day's unit in two tiers: a plain tier with no astrology vocabulary, and a four-paragraph story tier. A "Miks see?" reveal is the only place that names the transiting body, aspect, orb and natal placement. The wheel and the chart lists remain available as the depth layer underneath.
 
 ## Consequence
 
