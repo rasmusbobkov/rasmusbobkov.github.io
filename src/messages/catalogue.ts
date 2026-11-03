@@ -1,7 +1,8 @@
 /**
- * The single message catalogue. Estonian is the source language; English is
- * structure only for now and marked as coming. No component may hardcode
- * user-facing copy — every string lives here. *
+ * The single interface message catalogue. Estonian is the source language;
+ * English is structure only for now and marked as coming. No component may
+ * hardcode user-facing copy — interface strings live here, and the day's
+ * story copy lives on its meaning unit in lib/meaning.ts.
  * Vocabulary decisions from the concept board:
  * - sünnikaart (not "horoskoop", which is reserved for sun-sign content)
  * - tõusumärk in the UI; "asendents" appears once, in the glossary

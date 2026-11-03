@@ -1,7 +1,8 @@
 /**
  * The client application: birth entry, chart computation, wheel + text
- * rendering, share/export/import, language switching. All user-facing
- * strings come from the message catalogue; nothing is hardcoded here.
+ * rendering, share/export/import, language switching. Interface strings come
+ * from the message catalogue and the day's copy from its meaning unit;
+ * nothing is hardcoded here.
  */
 import { DEFAULT_LANG, t, fmt, type Lang, type MessageKey } from '../messages/catalogue';
 import { SIGNS, MAX_FOCUS_AREAS, FOCUS_AREAS, type BodyId, type FocusArea } from '../lib/astro-constants';
