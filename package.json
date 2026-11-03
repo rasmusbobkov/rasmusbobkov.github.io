@@ -17,7 +17,9 @@
     "astro": "astro",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "astro check"
+    "check": "astro check",
+    "docs:check": "bash scripts/check-project-docs.sh .",
+    "pretest": "bash scripts/check-project-docs.sh ."
   },
   "dependencies": {
     "@swisseph/browser": "^1.4.0",
