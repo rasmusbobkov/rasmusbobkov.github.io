@@ -16,6 +16,8 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Documentation
 
+Project map: `docs/architecture.md`, invariants in `docs/invariants.md`, decisions in `docs/decisions/`.
+
 Full documentation: https://docs.astro.build
 
 Consult these guides before working on related tasks:
