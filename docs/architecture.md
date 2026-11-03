@@ -18,30 +18,31 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 | Build | `npm run build` |
 | Docs only | `npm run docs:check` |
 
-`npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy and the Estonian spelling checks. Nothing here talks to a server, so the same commands work offline.
+`npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy, the meaning-selection, share/storage and wheel/birth-wheel tests, and the Estonian spelling check. Nothing here talks to a server, so the same commands work offline.
 
 ## Map
 
-- **Entry points.** `src/pages/index.astro` is the single static page: it renders the shell and every string from the catalogue at build time, so the page is readable before JavaScript. `src/scripts/app.ts` is the client controller loaded by that page; it owns boot, the birth form, chart rendering, the daily story, focus setup, and share/export/import.
+- **Entry points.** `src/pages/index.astro` is the single static page: at build time it renders the shell and its interface strings from the catalogue, so the form and the story frame are readable before JavaScript. `src/scripts/app.ts` is the client controller loaded by that page; it owns boot, the birth form, chart rendering, the daily story, focus setup, and share/export/import, and it is where the day's wording actually reaches the screen.
 - **Main modules.**
   - `src/lib/time.ts` — birth wall clock plus IANA timezone to a UTC instant via Luxon; rejects DST-gap times and notes the fall-back ambiguity.
   - `src/lib/ephemeris.ts` — the only seam onto Swiss Ephemeris WASM: a lazily initialised singleton, Moshier flags, Placidus houses.
   - `src/lib/chart.ts` — natal chart model: placements, house cusps, Asc/MC, the five major aspects; planets compute even when the birth time is unknown, houses and the Rising sign do not.
   - `src/lib/transits.ts` — the current sky (Sun through Pluto plus the mean node; no Moon) read against the natal chart with transit orbs, day key in `Europe/Tallinn`.
-  - `src/lib/meaning.ts` — the typed `MEANING_UNITS` table, the natal-target-to-focus map, and the one function that selects the day's single reading.
-  - `src/messages/catalogue.ts` — the single message catalogue; Estonian is the source language and English is structure only.
+  - `src/lib/meaning.ts` — the typed `MEANING_UNITS` table, the natal-target-to-focus map, and the one function that selects the day's single reading. Every unit also carries the day's copy: `open`, `tight`, `action`, `pitfall`, `astroNote` and the four story paragraphs, which `app.ts` renders straight from the unit.
+  - `src/messages/catalogue.ts` — the interface message catalogue: labels, headings, buttons, errors and the glossary; Estonian is the source language and English is structure only. Story copy is not here.
   - `src/scripts/wheel.ts` — programmatic SVG wheel: signs, glyph placement, house spokes, aspect lines, plus the selection model the detail panel reads.
   - `src/lib/storage.ts`, `src/lib/share.ts` — versioned localStorage records with JSON export/import; share links encode only derived Sun/Moon/Rising signs.
   - `src/lib/places.ts` with `src/data/*.json` — offline place search over bundled Estonian settlements and world cities; the world set is code-split.
   - `src/lib/birth-wheels.ts`, `src/lib/format.ts`, `src/lib/astro-constants.ts` — wheel logic and the shared year bound, Estonian date/degree formatting, bodies/aspects/focus constants.
-- **Data flow.** Birth entry (wheel pickers or text fields) → `resolveInstant` turns local time and the chosen place's timezone into UTC → `computeChart` asks the WASM ephemeris for positions and Placidus houses → the `Chart` is saved to localStorage and routed to focus setup, then the story → `currentTransitReading(new Date(), chart)` computes the sky now → `selectDayReading` picks at most one meaning unit → `app.ts` renders the plain tier, the story tier and the "Miks see?" reveal; the wheel renders on demand from the same `Chart`. A share fragment is decoded at boot into a read-only trio view that neither stores nor recomputes anything. No step sends data anywhere.
+- **Data flow.** Birth entry (wheel pickers or text fields) → `resolveInstant` turns local time and the chosen place's timezone into UTC → `computeChart` asks the WASM ephemeris for positions and Placidus houses → the resulting `Chart` stays in memory for the session while only the birth inputs (`toStored`), the focus choice and the language preference are written to localStorage, and control routes to focus setup, then the story → `currentTransitReading(new Date(), chart)` computes the sky now → `selectDayReading` picks at most one meaning unit → `app.ts` renders the plain tier, the story tier and the "Miks see?" reveal; the wheel renders on demand from the same `Chart`. A reload restores the stored birth record, recomputes the chart from it and continues through the stored focus choice into the story for the current moment, so nothing derived is ever persisted. A share fragment is decoded at boot into a read-only trio view that neither stores nor recomputes anything. No step sends data anywhere.
 - **External dependencies that matter.** `@swisseph/browser` — Swiss Ephemeris C 2.10.03 compiled to WASM, ≈0.2 MB gzipped, running the built-in Moshier ephemeris; no `.se1` files are ever fetched. It is AGPL-3.0, and that licence question is recorded in `decisions/0002-swiss-ephemeris-wasm-and-agpl.md`. `luxon` supplies historical timezone offsets from the runtime's IANA data. `astro` produces the static build; `vitest`, `@astrojs/check` and `typescript` are dev-only. `hunspell-asm` plus the committed et_EE dictionary power the spelling test only. Fonts are self-hosted under `public/fonts`.
 
 ## Where to change what
 
 | Change | Start here |
 | --- | --- |
-| Any user-facing wording | `src/messages/catalogue.ts`; then re-run the content gate, goldens and spelling tests |
+| Interface wording (labels, headings, buttons, errors) | `src/messages/catalogue.ts`; then re-run the content gate, goldens and spelling tests |
+| The day's story copy and its plain-tier fields | `src/lib/meaning.ts`, in the matching `MEANING_UNITS` unit; then re-run the content gate, goldens, spelling and meaning tests |
 | Birth form, wheels, focus UI | Markup in `src/pages/index.astro`, behaviour in `src/scripts/app.ts`, wheel logic in `src/lib/birth-wheels.ts` |
 | Natal positions, houses, aspects | `src/lib/chart.ts` and `src/lib/astro-constants.ts` |
 | Ephemeris engine or flags | `src/lib/ephemeris.ts`; the engine choice and licence posture are decisions, not an implementation detail |
