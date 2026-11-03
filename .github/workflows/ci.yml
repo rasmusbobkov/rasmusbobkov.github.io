@@ -9,7 +9,12 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+      # The docs gate in `pretest` verifies that each generated docs block's
+      # recorded source head is an ancestor of HEAD, so the checkout needs the
+      # history the default single-commit fetch omits.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
