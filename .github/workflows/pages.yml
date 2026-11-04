@@ -7,7 +7,7 @@ name: Pages
 # a tree the gate rejected.
 on:
   push:
-    branches: [main, fm/task-a1bca876]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
