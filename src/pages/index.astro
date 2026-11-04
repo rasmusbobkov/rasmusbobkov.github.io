@@ -12,6 +12,11 @@ import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
 
+// The deployment base, from the one place that declares it (astro.config.mjs):
+// the page is published under it, so its own asset links have to carry it too.
+// Astro hands back the value verbatim, so the separator is added here once.
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 // The source offer, shown as the address itself: the link text is the URL
 // without its scheme, so one constant holds the whole address (AGPL-3.0 §13).
 const sourceLabel = SOURCE_URL.replace(/^https?:\/\//, '');
@@ -39,8 +44,8 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
     <meta name="referrer" content="no-referrer" />
     <meta name="description" content={tx('app.description')} />
     <title>{tx('app.name')}</title>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="stylesheet" href={`${base}fonts/fonts.css`} />
   </head>
   <body>
     <header class="site-head wrap">

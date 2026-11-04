@@ -43,7 +43,13 @@ the work as long as they publish their own source under the same terms, so the
 code and the copy cannot be closed later, and the project pays Astrodienst
 nothing.
 
-Two things stay open until the project is actually published: the repository
-must become public and the page must be served. Until then the footer's offer
-points at a repository a visitor cannot read; licensing the work is not
-distributing it, which AGPL-3.0 permits.
+The two steps this record left open were carried out on 4.11.2026: the
+repository is public, and the page is served at
+<https://rasmusbobkov.github.io/firstmate_astro/> — the address the footer's
+offer is read at. `astro.config.mjs` declares that address (`site` and
+`base`), `.github/workflows/pages.yml` builds `dist/` and hands it to GitHub
+Pages on every push to `main`, and `tests/published-page.test.ts` holds every
+root-relative reference in the built page and in the stylesheets it serves to
+the declared base. That last check exists because the base is invisible
+locally: served from the root, a `/fonts/…` link works, and the same page
+served under a base path loses its stylesheet and its fonts without a word.

@@ -23,7 +23,7 @@ for css_file in ('fraunces.css', 'fraunces-i.css', 'inter.css', 'jbm.css'):
         target = here / fname
         if not target.exists():
             subprocess.run(['curl', '-fsSL', '-o', str(target), url], check=True)
-        out_css.append(block.replace(url, f'/fonts/{fname}'))
+        out_css.append(block.replace(url, f'./{fname}'))
 
 (here / 'fonts.css').write_text('\n'.join(out_css) + '\n')
 print('fonts.css written,', len(out_css), 'faces')

@@ -1,0 +1,48 @@
+name: Pages
+
+# Publishes the built page to the address in astro.config.mjs (`site` + `base`),
+# which is the address the footer's source offer is read at. CI is the gate
+# that must pass before a change reaches `main`; this workflow only builds the
+# same static output and hands it to Pages, so a page can never be served from
+# a tree the gate rejected.
+on:
+  push:
+    branches: [main, fm/task-a1bca876]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, oldest kept: a page that is already up stays up
+# while a newer build runs.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

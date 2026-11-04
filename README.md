@@ -81,3 +81,8 @@ their texts under `public/fonts`) and the GeoNames place data (CC BY 4.0)
 included. The page names the licence, offers the source from this repository
 and credits GeoNames; the choice and its consequences are recorded in
 [`docs/decisions/0007-agpl-3-0-and-source-offer.md`](docs/decisions/0007-agpl-3-0-and-source-offer.md).
+
+The page is published at <https://rasmusbobkov.github.io/firstmate_astro/> as a
+GitHub Pages project site. That address lives in `astro.config.mjs` (`site` and
+`base`); `.github/workflows/pages.yml` builds `dist/` and hands it to Pages on
+every push to `main`.
