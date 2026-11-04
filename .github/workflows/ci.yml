@@ -20,6 +20,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm test
+      # The build runs before the tests so the built-output scans have a dist/
+      # to read: the privacy scan looks for remote URLs and network APIs in
+      # what ships, and the licence scan reads the real footer HTML that
+      # carries the AGPL-3.0 source offer and the credits.
       - run: npm run build
+      - run: npm test
       - run: npm run check

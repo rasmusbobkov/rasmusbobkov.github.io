@@ -12,6 +12,8 @@
  * - address form: sina throughout
  */
 
+import { LICENCE_ID } from '../lib/licence';
+
 export type Lang = 'et' | 'en';
 
 export const DEFAULT_LANG: Lang = 'et';
@@ -231,6 +233,10 @@ const et = {
   'lang.label': 'Keel',
   'lang.et': 'Eesti',
   'lang.en': 'Inglise',
+
+  // Footer: the licence, the source offer and the place-data credit
+  'foot.licence': `Litsents: ${LICENCE_ID}. Lähtekood:`,
+  'foot.places': 'Kohanimed ja ajavööndid: GeoNames (CC BY 4.0)',
 
   // Story tier switch
   'story.tierSwitch': 'Kuidas täna loetud?',

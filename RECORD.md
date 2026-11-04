@@ -27,7 +27,8 @@ such as swisseph-wasm)" with a fallback decision at > ~2.5 MB gzipped.
 GPL; every real port inherits it). The app is a static client-only tool;
 shipping it under a compatible copyleft license should be a deliberate
 product decision before public launch. Flagged to the captain in the
-delivery report.
+delivery report. *(Settled afterwards: see "Licence and source offer
+(AGPL-3.0)" below.)*
 
 ## Timezone resolution
 
@@ -312,3 +313,33 @@ allowlisted.
   compound can still pass. The gate is a spelling check, not a grammar
   judge; it reliably catches non-words and single-word misspellings
   ('ütleda' class), which is what ships into the copy today.
+
+## Licence and source offer (AGPL-3.0)
+
+The engine's licence settles the product's, exactly as the ephemeris note
+above said it must. The captain chose AGPL-3.0 with a public page (card
+`d4a005dc-4`, 4.11.2026) over a commercial Swiss Ephemeris Professional
+License (750 CHF, closed publication) and over publishing nothing; the
+reasoning now lives in `docs/decisions/0007-agpl-3-0-and-source-offer.md`.
+The question had been open since the ephemeris slice, and only a captain's choice could close it: Astrodienst's terms ask the distributor to pick one of two models, so no amount of package metadata decides it.
+
+What shipped: the verbatim AGPL-3.0 text as `LICENSE`; `THIRD-PARTY-NOTICES.md`
+naming every component the build ships with its version and licence (the
+AGPL-3.0 `@swisseph/*` engine, MIT Astro and Luxon, the OFL-1.1 fonts, the
+CC BY 4.0 GeoNames place data, the LGPL-2.1 spell-check dictionary); each font
+family's own OFL text beside the served `.woff2` files under `public/fonts`;
+and the page footer naming the licence, linking to the project's own source
+(the AGPL-3.0 §13 offer) and crediting GeoNames. The address and the licence
+id live once, in `src/lib/licence.ts`.
+
+Two consequences worth keeping:
+
+- **The offer is only real once the project is published.** Until the
+  repository is public and the page is served, the footer points at a
+  repository an outsider cannot read. Licensing the work is not distributing
+  it, which AGPL-3.0 permits; the two publication steps are the captain's.
+- **PRIV-1 was re-typed, not bent.** "No remote URL" became "no network API,
+  and only these two reviewed credit links": a credit link a visitor may
+  follow is not a request the page makes, and `tests/privacy.test.ts` keeps
+  the difference by allowlisting those two addresses while still failing on
+  every other remote URL and on any network call.
