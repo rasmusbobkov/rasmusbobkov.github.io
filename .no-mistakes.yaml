@@ -6,7 +6,12 @@
 #
 # These values are read from the default branch only (trusted copy), so a change
 # to this file takes effect once it lands on main.
+#
+# `test` builds the site first, the way CI does in its own step above `npm test`:
+# two checks read the build output — the privacy scan reads every published file
+# and the licence test reads the built footer — and with no `dist/` they report
+# that they skipped while the suite still reads all green.
 commands:
   prepare: "npm ci"
   lint: "npm run check"
-  test: "npm test"
+  test: "npm run build && npm test"
