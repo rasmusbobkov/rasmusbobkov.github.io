@@ -1,11 +1,19 @@
 /**
  * PRIVACY ENFORCED MECHANICALLY:
- * application source calls no network API, and the only remote addresses it
- * names are the two credits the page displays — the project's own source
- * (the AGPL-3.0 §13 source offer) and GeoNames. A credit is an address a
- * visitor may follow; nothing loads from it. Every other remote URL is still
- * an offence, and the allowlist is pinned below to the licence module's two
- * exported addresses and proven to be narrow.
+ * the published work calls no network API, and the only remote addresses it
+ * names are ones nothing loads — the two credits the page displays (the
+ * project's own source, the AGPL-3.0 §13 source offer, and GeoNames), the
+ * addresses inside the third-party licence notices a publisher is obliged to
+ * ship verbatim, and the SVG namespaces. Every other remote URL is still an
+ * offence, and the allowances are pinned below and proven narrow.
+ *
+ * One scan reads every file a visitor can be served, as text: our own source,
+ * the assets `public/` copies into the build verbatim (the font stylesheet,
+ * the OFL notices, the favicon — anything put there reaches the site), and the
+ * whole built output. A font or the WASM module carries NUL bytes and is left
+ * out, since no browser reads one as text. Reading `public/` beside `dist/` is
+ * what covers the published surface whether or not a build has run; the build
+ * output is reported as unscanned when `dist/` is missing.
  *
  * The vendored ephemeris chunk (@swisseph/browser, bundled as swisseph.*.js)
  * contains an unreachable constant URL used only by its optional
@@ -19,6 +27,9 @@ import { PLACE_DATA_URL, SOURCE_URL } from '../src/lib/licence';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const SRC = path.join(ROOT, 'src');
+const PUBLIC = path.join(ROOT, 'public');
+const DIST = path.join(ROOT, 'dist');
+const NOTICES = path.join(ROOT, 'THIRD-PARTY-NOTICES.md');
 
 /**
  * The two credited addresses the page shows, each reviewed: they are links in
@@ -30,7 +41,26 @@ const REVIEWED_CREDITS: readonly string[] = [
   PLACE_DATA_URL, // GeoNames — the CC BY 4.0 credit for the bundled place data
 ];
 
-const LINE_PATTERNS: Array<{ re: RegExp; allowNamespace?: boolean; allowCredits?: boolean; why: string }> = [
+/**
+ * The third-party licence notices we must ship beside the fonts they cover
+ * (decision 0007), in `public/fonts` and in its copy in the build. They are
+ * other people's documents, carried verbatim: their copyright lines and the
+ * OFL's own FAQ name addresses that are part of the text, so they cannot be
+ * edited away and nothing loads them.
+ *
+ * THIRD-PARTY-NOTICES.md is the one document that records what we ship, so an
+ * address inside a notice is allowed only while that document already names
+ * it. A new address — in a notice, or in any other published file — still
+ * fails, and the bait below proves it.
+ */
+const LICENCE_NOTICE = /^(?:public|dist)\/fonts\/[\w.-]+-OFL\.txt$/;
+const RECORDED_ADDRESSES: readonly string[] = [
+  ...new Set(
+    [...fs.readFileSync(NOTICES, 'utf8').matchAll(/https?:\/\/[^\s>)]+/g)].map((match) => match[0]!),
+  ),
+];
+
+const LINE_PATTERNS: Array<{ re: RegExp; allowRemote?: boolean; why: string }> = [
   { re: /\bfetch\s*\(/, why: 'fetch()' },
   { re: /\bXMLHttpRequest\b/, why: 'XMLHttpRequest' },
   { re: /\bWebSocket\b/, why: 'WebSocket' },
@@ -38,20 +68,26 @@ const LINE_PATTERNS: Array<{ re: RegExp; allowNamespace?: boolean; allowCredits?
   { re: /\bpostMessage\s*\(/, why: 'postMessage' },
   {
     re: /https?:\/\/(?!www\.w3\.org\/(1999\/xhtml|2000\/svg))/,
-    allowCredits: true,
+    allowRemote: true,
     why: 'remote URL',
   },
 ];
 const NAMESPACE_LINE = /www\.w3\.org\/(1999\/xhtml|2000\/svg)/;
 
-/** Drop the reviewed credit addresses, so the remote-URL rule sees what is
- * left: a credit may only ever be exactly the reviewed address. */
-function withoutReviewedCredits(line: string): string {
+/** Drop the addresses this file may name, so the remote-URL rule sees what is
+ * left: an allowed address may only ever be exactly that address. */
+function withoutAllowed(line: string, allowed: readonly string[]): string {
   let out = line;
-  for (const url of REVIEWED_CREDITS) {
+  for (const url of allowed) {
     out = out.replace(new RegExp(`${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w./-])`, 'g'), '');
   }
   return out;
+}
+
+/** The addresses a published file may name: the notices get the ones the
+ * notices document records, everything else only the two page credits. */
+function allowedIn(rel: string): readonly string[] {
+  return LICENCE_NOTICE.test(rel) ? [...REVIEWED_CREDITS, ...RECORDED_ADDRESSES] : REVIEWED_CREDITS;
 }
 
 function* walkFiles(dir: string): Generator<string> {
@@ -62,25 +98,60 @@ function* walkFiles(dir: string): Generator<string> {
   }
 }
 
-function offendingLines(text: string): string[] {
+function offendingLines(text: string, allowed: readonly string[]): string[] {
   const bad: string[] = [];
   for (const line of text.split('\n')) {
     if (NAMESPACE_LINE.test(line)) continue;
-    for (const { re, allowCredits, why } of LINE_PATTERNS) {
-      if (re.test(allowCredits ? withoutReviewedCredits(line) : line)) bad.push(why);
+    for (const { re, allowRemote, why } of LINE_PATTERNS) {
+      if (re.test(allowRemote ? withoutAllowed(line, allowed) : line)) bad.push(why);
     }
   }
   return bad;
 }
 
-test('src: no network APIs or remote URLs in application source', () => {
-  const offenders: string[] = [];
-  for (const file of walkFiles(SRC)) {
-    const rel = path.relative(ROOT, file);
-    for (const why of offendingLines(fs.readFileSync(file, 'utf8'))) {
-      offenders.push(`${rel}: ${why}`);
+/**
+ * Every published file read as text: our own source, the assets `public/`
+ * ships verbatim, and, once a build has run, the whole `dist/` tree — its
+ * HTML, CSS and JS and its copies of those same assets.
+ */
+function publishedFiles(): Array<{ rel: string; text: string }> {
+  const roots: Array<[string, string]> = [
+    [SRC, 'src'],
+    [PUBLIC, 'public'],
+    [DIST, 'dist'],
+  ];
+  const files: Array<{ rel: string; text: string }> = [];
+  for (const [dir, label] of roots) {
+    if (!fs.existsSync(dir)) continue;
+    for (const file of walkFiles(dir)) {
+      // the vendored ephemeris chunk is checked at source level (CDN constant
+      // unreachable); everything else must be fully local
+      if (/^swisseph\..*\.js$/.test(path.basename(file))) continue;
+      const bytes = fs.readFileSync(file);
+      // a NUL byte is a font binary or the WASM module: no browser reads one
+      // as text, and no address in it is ever followed
+      if (bytes.includes(0)) continue;
+      files.push({ rel: `${label}/${path.relative(dir, file)}`, text: bytes.toString('utf8') });
     }
   }
+  return files;
+}
+
+function scan(files: ReadonlyArray<{ rel: string; text: string }>): string[] {
+  const offenders: string[] = [];
+  for (const { rel, text } of files) {
+    for (const why of offendingLines(text, allowedIn(rel))) offenders.push(`${rel}: ${why}`);
+  }
+  return offenders;
+}
+
+test('no published file calls a network API or names a remote address no allowance covers', () => {
+  if (!fs.existsSync(DIST)) {
+    console.warn(
+      'dist/ missing — the built output is not scanned; run `npm run build` first (the project’s gate and CI build before the tests)',
+    );
+  }
+  const offenders = scan(publishedFiles());
   expect(offenders, offenders.join('; ')).toEqual([]);
 });
 
@@ -94,36 +165,31 @@ test('the credit allowlist is exactly the licence module’s two addresses', () 
   );
 });
 
-test('a remote URL that is not a reviewed credit still fails', () => {
+test('a remote address no reviewed allowance covers still fails', () => {
   // the bait for the exception: the rule must stay sharp around it
-  expect(offendingLines('<link rel="stylesheet" href="https://cdn.example.com/x.css">')).toContain(
-    'remote URL',
-  );
-  expect(offendingLines('<script src="https://github.com/rasmusbobkov/evil"></script>')).toContain(
+  expect(
+    offendingLines('<link rel="stylesheet" href="https://cdn.example.com/x.css">', REVIEWED_CREDITS),
+  ).toContain('remote URL');
+  expect(offendingLines('<script src="https://github.com/rasmusbobkov/evil"></script>', REVIEWED_CREDITS)).toContain(
     'remote URL',
   );
   // and each reviewed credit is accepted only as itself
   for (const url of REVIEWED_CREDITS) {
-    expect(offendingLines(`<a href="${url}">x</a>`)).toEqual([]);
-    expect(offendingLines(`<a href="${url}evil.example.com">x</a>`)).toContain('remote URL');
+    expect(offendingLines(`<a href="${url}">x</a>`, REVIEWED_CREDITS)).toEqual([]);
+    expect(offendingLines(`<a href="${url}evil.example.com">x</a>`, REVIEWED_CREDITS)).toContain('remote URL');
   }
-});
-
-test('src: the only remote addresses named are the reviewed credits', () => {
-  // every https?:// occurrence in our own source, minus the two credits and the
-  // SVG namespaces, must be nothing at all
-  const leftovers: string[] = [];
-  for (const file of walkFiles(SRC)) {
-    const text = fs.readFileSync(file, 'utf8');
-    const scrubbed = text
-      .split('\n')
-      .filter((line) => !NAMESPACE_LINE.test(line))
-      .join('\n');
-    for (const match of withoutReviewedCredits(scrubbed).matchAll(/https?:\/\/\S*/g)) {
-      leftovers.push(`${path.relative(ROOT, file)}: ${match[0]}`);
-    }
-  }
-  expect(leftovers, leftovers.join('; ')).toEqual([]);
+  // a shipped asset that is not a licence notice gets no allowance beyond the
+  // two credits: this is the file the review found reaching the site unread
+  expect(scan([{ rel: 'public/fonts/localize_fonts.py', text: 'url = "https://fonts.gstatic.com/x.woff2"' }])).toContain(
+    'public/fonts/localize_fonts.py: remote URL',
+  );
+  // a notice may name an address the notices document records, and only that
+  const notice = 'public/fonts/fraunces-OFL.txt';
+  const recorded = RECORDED_ADDRESSES[0]!;
+  expect(scan([{ rel: notice, text: `Copyright 2018 The Fraunces Project Authors (${recorded})` }])).toEqual([]);
+  expect(scan([{ rel: notice, text: 'Redistributed from https://fonts.example.com/fraunces' }])).toContain(
+    `${notice}: remote URL`,
+  );
 });
 
 test('src: the optional CDN ephemeris loaders are never used', () => {
@@ -137,22 +203,20 @@ test('src: the optional CDN ephemeris loaders are never used', () => {
   expect(offenders, offenders.join('; ')).toEqual([]);
 });
 
-test('dist: built HTML/CSS and our app chunk contain no remote URLs', () => {
-  const dist = path.join(ROOT, 'dist');
-  if (!fs.existsSync(dist)) {
-    console.warn('dist/ missing — build output scan skipped');
-    return;
-  }
-  const offenders: string[] = [];
-  for (const file of walkFiles(dist)) {
-    const base = path.basename(file);
-    // the vendored ephemeris chunk is checked at source level (CDN constant
-    // unreachable); everything else must be fully local
-    if (/^swisseph\..*\.js$/.test(base)) continue;
-    if (!/\.(html|css|js)$/.test(base)) continue;
-    for (const why of offendingLines(fs.readFileSync(file, 'utf8'))) {
-      offenders.push(`${path.relative(dist, file)}: ${why}`);
+test('the scan reads the assets public/ ships and the build copies of them', () => {
+  // The gap this test guards: the assets under `public/` reach the site, so a
+  // file put there — .py, .txt, .svg, whatever — is published, and no check
+  // read it. Both the authored file and its copy in the build must be read.
+  const read = new Set(publishedFiles().map((file) => file.rel));
+  for (const file of walkFiles(PUBLIC)) {
+    if (fs.readFileSync(file).includes(0)) continue; // a font binary
+    const rel = path.relative(PUBLIC, file);
+    expect(read, `public/${rel} reaches the site, so the scan must read it`).toContain(`public/${rel}`);
+    if (fs.existsSync(DIST)) {
+      expect(read, `dist/${rel} is the published copy of public/${rel}`).toContain(`dist/${rel}`);
     }
   }
-  expect(offenders, offenders.join('; ')).toEqual([]);
+  if (fs.existsSync(DIST)) {
+    expect(read, 'the built page itself is read').toContain('dist/index.html');
+  }
 });

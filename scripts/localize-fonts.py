@@ -1,9 +1,14 @@
 # Localize Google Fonts subsets: download woff2 files, rewrite @font-face to local URLs
+#
+# A development helper, not part of the site: it is kept beside the other repo
+# tools rather than under public/, because everything in public/ is published
+# verbatim and a visitor has no use for it.
 import re
 import subprocess
 from pathlib import Path
 
-here = Path(__file__).parent
+# the font assets it rewrites live in the site's own public/fonts
+here = Path(__file__).resolve().parent.parent / 'public' / 'fonts'
 out_css = []
 
 SUBSETS = ('latin', 'latin-ext', 'vietnamese')

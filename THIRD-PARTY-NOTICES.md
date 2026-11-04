@@ -45,6 +45,10 @@ each family's own copyright line in the OFL text beside the files:
 - JetBrains Mono — Copyright 2020 The JetBrains Mono Project Authors
   (<https://github.com/JetBrains/JetBrainsMono>)
 
+The OFL text's own header, also carried verbatim, names the licence FAQ:
+<http://scripts.sil.org/OFL> in the Fraunces text and
+<https://scripts.sil.org/OFL> in the Inter and JetBrains Mono texts.
+
 ### MIT components — Astro, Luxon
 
 ```
