@@ -21,6 +21,8 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 
 `npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy, the meaning-selection, share/storage and wheel/birth-wheel tests, and the Estonian spelling check. Nothing here talks to a server, so the same commands work offline.
 
+The privacy scan reads every published file and the licence test reads the built footer, so both need build output: run `npm run build` before `npm test`, as the project's own gate (`.no-mistakes.yaml`) and CI both do.
+
 ## Map
 
 - **Entry points.** `src/pages/index.astro` is the single static page: at build time it renders the shell and its interface strings from the catalogue, so the form and the story frame are readable before JavaScript. It is published as a GitHub Pages project site, so the page and the stylesheets it serves carry the base path declared in `astro.config.mjs` (`site`, `base`); `tests/published-page.test.ts` reads the built page back and fails if any root-relative reference escapes that base. `src/scripts/app.ts` is the client controller loaded by that page; it owns boot, the birth form, chart rendering, the daily story, focus setup, and share/export/import, and it is where the day's wording actually reaches the screen.
@@ -54,7 +56,7 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 | Saved data, export, import, reset | `src/lib/storage.ts` |
 | Share link format | `src/lib/share.ts` |
 | Place data or timezone handling | `src/lib/places.ts`, `src/data/*.json`, `src/lib/time.ts` |
-| Visual design and fonts | `src/styles/global.css`, `public/fonts` |
+| Visual design and fonts | `src/styles/global.css`, `public/fonts`; the Google Fonts subsetting helper is `scripts/localize-fonts.py` |
 | Licence, source offer and third-party credits | `LICENSE`, `THIRD-PARTY-NOTICES.md`, `src/lib/licence.ts` and the footer of `src/pages/index.astro`; then re-run `npm test` |
 
 ## Generated layout
