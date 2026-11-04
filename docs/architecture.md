@@ -16,13 +16,14 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 | Test | `npm test` (runs `npm run docs:check` first through `pretest`) |
 | Lint / typecheck | `npm run check` |
 | Build | `npm run build` |
+| Publish | push to `main`: `.github/workflows/pages.yml` builds `dist/` and serves it at the address in `astro.config.mjs` |
 | Docs only | `npm run docs:check` |
 
 `npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy, the meaning-selection, share/storage and wheel/birth-wheel tests, and the Estonian spelling check. Nothing here talks to a server, so the same commands work offline.
 
 ## Map
 
-- **Entry points.** `src/pages/index.astro` is the single static page: at build time it renders the shell and its interface strings from the catalogue, so the form and the story frame are readable before JavaScript. `src/scripts/app.ts` is the client controller loaded by that page; it owns boot, the birth form, chart rendering, the daily story, focus setup, and share/export/import, and it is where the day's wording actually reaches the screen.
+- **Entry points.** `src/pages/index.astro` is the single static page: at build time it renders the shell and its interface strings from the catalogue, so the form and the story frame are readable before JavaScript. It is published as a GitHub Pages project site, so the page and the stylesheets it serves carry the base path declared in `astro.config.mjs` (`site`, `base`); `tests/published-page.test.ts` reads the built page back and fails if any root-relative reference escapes that base. `src/scripts/app.ts` is the client controller loaded by that page; it owns boot, the birth form, chart rendering, the daily story, focus setup, and share/export/import, and it is where the day's wording actually reaches the screen.
 - **Main modules.**
   - `src/lib/time.ts` — birth wall clock plus IANA timezone to a UTC instant via Luxon; rejects DST-gap times and notes the fall-back ambiguity.
   - `src/lib/ephemeris.ts` — the only seam onto Swiss Ephemeris WASM: a lazily initialised singleton, Moshier flags, Placidus houses.

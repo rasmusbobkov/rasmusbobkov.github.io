@@ -343,3 +343,28 @@ Two consequences worth keeping:
   follow is not a request the page makes, and `tests/privacy.test.ts` keeps
   the difference by allowlisting those two addresses while still failing on
   every other remote URL and on any network call.
+
+## Publication (GitHub Pages)
+
+The two publication steps 0007 left to the captain were carried out on
+4.11.2026: the repository `rasmusbobkov/firstmate_astro` is public, and the
+built page is served at <https://rasmusbobkov.github.io/firstmate_astro/> —
+the one address the footer's source offer is read at.
+
+- **The address lives once.** `astro.config.mjs` declares `site` and `base`;
+  `.github/workflows/pages.yml` builds `dist/` and hands it to GitHub Pages on
+  every push to `main`, so the served page is always a tree the CI gate
+  accepted. Pages serves a project site under its base path, and the page's own
+  asset links follow: the two hand-written ones read
+  `import.meta.env.BASE_URL`, and the `@font-face` files in
+  `public/fonts/fonts.css` are referenced relatively, beside themselves.
+- **The base path is invisible locally and fatal in public.** Served from the
+  root during development, `/favicon.svg`, `/fonts/fonts.css` and the
+  `url(/fonts/…)` list inside that stylesheet all resolve; served under
+  `/firstmate_astro/` the same references 404 and the page arrives unstyled,
+  font-less but otherwise working. `tests/published-page.test.ts` reads the
+  built page and the built stylesheets and holds every root-relative reference
+  to the declared base, and resolves each page reference against `dist/`.
+- **Publishing changed no copy and no design.** The footer already named the
+  licence, linked the source and credited GeoNames; what changed is that an
+  outsider can now read both ends of that offer.
