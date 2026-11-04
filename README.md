@@ -59,8 +59,25 @@ value was derived from any consumer astrology app.
 
 ## Privacy, mechanically enforced
 
-`tests/privacy.test.ts` fails if `src/` references `fetch`, `XMLHttpRequest`,
-WebSockets, `sendBeacon`, `postMessage` or any remote URL, and re-scans the
-built output. Persistence is a versioned localStorage schema with JSON
-export/import; the share link encodes only the derived Sun/Moon/Rising sign
-placements in the URL fragment — never birth time or place.
+`tests/privacy.test.ts` fails if `src/` calls `fetch`, `XMLHttpRequest`,
+WebSockets, `sendBeacon` or `postMessage`, and re-scans the built output. The
+only remote addresses the source names are the two credits the footer displays
+— the project's own source and GeoNames — and nothing loads from either: a
+link a visitor may follow is not a request the page makes. Persistence is a
+versioned localStorage schema with JSON export/import; the share link encodes
+only the derived Sun/Moon/Rising sign placements in the URL fragment — never
+birth time or place.
+
+## Licence
+
+**AGPL-3.0** (SPDX `AGPL-3.0-only`). The app runs the AGPL-3.0 Swiss Ephemeris
+engine inside the same program, so the whole published work carries that
+licence: anyone may copy, host, modify and even sell it, as long as they
+publish their own source under the same terms. The full text is
+[`LICENSE`](LICENSE), which also covers the engine;
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) lists every component the
+build ships with its version and licence — the self-hosted fonts (SIL OFL 1.1,
+their texts under `public/fonts`) and the GeoNames place data (CC BY 4.0)
+included. The page names the licence, offers the source from this repository
+and credits GeoNames; the choice and its consequences are recorded in
+[`docs/decisions/0007-agpl-3-0-and-source-offer.md`](docs/decisions/0007-agpl-3-0-and-source-offer.md).
