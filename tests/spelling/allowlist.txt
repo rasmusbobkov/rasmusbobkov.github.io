@@ -37,3 +37,9 @@ Aspects  # English label in the en table
 
 # ——— technology names in export copy ———
 JSON  # the export format named in export copy ("JSON-failis")
+
+# ——— licence and credit copy in the footer ———
+AGPL  # licence identifier named in the footer (foot.licence); not an Estonian word
+GeoNames  # the source of the bundled place data, credited in the footer (foot.places); proper noun
+CC  # Creative Commons shorthand in the footer credit (CC BY 4.0)
+BY  # Creative Commons shorthand in the footer credit (CC BY 4.0)

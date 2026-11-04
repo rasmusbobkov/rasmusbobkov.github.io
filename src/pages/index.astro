@@ -7,9 +7,14 @@
  */
 import { t, DEFAULT_LANG } from '../messages/catalogue';
 import { MIN_BIRTH_YEAR, maxBirthYear, monthName, SEED_BIRTH_ENTRY } from '../lib/birth-wheels';
+import { PLACE_DATA_URL, SOURCE_URL } from '../lib/licence';
 import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
+
+// The source offer, shown as the address itself: the link text is the URL
+// without its scheme, so one constant holds the whole address (AGPL-3.0 §13).
+const sourceLabel = SOURCE_URL.replace(/^https?:\/\//, '');
 
 // Default birth entry: the example value the form has always shown; the
 // wheels and the text fields agree on it from the first paint — the same
@@ -361,6 +366,13 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
     <footer class="site-foot wrap">
       <p class="note" data-i18n="form.lede">{tx('form.lede')}</p>
+      <p class="note foot-credit">
+        <span data-i18n="foot.licence">{tx('foot.licence')}</span>
+        <a href={SOURCE_URL} rel="noopener">{sourceLabel}</a>
+      </p>
+      <p class="note foot-credit">
+        <a href={PLACE_DATA_URL} rel="noopener" data-i18n="foot.places">{tx('foot.places')}</a>
+      </p>
     </footer>
 
     <script>
@@ -438,4 +450,5 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
   .glossary dt { font-family: var(--display); font-style: italic; color: var(--gold); }
   .glossary dd { margin: 0; font-size: 13.5px; color: var(--muted); min-width: 0; }
   .site-foot { padding: 20px 24px 40px; border-top: 1px solid var(--line); margin-top: 40px; }
+  .site-foot .foot-credit { margin-top: 8px; }
 </style>
