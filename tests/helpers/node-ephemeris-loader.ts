@@ -4,7 +4,7 @@
  * is first used. Only test-side — the app never touches this.
  */
 import fs from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -22,7 +22,9 @@ if (!globalThis.__fmaShimInstalled) {
   globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
     if (url.startsWith('file:')) {
-      const bytes = fs.readFileSync(new URL(url).pathname);
+      // fileURLToPath decodes percent escapes (`%20` in a checkout path) and
+      // handles Windows drive letters; a raw `new URL(url).pathname` does not.
+      const bytes = fs.readFileSync(fileURLToPath(url));
       return new Response(bytes, { status: 200, headers: { 'Content-Type': 'application/wasm' } });
     }
     return realFetch(input, init);
