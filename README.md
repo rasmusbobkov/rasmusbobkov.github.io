@@ -82,7 +82,12 @@ included. The page names the licence, offers the source from this repository
 and credits GeoNames; the choice and its consequences are recorded in
 [`docs/decisions/0007-agpl-3-0-and-source-offer.md`](docs/decisions/0007-agpl-3-0-and-source-offer.md).
 
-The page is published at <https://rasmusbobkov.github.io/firstmate_astro/> as a
-GitHub Pages project site. That address lives in `astro.config.mjs` (`site` and
-`base`); `.github/workflows/pages.yml` builds `dist/` and hands it to Pages on
-every push to `main`.
+The page is built for <https://tähelugu.ee/>, the product's own domain, served
+from that address's root. That address lives in `astro.config.mjs` (`site`, with
+no base path); `.github/workflows/pages.yml` builds `dist/` and hands it to
+Pages on every push to `main`. The domain's DNS records and the Pages custom
+domain that make the address answer are set outside the repository; until they
+are, the page still answers at its first address,
+<https://rasmusbobkov.github.io/firstmate_astro/>, which GitHub Pages then
+redirects to the new one. The move, and the repository rename that follows it,
+are recorded in [`RECORD.md`](RECORD.md).

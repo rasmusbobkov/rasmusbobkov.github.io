@@ -1,17 +1,20 @@
 /**
- * PUBLISHED ADDRESS — the captain's direction of 4.11.2026 (AGPL-3.0 and a
- * public page, card `d4a005dc-4`) is carried out by serving the built page as
- * a GitHub Pages project site, so the page lives under the base path declared
- * once in `astro.config.mjs`.
+ * PUBLISHED ADDRESS — the page is served at the root of its own address, the
+ * one `docs/decisions/0008-product-name-and-public-address.md` chose (after the
+ * captain's direction of 4.11.2026, card `d4a005dc-4`, first put the built page
+ * on a public address). `astro.config.mjs` declares that address as `site`, and
+ * no `base` is declared, so the page and everything it fetches are fetched from
+ * that address's root.
  *
- * That base is invisible locally: `npm run dev` and a local static server put
- * the page at the root, where a root-relative `/fonts/…` works and a published
- * page loses its stylesheet, its fonts or its engine silently. These tests read
- * the built page and the stylesheets it serves and hold every root-relative
- * reference to the base, so the break shows up here instead of on the address
- * the footer's source offer is read at.
+ * A root-relative reference that does not resolve is fatal in public and
+ * invisible locally: `npm run dev` and a local static server both serve from
+ * the root, so a published page can lose its stylesheet, its fonts or its
+ * engine while every local look is fine. These tests read the built page and
+ * the stylesheets it serves and resolve every reference against `dist/`, so the
+ * break shows up here instead of on the address the footer's source offer is
+ * read at.
  *
- * The base is read from the config that declares it, never typed twice.
+ * The address is read from the config that declares it, never typed twice.
  */
 import { describe, expect, test } from 'vitest';
 import fs from 'node:fs';
@@ -21,11 +24,22 @@ import config from '../astro.config.mjs';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
-/** The declared base, always with its trailing separator. */
-function basePath(): string {
+/** The served root: the declared base path, or `/` with none declared. */
+function servedRoot(): string {
   const base = config.base;
-  expect(typeof base, 'astro.config.mjs must declare the base path the page is served under').toBe('string');
-  return (base as string).endsWith('/') ? (base as string) : `${base}/`;
+  expect(
+    base === undefined || typeof base === 'string',
+    'astro.config.mjs declares the base path as a string when it declares one',
+  ).toBe(true);
+  if (base === undefined) return '/';
+  return base.endsWith('/') ? base : `${base}/`;
+}
+
+/** A root-relative reference, resolved against `dist/`, or null. */
+function shippedPath(reference: string, root: string): string | null {
+  if (!reference.startsWith(root)) return null;
+  const rel = reference.slice(root.length).split(/[?#]/)[0]!;
+  return path.join(DIST, rel);
 }
 
 function builtFiles(dir: string, extension: string): string[] {
@@ -49,48 +63,59 @@ function stylesheetReferences(css: string): string[] {
 const rootRelative = (reference: string) => reference.startsWith('/');
 const external = (reference: string) => /^[a-z][a-z0-9+.-]*:/i.test(reference) || reference.startsWith('//');
 
-describe('the built page is served under the base it declares', () => {
+describe('the built page is served from its own address’s root', () => {
   const page = path.join(DIST, 'index.html');
   const html = fs.existsSync(page) ? fs.readFileSync(page, 'utf8') : null;
 
-  test('every root-relative reference in the page sits under the base', () => {
+  test('the declared address is a bare https origin, with no base path beside it', () => {
+    expect(
+      typeof config.site,
+      'astro.config.mjs must declare the address the page is built for',
+    ).toBe('string');
+    const address = new URL(config.site as string);
+    expect(address.protocol, 'the published page answers over https').toBe('https:');
+    expect(address.pathname, 'the page is the address itself, not a path under it').toBe('/');
+    expect(`${address.search}${address.hash}`, 'the address carries no query or fragment').toBe('');
+    expect(servedRoot(), 'no base path: the page is served from the root of that address').toBe('/');
+  });
+
+  test('every reference the page resolves from a root resolves to a file the build ships', () => {
     if (html === null) {
       // Reported, never silently skipped: CI builds before it tests, so this
       // branch is a local run without a build, not a hole in the gate.
-      console.warn('dist/index.html missing — run `npm run build` first; base-path check skipped');
+      console.warn('dist/index.html missing — run `npm run build` first; address check skipped');
       return;
     }
-    const base = basePath();
-    const adrift = pageReferences(html).filter((ref) => rootRelative(ref) && !ref.startsWith(base));
-    expect(adrift, `the page is served under ${base}, so these would 404 there: ${adrift.join(', ')}`).toEqual([]);
-  });
-
-  test('each root-relative reference in the page resolves to a file the build ships', () => {
-    if (html === null) return;
-    const base = basePath();
+    const root = servedRoot();
+    const adrift = pageReferences(html).filter((ref) => rootRelative(ref) && !ref.startsWith(root));
+    expect(adrift, `the page is served at ${root}, so these would 404 there: ${adrift.join(', ')}`).toEqual([]);
     const missing = pageReferences(html)
-      .filter((ref) => rootRelative(ref) && ref.startsWith(base))
-      .map((ref) => ref.slice(base.length).split(/[?#]/)[0]!)
-      .filter((rel) => rel !== '' && !fs.existsSync(path.join(DIST, rel)));
-    expect(missing, `these are served from ${base} but are not in the build: ${missing.join(', ')}`).toEqual([]);
+      .filter(rootRelative)
+      .map((ref) => shippedPath(ref, root))
+      .filter((file): file is string => file !== null && file !== DIST)
+      .filter((file) => !fs.existsSync(file));
+    expect(missing, `these are fetched from ${root} but are not in the build: ${missing.join(', ')}`).toEqual([]);
   });
 
-  test('every root-relative reference in the stylesheets the page serves sits under the base', () => {
-    const base = basePath();
+  test('every reference the page’s stylesheets resolve reaches a file the build ships', () => {
+    if (html === null) return;
+    const root = servedRoot();
     const sheets = [
       ...builtFiles(path.join(DIST, 'fonts'), '.css'),
       ...builtFiles(path.join(DIST, '_astro'), '.css'),
     ];
     expect(sheets.length, 'the build must serve the stylesheets the page links').toBeGreaterThan(0);
-    const adrift: string[] = [];
+    const missing: string[] = [];
     for (const sheet of sheets) {
       for (const ref of stylesheetReferences(fs.readFileSync(sheet, 'utf8'))) {
-        if (external(ref) || !rootRelative(ref) || ref.startsWith(base)) continue;
-        // A stylesheet reached under the base resolves its own relative URLs
-        // itself; only a root-relative one can escape the base.
-        adrift.push(`${path.relative(ROOT, sheet)}: ${ref}`);
+        if (external(ref)) continue;
+        // A root-relative reference resolves from the served root; a relative
+        // one resolves beside the stylesheet that carries it.
+        const file = rootRelative(ref) ? shippedPath(ref, root) : path.join(path.dirname(sheet), ref.split(/[?#]/)[0]!);
+        if (file === null || fs.existsSync(file)) continue;
+        missing.push(`${path.relative(ROOT, sheet)}: ${ref}`);
       }
     }
-    expect(adrift, `these would be fetched from the site root: ${adrift.join(', ')}`).toEqual([]);
+    expect(missing, `these are fetched but are not in the build: ${missing.join(', ')}`).toEqual([]);
   });
 });
