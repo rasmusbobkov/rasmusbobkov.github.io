@@ -26,6 +26,7 @@ import {
 } from '../lib/storage';
 import { encodeShareFragment, decodeShareFragment, type Trio } from '../lib/share';
 import { getEphemeris } from '../lib/ephemeris';
+import { counterSink, emit, setSink } from '../lib/events';
 import { renderWheel, type Selection } from './wheel';
 // the WASM asset is imported at build time; the browser resolves it from our own origin
 import wasmUrl from '@swisseph/browser/dist/swisseph.wasm?url';
@@ -51,6 +52,8 @@ let chartRendered = false;
 let storySeq = 0;
 /** the story surface currently shows the recompute failure note */
 let storyFailed = false;
+/** the story has been opened once this page load: one event per visit */
+let storyOpenedSent = false;
 
 // ——— i18n plumbing ———
 function fillStaticI18n(): void {
@@ -92,6 +95,8 @@ function setView(id: string, visible: boolean): void {
 
 // ——— boot ———
 async function boot(): Promise<void> {
+  setSink(counterSink());
+  emit('visit');
   try {
     const saved = localStorage.getItem(LANG_KEY);
     if (saved === 'et' || saved === 'en') lang = saved;
@@ -567,7 +572,8 @@ function wireBirthForm(): void {
       timeUnknown: unknownEl.checked,
       place: { lat: chosenPlace.lat, lon: chosenPlace.lon, tz: chosenPlace.tz },
     };
-    await showChartFromInput(input);
+    const ok = await showChartFromInput(input);
+    if (ok) emit('birthDataGiven');
   });
 }
 
@@ -777,6 +783,10 @@ async function enterStory(): Promise<void> {
     storyFailed = false;
     renderStory();
     renderWhyPanel();
+    if (!storyOpenedSent) {
+      storyOpenedSent = true;
+      emit('storyOpened');
+    }
   } catch (err) {
     if (seq !== storySeq) return;
     console.error(err);
@@ -1307,6 +1317,7 @@ function wireDataActions(c: Chart): void {
       const input = toBirthInput(stored);
       placeName = stored.place.name;
       const ok = await showChartFromInput(input);
+      if (ok) emit('birthDataGiven');
       const note = document.getElementById('import-note');
       if (note) note.textContent = ok ? t(lang, 'import.success') : '';
     });

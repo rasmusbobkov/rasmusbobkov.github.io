@@ -1,11 +1,19 @@
 /**
  * PRIVACY ENFORCED MECHANICALLY:
- * the published work calls no network API, and the only remote addresses it
- * names are ones nothing loads — the two credits the page displays (the
- * project's own source, the AGPL-3.0 §13 source offer, and GeoNames), the
- * addresses inside the third-party licence notices a publisher is obliged to
- * ship verbatim, and the SVG namespaces. Every other remote URL is still an
- * offence, and the allowances are pinned below and proven narrow.
+ * the published work calls no network API except the one approved measurement
+ * request, and the only remote addresses it names are the two credits the
+ * page displays (the project's own source, the AGPL-3.0 §13 source offer, and
+ * GeoNames), the one cookieless counter address, the addresses inside the
+ * third-party licence notices a publisher is obliged to ship verbatim, and
+ * the SVG namespaces. Every other remote URL is still an offence, and the
+ * allowances are pinned below and proven narrow.
+ *
+ * The measurement allowance is deliberately the narrowest the approved plan
+ * allows (card-f77f7896-fm-measurement-plan): ONE address, requested from ONE
+ * module. `src/lib/events.ts` is the only authored file that may call a
+ * network API, and in the build only the chunk that names the counter address
+ * may; a second address, or a request from any other file, still fails. The
+ * bait below proves both.
  *
  * One scan reads every file a visitor can be served, as text: our own source,
  * the assets `public/` copies into the build verbatim (the font stylesheet,
@@ -24,6 +32,7 @@ import { expect, test } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { PLACE_DATA_URL, SOURCE_URL } from '../src/lib/licence';
+import { COUNTER_URL } from '../src/lib/events';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const SRC = path.join(ROOT, 'src');
@@ -40,6 +49,24 @@ const REVIEWED_CREDITS: readonly string[] = [
   SOURCE_URL, // the project's own repository — AGPL-3.0 §13 source offer
   PLACE_DATA_URL, // GeoNames — the CC BY 4.0 credit for the bundled place data
 ];
+
+/**
+ * The one measurement address the approved plan allows. Unlike the credits it
+ * IS a request the page makes: exactly one GET per wired event, from one
+ * module, carrying only the event name and the app version. It is read from
+ * the module that sends it, and from the data file both the page and the daily
+ * refresh script read, so no second copy of the address can appear.
+ */
+const COUNTER_ADDRESS: string = COUNTER_URL;
+
+/** The one authored module allowed to call the network. */
+const NETWORK_MODULE = 'src/lib/events.ts';
+
+/** In the build, the module's chunk is the one whose text names the address. */
+function networkAllowed(rel: string, text: string): boolean {
+  if (rel === NETWORK_MODULE) return true;
+  return rel.startsWith('dist/') && text.includes(COUNTER_ADDRESS);
+}
 
 /**
  * The third-party licence notices we must ship beside the fonts they cover
@@ -85,9 +112,11 @@ function withoutAllowed(line: string, allowed: readonly string[]): string {
 }
 
 /** The addresses a published file may name: the notices get the ones the
- * notices document records, everything else only the two page credits. */
+ * notices document records, everything else only the two page credits — and
+ * every published file may name the one approved counter address. */
 function allowedIn(rel: string): readonly string[] {
-  return LICENCE_NOTICE.test(rel) ? [...REVIEWED_CREDITS, ...RECORDED_ADDRESSES] : REVIEWED_CREDITS;
+  const base = LICENCE_NOTICE.test(rel) ? [...REVIEWED_CREDITS, ...RECORDED_ADDRESSES] : REVIEWED_CREDITS;
+  return [...base, COUNTER_ADDRESS];
 }
 
 function* walkFiles(dir: string): Generator<string> {
@@ -98,12 +127,16 @@ function* walkFiles(dir: string): Generator<string> {
   }
 }
 
-function offendingLines(text: string, allowed: readonly string[]): string[] {
+function offendingLines(text: string, allowed: readonly string[], networkApi = false): string[] {
   const bad: string[] = [];
   for (const line of text.split('\n')) {
     if (NAMESPACE_LINE.test(line)) continue;
     for (const { re, allowRemote, why } of LINE_PATTERNS) {
-      if (re.test(allowRemote ? withoutAllowed(line, allowed) : line)) bad.push(why);
+      if (allowRemote) {
+        if (re.test(withoutAllowed(line, allowed))) bad.push(why);
+      } else if (!networkApi && re.test(line)) {
+        bad.push(why);
+      }
     }
   }
   return bad;
@@ -140,7 +173,9 @@ function publishedFiles(): Array<{ rel: string; text: string }> {
 function scan(files: ReadonlyArray<{ rel: string; text: string }>): string[] {
   const offenders: string[] = [];
   for (const { rel, text } of files) {
-    for (const why of offendingLines(text, allowedIn(rel))) offenders.push(`${rel}: ${why}`);
+    for (const why of offendingLines(text, allowedIn(rel), networkAllowed(rel, text))) {
+      offenders.push(`${rel}: ${why}`);
+    }
   }
   return offenders;
 }
@@ -190,6 +225,40 @@ test('a remote address no reviewed allowance covers still fails', () => {
   expect(scan([{ rel: notice, text: 'Redistributed from https://fonts.example.com/fraunces' }])).toContain(
     `${notice}: remote URL`,
   );
+});
+
+test('the one measurement address is allowed and only its module may request it', () => {
+  // The address is the one the data file declares and the one module sends.
+  const declared = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'src', 'data', 'counter.json'), 'utf8'),
+  ) as { count: string };
+  expect(COUNTER_ADDRESS).toBe(declared.count);
+  expect(COUNTER_ADDRESS).toMatch(/^https:\/\/[\w.-]+\.goatcounter\.com\/count$/);
+
+  // The module's own request is allowed, in source and in its build chunk.
+  expect(scan([{ rel: NETWORK_MODULE, text: `fetch("${COUNTER_ADDRESS}?p=visit&t=0.1.0")` }])).toEqual([]);
+  expect(scan([{ rel: 'dist/_astro/page.js', text: `fetch("${COUNTER_ADDRESS}?p=visit")` }])).toEqual([]);
+
+  // The same call from any other file still fails ...
+  expect(scan([{ rel: 'src/scripts/app.ts', text: `fetch("${COUNTER_ADDRESS}?p=visit")` }])).toContain(
+    'src/scripts/app.ts: fetch()',
+  );
+  // ... and so does a build chunk that names no counter address.
+  expect(scan([{ rel: 'dist/_astro/other.js', text: 'fetch("/count")' }])).toContain(
+    'dist/_astro/other.js: fetch()',
+  );
+
+  // The one address is accepted only as itself: a path beside it is a second
+  // address, and a second address in the module or its chunk still fails.
+  expect(offendingLines(`<a href="${COUNTER_ADDRESS}/evil">x</a>`, [COUNTER_ADDRESS])).toContain(
+    'remote URL',
+  );
+  expect(scan([{ rel: NETWORK_MODULE, text: 'fetch("https://evil.example/count")' }])).toContain(
+    'src/lib/events.ts: remote URL',
+  );
+  expect(
+    scan([{ rel: 'dist/_astro/page.js', text: `fetch("${COUNTER_ADDRESS}?p=visit&r=https://evil.example/x")` }]),
+  ).toContain('dist/_astro/page.js: remote URL');
 });
 
 test('src: the optional CDN ephemeris loaders are never used', () => {

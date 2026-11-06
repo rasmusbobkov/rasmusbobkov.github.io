@@ -13,3 +13,4 @@ This table is the only place a decision is listed; the record itself holds the r
 | [0006](0006-offline-bundled-place-data.md) | Bundle place and timezone data instead of geocoding | accepted |
 | [0007](0007-agpl-3-0-and-source-offer.md) | Ship under AGPL-3.0 and offer the source from the page | accepted |
 | [0008](0008-product-name-and-public-address.md) | The product is called Tähelugu and published at tähelugu.ee | accepted |
+| [0009](0009-cookieless-measurement.md) | Measure three events with one cookieless counter, baked at build time | accepted |

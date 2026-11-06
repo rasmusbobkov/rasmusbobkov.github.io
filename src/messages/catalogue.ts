@@ -237,6 +237,28 @@ const et = {
   // Footer: the licence, the source offer and the place-data credit
   'foot.licence': `Litsents: ${LICENCE_ID}. Lähtekood:`,
   'foot.places': 'Kohanimed ja ajavööndid: GeoNames (CC BY 4.0)',
+  // Footer: the measurement sentence, beside the privacy sentence
+  'foot.measurement':
+    'Mõõdame külastusi, sünniandmete andmist ja lugude avamist anonüümselt ega kasuta küpsiseid — loe täpsemalt',
+  'foot.measurement.link': 'mõõdikute lehelt.',
+
+  // The public measurement page
+  'metrics.title': 'Mõõdikud',
+  'metrics.lede': 'Mida me mõõdame ja mida mitte.',
+  'metrics.event': 'Sündmus',
+  'metrics.count': 'Arv',
+  'metrics.readAt': 'Numbrid loetud',
+  'metrics.leaving': 'väljub ainult sündmuse nimi',
+  'metrics.unavailable': 'Andmed puuduvad',
+  'metrics.back': '← Tagasi lehele',
+  'metrics.visit': 'Külastus',
+  'metrics.birthDataGiven': 'Sünniandmed antud',
+  'metrics.storyOpened': 'Lugu avatud',
+  'metrics.noCookies':
+    'Leht ei pane brauserisse küpsist ega saada päringut numbrite nägemiseks: arvud pannakse lehe sisse ehituse ajal.',
+  'metrics.notMeasured':
+    'Teavituse luba, tasulise piiri nägemine ja ost on loendis nimedena; need lülituvad sisse oma funktsioonidega S2-s ja S4-s.',
+  'metrics.onlyName': 'Iga teo kohta väljub üks sündmus: sündmuse nimi ja rakenduse versioon.',
 
   // Story tier switch
   'story.tierSwitch': 'Kuidas täna loetud?',
@@ -280,6 +302,7 @@ export type MessageKey = keyof typeof et;
  * language switch shows the "coming soon" notice. */
 const en: Partial<Record<MessageKey, string>> = {
   'app.name': 'Tähelugu',
+  'metrics.title': 'Metrics',
   'chart.planetsHeading': 'Planets',
   'chart.housesHeading': 'Houses',
   'chart.aspectsHeading': 'Aspects',
