@@ -12,9 +12,10 @@ import '../styles/global.css';
 const L = DEFAULT_LANG;
 const tx = (key: Parameters<typeof t>[1]) => t(L, key);
 
-// The deployment base, from the one place that declares it (astro.config.mjs):
-// the page is published under it, so its own asset links have to carry it too.
-// Astro hands back the value verbatim, so the separator is added here once.
+// The served root, from the one place that declares it (astro.config.mjs): with
+// no base path declared the page sits at the root of its own address, and its
+// asset links are root-relative. Astro hands back the value verbatim, so the
+// separator is added here once, and a base path set there would be carried.
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 
 // The source offer, shown as the address itself: the link text is the URL
