@@ -15,7 +15,7 @@
 export const LICENCE_ID = 'AGPL-3.0';
 
 /** The project's own repository — the source offer AGPL-3.0 §13 requires. */
-export const SOURCE_URL = 'https://github.com/rasmusbobkov/firstmate_astro';
+export const SOURCE_URL = 'https://github.com/rasmusbobkov/rasmusbobkov.github.io';
 
 /** The credited source of the bundled place data (GeoNames, CC BY 4.0). */
 export const PLACE_DATA_URL = 'https://www.geonames.org/';

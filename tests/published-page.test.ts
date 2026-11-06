@@ -1,10 +1,12 @@
 /**
- * PUBLISHED ADDRESS — the page is served at the root of its own address, the
- * one `docs/decisions/0008-product-name-and-public-address.md` chose (after the
- * captain's direction of 4.11.2026, card `d4a005dc-4`, first put the built page
- * on a public address). `astro.config.mjs` declares that address as `site`, and
- * no `base` is declared, so the page and everything it fetches are fetched from
- * that address's root.
+ * PUBLISHED ADDRESS — the page is served at the root of its own address: the
+ * repository is a GitHub Pages user site, named after that address, and
+ * `astro.config.mjs` declares it as `site` with no `base`, so the page and
+ * everything it fetches are fetched from that address's root. Decision
+ * `docs/decisions/0008-product-name-and-public-address.md` chose the product's
+ * own domain, which replaces this address when it answers (after the captain's
+ * direction of 4.11.2026, card `d4a005dc-4`, first put the built page on a
+ * public address).
  *
  * A root-relative reference that does not resolve is fatal in public and
  * invisible locally: `npm run dev` and a local static server both serve from

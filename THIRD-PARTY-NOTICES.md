@@ -1,6 +1,6 @@
 # Third-party notices
 
-`firstmate_astro` is licensed under the **GNU Affero General Public License,
+The published work is licensed under the **GNU Affero General Public License,
 version 3** (AGPL-3.0, SPDX `AGPL-3.0-only`); the full text is in
 [`LICENSE`](LICENSE). The whole published work carries that licence, because
 the app runs the AGPL-3.0 Swiss Ephemeris engine inside the same program — the

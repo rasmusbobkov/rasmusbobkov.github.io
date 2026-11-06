@@ -5,18 +5,18 @@ import { defineConfig } from 'astro/config';
 //
 // `site` is the published address, and the page is served from that address's
 // root: no `base` is declared, so nothing is prefixed and every asset link the
-// page writes is root-relative. Serving from a domain's root is what decision
-// `docs/decisions/0008-product-name-and-public-address.md` chose; the DNS
-// records and the Pages custom domain that make the address answer are set
-// outside this file, and `tests/published-page.test.ts` reads the built page
-// back and fails if a root-relative path does not resolve to a file the build
-// ships, which is the way a published page loses its stylesheet without anyone
-// noticing locally.
+// page writes is root-relative. The repository is named after the address (a
+// GitHub Pages *user site*), so the page, the footer's source offer and the
+// repository carry one name. Decision
+// `docs/decisions/0008-product-name-and-public-address.md` chose the product's
+// own domain: when `tähelugu.ee` answers, it becomes `site` here and the
+// repository is renamed `tahelugu`.
 //
-// The address is Estonian and keeps the name's own letters; its DNS records and
-// the Pages setting take the Punycode form, `xn--thelugu-5wa.ee`.
+// `tests/published-page.test.ts` reads the built page back and fails if a
+// root-relative path does not resolve to a file the build ships, which is the
+// way a published page loses its stylesheet without anyone noticing locally.
 export default defineConfig({
-  site: 'https://tähelugu.ee',
+  site: 'https://rasmusbobkov.github.io',
   output: 'static',
   vite: {
     build: {

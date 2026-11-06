@@ -369,41 +369,45 @@ the one address the footer's source offer is read at.
   licence, linked the source and credited GeoNames; what changed is that an
   outsider can now read both ends of that offer.
 
-## The page moves to its own address (tähelugu.ee)
+## The page gets its own address (a GitHub Pages user site)
 
 The captain's first roadmap item settled the product's name and its public
-address; this is the address half. The page is built for
-<https://tähelugu.ee/>, the product's own domain, served from that address's
-root, and the old GitHub address is left to GitHub Pages' own redirect.
+address; this is the address half. Its first step needs nothing bought: the
+repository is renamed `rasmusbobkov/rasmusbobkov.github.io`, which makes it a
+GitHub Pages *user site*, so the built page is served from the root of
+<https://rasmusbobkov.github.io/> instead of the path a project site sits
+under. The product's own domain, `tähelugu.ee`, replaces that address once it
+is registered and answers.
 
 - **The address lives once, and it is no longer a project path.**
-  `astro.config.mjs` declares `site` and no `base`, so the page, its
-  stylesheet, its fonts and its engine are fetched from the root of that
-  address. The two hand-written asset links in `src/pages/index.astro` still
-  read `import.meta.env.BASE_URL`, which is `/` at the root.
-- **The old address answers with a redirect, and that redirect is GitHub's.**
-  <https://rasmusbobkov.github.io/firstmate_astro/> serves the page today as a
-  Pages project site; once a custom domain is set, Pages answers a project
-  site's default `<user>.github.io/<repository>/` address with a 301 to that
-  domain. Checked on 6.11.2026 against a live Pages site on a custom domain:
-  `jekyll.github.io/jekyll/` answers `301` to `http://jekyllrb.com/`.
-- **The registrar purchase, the DNS records and the Pages custom domain are
-  the captain's steps**: they need the captain's own accounts and payment. The
-  name was unregistered when this was written — the .ee registry answered
-  "Domain not found" for `tähelugu.ee` — and an internationalized domain is
-  entered in its Punycode form (`xn--thelugu-5wa.ee`) in DNS and in the Pages
-  setting. Until the records answer, the page keeps serving at its first
-  address; a build served from a root it is not at arrives without its
-  stylesheet, which is why the two are done together.
+  `astro.config.mjs` declares `site` as <https://rasmusbobkov.github.io> and no
+  `base`, so the page, its stylesheet, its fonts and its engine are fetched
+  from the root of that address. The two hand-written asset links in
+  `src/pages/index.astro` still read `import.meta.env.BASE_URL`, which is `/`
+  at the root.
+- **The page, the source offer and the repository carry one name.** A user
+  site is published at the root of `<user>.github.io` and its repository has to
+  be named exactly that, so the address and the repository's name agree;
+  `src/lib/licence.ts` points the footer's source offer at
+  <https://github.com/rasmusbobkov/rasmusbobkov.github.io>, and
+  `tests/licence.test.ts` keeps the offer and the address this checkout was
+  cloned from in step. GitHub answers the repository's former address with its
+  own redirect.
 - **The published-address test was re-typed, not abandoned.**
   `tests/published-page.test.ts` read the base path and held every
   root-relative reference to it; with no base it reads the declared address,
   holds the page to that address's root, and resolves every root-relative
   reference in the page and in the stylesheets it serves against `dist/`.
-  `README.md` and `docs/architecture.md` name the address the same way.
-- **The repository name, and the footer's offer, are the step after this
-  one.** The footer's source offer in `src/lib/licence.ts` still names
-  `rasmusbobkov/firstmate_astro`, and `tests/licence.test.ts` holds it to the
-  address this checkout was cloned from, so renaming the repository and
-  pointing the offer at the new name are one change: until the repository is
-  renamed, the offer names the repository that exists.
+  `README.md` and `docs/architecture.md` name the address the same way, and
+  `THIRD-PARTY-NOTICES.md` no longer names the work after a repository address
+  that has moved.
+- **The product's own domain is the step after this one, and it is the
+  captain's to register.** The .ee registry answered "Domain not found" for
+  `tähelugu.ee` when this was written, and an internationalized domain is
+  entered in its Punycode form (`xn--thelugu-5wa.ee`) in DNS and in the Pages
+  setting. Setting a custom domain makes Pages answer a site's default address
+  with a 301 to it — checked on 6.11.2026 against a live Pages site on a
+  custom domain, where `jekyll.github.io/jekyll/` answers `301` to
+  `http://jekyllrb.com/` — so that is what the user site's address will do
+  then. The repository is renamed `tahelugu` in the same move, so the address,
+  the offer and the repository carry that name.
