@@ -20,9 +20,9 @@ export const DEFAULT_LANG: Lang = 'et';
 
 const et = {
   // App identity
-  'app.name': 'Firstmate Astro',
+  'app.name': 'Tähelugu',
   'app.description': 'Sinu sünnikaart, arvutatud sinu seadmes.',
-  'app.comingSoon': 'Inglise tõlge on tulemas. Seni räägib Firstmate Astro sinuga eesti keeles.',
+  'app.comingSoon': 'Inglise tõlge on tulemas. Seni räägib Tähelugu sinuga eesti keeles.',
   'misc.calculating': 'Arvutan…',
 
   // Daily story (the landing surface)
@@ -279,7 +279,7 @@ export type MessageKey = keyof typeof et;
 /** English is structure only; missing keys fall back to Estonian and the
  * language switch shows the "coming soon" notice. */
 const en: Partial<Record<MessageKey, string>> = {
-  'app.name': 'Firstmate Astro',
+  'app.name': 'Tähelugu',
   'chart.planetsHeading': 'Planets',
   'chart.housesHeading': 'Houses',
   'chart.aspectsHeading': 'Aspects',

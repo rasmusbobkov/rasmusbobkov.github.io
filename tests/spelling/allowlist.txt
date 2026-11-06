@@ -9,8 +9,8 @@
 # Format: word  # reason  (full-line # comments are free)
 
 # ——— brand and app identity ———
-Firstmate  # the product's own name (app.name, share texts); proper noun, not in any Estonian dictionary
-Astro  # the product's own name (app.name); proper noun
+# The product name Tähelugu (täht + lugu) is an Estonian compound the committed
+# dictionary already accepts, so it needs no entry here.
 
 # ——— planet names ———
 Saturn  # Estonia keeps the Latin planet name in astrology (also in golden day notes); dictionary gap
