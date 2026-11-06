@@ -1,4 +1,4 @@
-# Firstmate Astro
+# Tähelugu
 
 An Estonian-first astrology app for the general public: a daily coach that
 speaks from a real natal chart, not a chart viewer. The daily story is the
