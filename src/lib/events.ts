@@ -8,7 +8,9 @@
  * the page injects a sink through `setSink`, and until it does, nothing
  * leaves the page at all. The counter sink that sends the approved request
  * lives in this same module, so the event layer and its one outbound address
- * cannot drift apart.
+ * cannot drift apart. The address itself sits in `src/data/counter.json`, read
+ * here and by the build-time refresh script, so the page and the build read
+ * one address and not two.
  *
  * Three events exist today and are wired where they happen: `visit`,
  * `birthDataGiven`, `storyOpened`. The other three — `notificationPermission`,
@@ -16,6 +18,7 @@
  * unwired until their features arrive in S2 and S4. A named event with no
  * feature behind it sends nothing.
  */
+import counter from '../data/counter.json';
 
 /**
  * The version an event carries. It stays in step with `package.json`;
@@ -56,11 +59,39 @@ export type EventSink = (payload: EventPayload) => void;
 
 const wired: readonly EventName[] = WIRED_EVENTS;
 
+/**
+ * The one outbound address the approved plan allows: a cookieless counter
+ * that keeps no IP address, no user agent and no tracking identifier. It is
+ * declared once, in `src/data/counter.json`, and read here and by the daily
+ * refresh script — no second copy of the address exists.
+ */
+export const COUNTER_URL: string = counter.count;
+
 let sink: EventSink | null = null;
 
 /** Point the layer at a sink; `null` switches the transport off. */
 export function setSink(next: EventSink | null): void {
   sink = next;
+}
+
+/**
+ * The approved transport: one GET per wired event to the one counter address,
+ * carrying the event name and the app version and nothing else. No cookie is
+ * offered (`credentials: 'omit'`), no referrer is sent, and the page never
+ * waits on the answer — a counter that does not answer cannot slow the app.
+ */
+export function counterSink(): EventSink {
+  return ({ event, version }) => {
+    const query = `p=${encodeURIComponent(event)}&t=${encodeURIComponent(version)}`;
+    void fetch(`${COUNTER_URL}?${query}`, {
+      method: 'GET',
+      mode: 'no-cors',
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+      cache: 'no-store',
+      keepalive: true,
+    }).catch(() => undefined);
+  };
 }
 
 /**

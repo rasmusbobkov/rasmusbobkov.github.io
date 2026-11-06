@@ -1,0 +1,118 @@
+---
+/**
+ * MÕÕDIKUD — the public measurement page.
+ *
+ * The captain's approved measurement plan (card-f77f7896-fm-measurement-plan)
+ * asked for one public page in the app that shows the event counts in
+ * Estonian. The numbers are baked into this page at build time from
+ * `src/data/metrics.json`, which the daily build refreshes from the counter's
+ * public counts; the page itself asks the visitor nothing and sends no
+ * request. When the counter has not answered yet, the page says so with a
+ * dash and a plain note rather than showing a zero it cannot prove.
+ *
+ * This page is served from the same address as the app and carries the same
+ * licence and credit obligations in its footer. Its own address is written
+ * percent-encoded in the app's footer link; `tests/published-page.test.ts`
+ * decodes it when it resolves the reference against the build.
+ */
+import { DEFAULT_LANG, t } from '../messages/catalogue';
+import type { MessageKey } from '../messages/catalogue';
+import { PLACE_DATA_URL, SOURCE_URL } from '../lib/licence';
+import { metricsRows, readAtLabel } from '../lib/metrics';
+import type { MetricsSnapshot } from '../lib/metrics';
+import metrics from '../data/metrics.json';
+import '../styles/global.css';
+
+const L = DEFAULT_LANG;
+const tx = (key: MessageKey) => t(L, key);
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const sourceLabel = SOURCE_URL.replace(/^https?:\/\//, '');
+
+const snapshot = metrics as unknown as MetricsSnapshot;
+const readAt = readAtLabel(snapshot);
+const rows = metricsRows(snapshot).map((row) => ({
+  ...row,
+  label: tx(('metrics.' + row.event) as MessageKey),
+}));
+---
+
+<!doctype html>
+<html lang="et">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content={tx('metrics.lede')} />
+    <title>{tx('metrics.title')} · {tx('app.name')}</title>
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="stylesheet" href={`${base}fonts/fonts.css`} />
+  </head>
+  <body>
+    <header class="site-head wrap">
+      <div class="mark">
+        <span class="mark-dot" aria-hidden="true"></span>
+        <span class="mark-name">{tx('app.name')}</span>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card metrics-card">
+        <h1 class="metrics-title">{tx('metrics.title')}</h1>
+        <p class="note metrics-lede">{tx('metrics.lede')}</p>
+
+        <table class="metrics-table">
+          <thead>
+            <tr>
+              <th scope="col">{tx('metrics.event')}</th>
+              <th scope="col">{tx('metrics.count')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr>
+                <td>{row.label}</td>
+                <td class="metrics-number">{row.count ?? '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <p class="note metrics-read">
+          {tx('metrics.readAt')} {readAt ?? tx('metrics.unavailable')} · {tx('metrics.leaving')}
+        </p>
+        <p class="note">{tx('metrics.onlyName')}</p>
+        <p class="note">{tx('metrics.noCookies')}</p>
+        <p class="note">{tx('metrics.notMeasured')}</p>
+        <p class="metrics-back"><a href={base}>{tx('metrics.back')}</a></p>
+      </section>
+    </main>
+
+    <footer class="site-foot wrap">
+      <p class="note foot-credit">
+        <span>{tx('foot.licence')}</span>
+        <a href={SOURCE_URL} rel="noopener">{sourceLabel}</a>
+      </p>
+      <p class="note foot-credit">
+        <a href={PLACE_DATA_URL} rel="noopener">{tx('foot.places')}</a>
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-head { display: flex; align-items: center; padding: 22px 24px 8px; }
+  .mark { display: flex; align-items: center; gap: 12px; }
+  .metrics-card { max-width: 560px; margin: 40px auto; }
+  .metrics-title { font-size: 30px; margin: 0 0 6px; }
+  .metrics-lede { margin: 0 0 20px; }
+  .metrics-table { width: 100%; border-collapse: collapse; margin: 0 0 16px; }
+  .metrics-table th,
+  .metrics-table td { text-align: left; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .metrics-table th { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 400; }
+  .metrics-number { text-align: right; font-family: var(--mono); color: var(--gold); }
+  .metrics-read { margin: 0 0 10px; }
+  .metrics-back { margin: 18px 0 0; font-size: 13px; }
+  .site-foot { padding: 20px 24px 40px; border-top: 1px solid var(--line); margin-top: 40px; }
+  .site-foot .foot-credit { margin-top: 8px; }
+</style>

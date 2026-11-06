@@ -8,17 +8,20 @@
  * the six approved names with exactly three wired, the payload keys, the
  * version staying in step with `package.json`, and no sink meaning no request.
  *
- * The counter request itself is tested beside this file once the approved
- * address is wired in.
+ * The approved counter request is tested here too: one GET per event, to the
+ * one address, carrying only the event name and the version and offering no
+ * cookie or referrer. A counter that does not answer never reaches the page.
  */
 import { describe, expect, test } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
   APP_VERSION,
+  COUNTER_URL,
   EVENT_NAMES,
   UNWIRED_EVENTS,
   WIRED_EVENTS,
+  counterSink,
   emit,
   setSink,
   type EventPayload,
@@ -86,5 +89,45 @@ describe('the payload rule', () => {
     emit('birthDataGiven');
     emit('storyOpened');
     expect(seen, 'nothing may be delivered while no sink is set').toEqual([]);
+  });
+});
+
+describe('the approved counter request', () => {
+  test('one GET per event carries only the event name and the version', () => {
+    const calls: Array<{ url: string; init: RequestInit }> = [];
+    const original = globalThis.fetch;
+    globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+      calls.push({ url: String(input), init: init ?? {} });
+      return Promise.resolve(new Response(''));
+    }) as typeof fetch;
+    try {
+      counterSink()({ event: 'visit', version: '0.1.0' });
+      expect(calls).toHaveLength(1);
+      const requested = new URL(calls[0]!.url);
+      const approved = new URL(COUNTER_URL);
+      expect(requested.origin).toBe(approved.origin);
+      expect(requested.pathname).toBe(approved.pathname);
+      // the whole query is the event name and the app version: p and t
+      expect([...requested.searchParams.keys()].sort()).toEqual(['p', 't']);
+      expect(requested.searchParams.get('p')).toBe('visit');
+      expect(requested.searchParams.get('t')).toBe('0.1.0');
+      // no cookie, no referrer, and the page does not wait on the answer
+      expect(calls[0]!.init.credentials).toBe('omit');
+      expect(calls[0]!.init.referrerPolicy).toBe('no-referrer');
+      expect(calls[0]!.init.keepalive).toBe(true);
+    } finally {
+      globalThis.fetch = original;
+    }
+  });
+
+  test('a counter that does not answer never throws into the page', async () => {
+    const original = globalThis.fetch;
+    globalThis.fetch = (() => Promise.reject(new Error('offline'))) as typeof fetch;
+    try {
+      expect(() => counterSink()({ event: 'visit', version: '0.1.0' })).not.toThrow();
+      await Promise.resolve();
+    } finally {
+      globalThis.fetch = original;
+    }
   });
 });

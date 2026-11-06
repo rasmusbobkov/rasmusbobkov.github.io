@@ -64,9 +64,14 @@ value was derived from any consumer astrology app.
 
 `tests/privacy.test.ts` fails if `src/` calls `fetch`, `XMLHttpRequest`,
 WebSockets, `sendBeacon` or `postMessage`, and re-scans the built output. The
-only remote addresses the source names are the two credits the footer displays
-— the project's own source and GeoNames — and nothing loads from either: a
-link a visitor may follow is not a request the page makes. Persistence is a
+one exception is the approved measurement: `src/lib/events.ts` sends one GET
+per wired event — a visit, birth data given, a story opened — to a cookieless
+counter, carrying the event name and the app version and nothing else. The
+only remote addresses the source names are that counter and the two credits
+the footer displays — the project's own source and GeoNames — and nothing
+loads from the credits: a link a visitor may follow is not a request the page
+makes. The public metrics page at `/mõõdikud/` reads its numbers from the
+build-time snapshot, so it sends no request of its own. Persistence is a
 versioned localStorage schema with JSON export/import; the share link encodes
 only the derived Sun/Moon/Rising sign placements in the URL fragment — never
 birth time or place.

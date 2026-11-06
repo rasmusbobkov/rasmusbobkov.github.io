@@ -8,6 +8,10 @@ name: Pages
 on:
   push:
     branches: [main]
+  # Once a day, the refresh below reads the counter's public counts and the
+  # build bakes them into the measurement page, as decision 0009 records.
+  schedule:
+    - cron: '17 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -31,6 +35,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Refresh the committed measurement snapshot from the counter's public
+      # counts before the build. A counter that does not answer leaves the
+      # committed snapshot as it is; the script says so and exits without
+      # failing the deploy.
+      - run: node scripts/refresh-metrics.mjs
       - run: npm run build
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

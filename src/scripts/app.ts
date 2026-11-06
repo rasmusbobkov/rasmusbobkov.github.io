@@ -26,7 +26,7 @@ import {
 } from '../lib/storage';
 import { encodeShareFragment, decodeShareFragment, type Trio } from '../lib/share';
 import { getEphemeris } from '../lib/ephemeris';
-import { emit } from '../lib/events';
+import { counterSink, emit, setSink } from '../lib/events';
 import { renderWheel, type Selection } from './wheel';
 // the WASM asset is imported at build time; the browser resolves it from our own origin
 import wasmUrl from '@swisseph/browser/dist/swisseph.wasm?url';
@@ -95,6 +95,7 @@ function setView(id: string, visible: boolean): void {
 
 // ——— boot ———
 async function boot(): Promise<void> {
+  setSink(counterSink());
   emit('visit');
   try {
     const saved = localStorage.getItem(LANG_KEY);

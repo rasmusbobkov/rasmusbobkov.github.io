@@ -37,10 +37,21 @@ function servedRoot(): string {
   return base.endsWith('/') ? base : `${base}/`;
 }
 
-/** A root-relative reference, resolved against `dist/`, or null. */
+/**
+ * A root-relative reference, resolved against `dist/`, or null. The link to
+ * the measurement page is percent-encoded (`/m%C3%B5%C3%B5dikud/`, as the
+ * approved plan asks), so the reference is decoded before it is resolved; a
+ * malformed escape cannot be a shipped path.
+ */
 function shippedPath(reference: string, root: string): string | null {
   if (!reference.startsWith(root)) return null;
-  const rel = reference.slice(root.length).split(/[?#]/)[0]!;
+  const raw = reference.slice(root.length).split(/[?#]/)[0]!;
+  let rel: string;
+  try {
+    rel = decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
   return path.join(DIST, rel);
 }
 

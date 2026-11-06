@@ -18,6 +18,10 @@ const tx = (key: Parameters<typeof t>[1]) => t(L, key);
 // separator is added here once, and a base path set there would be carried.
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 
+// The measurement page's address, percent-encoded as the approved plan asks:
+// the page file is `mõõdikud.astro`, served at the same root as this page.
+const metricsHref = `${base}m%C3%B5%C3%B5dikud/`;
+
 // The source offer, shown as the address itself: the link text is the URL
 // without its scheme, so one constant holds the whole address (AGPL-3.0 §13).
 const sourceLabel = SOURCE_URL.replace(/^https?:\/\//, '');
@@ -372,6 +376,10 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
     <footer class="site-foot wrap">
       <p class="note" data-i18n="form.lede">{tx('form.lede')}</p>
+      <p class="note foot-measure">
+        <span data-i18n="foot.measurement">{tx('foot.measurement')}</span>
+        <a href={metricsHref} data-i18n="foot.measurement.link">{tx('foot.measurement.link')}</a>
+      </p>
       <p class="note foot-credit">
         <span data-i18n="foot.licence">{tx('foot.licence')}</span>
         <a href={SOURCE_URL} rel="noopener">{sourceLabel}</a>

@@ -34,6 +34,9 @@ liiguvat  # oblique mood of liikuma ("näib liiguvat"); dictionary only knows th
 Planets  # English label in the en table (structure only until the English translation ships)
 Houses  # English label in the en table
 Aspects  # English label in the en table
+Metrics  # English title on the measurement page's en table entry
+brauserisse  # standard loanword "brauser" (browser) in the illative, in the measurement page's no-cookie sentence; dictionary gap
+Teavituse  # standard word "teavitus" (notification) in the genitive, at the sentence start on the measurement page; dictionary gap
 
 # ——— technology names in export copy ———
 JSON  # the export format named in export copy ("JSON-failis")
