@@ -20,10 +20,13 @@ Architecture, the invariants tied to tests and the decision log live in
 ```
 npm install            # use --legacy-peer-deps if npm's resolver balks on vitest peers
 npm run dev            # astro dev --background; stop/status/logs via npm run dev:<cmd>
-npm test               # docs shape check, then correctness, privacy, story-content and spelling gates
+npm test               # docs shape and file-length checks, then the correctness, privacy, story-content and spelling gates
 npm run docs:check     # documentation shape check only; npm test runs it first through pretest
 npm run build          # static output into dist/
 ```
+
+`pretest` also runs `scripts/check-file-lengths.sh`, which fails on any code
+file longer than 1500 lines: split the file rather than raise the cap.
 
 ## Stack
 

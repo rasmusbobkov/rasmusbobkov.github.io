@@ -411,3 +411,18 @@ is registered and answers.
   `http://jekyllrb.com/` — so that is what the user site's address will do
   then. The repository is renamed `tahelugu` in the same move, so the address,
   the offer and the repository carry that name.
+
+## Code file length cap
+
+- **One code file may not pass 1500 lines.** `src/scripts/app.ts` is the
+  longest at 1352 lines; a 1000-line cap (the common starting number) would
+  fail on its first run and make splitting that file the work. The cap sits at
+  1500 today, stops the growth, and moves down once the file is split.
+- **A script in the gate, not a linter.** The project has no linter: `npm run
+  check` is Astro's own type check, and it says nothing about file length.
+  `scripts/check-file-lengths.sh` counts the code files the project writes by
+  hand and runs from `pretest` beside the documentation shape check, so
+  `npm test`, CI and the project's own gate all fail on an over-long file.
+  `tests/file-lengths.test.ts` proves the failure, and the exclusions
+  (`node_modules`, `dist`, `.astro`, `gen/`, and files that are not code).
+- **Splitting the file is the fix; raising the cap is a decision of its own.**
