@@ -14,6 +14,12 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Code size
+
+No code file may pass 1500 lines. `scripts/check-file-lengths.sh` counts them
+and `npm test` fails through `pretest` on one that does. Split the file; the cap
+moves only by a deliberate decision.
+
 ## Documentation
 
 Project map: `docs/architecture.md`, invariants in `docs/invariants.md`, decisions in `docs/decisions/`.

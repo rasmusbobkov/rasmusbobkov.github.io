@@ -13,13 +13,15 @@ A static, browser-only Estonian astrology app that reads one real transit agains
 | --- | --- |
 | Install | `npm install` |
 | Run (background dev server) | `npm run dev`; stop/status/logs with `npm run dev:stop`, `npm run dev:status`, `npm run dev:logs` |
-| Test | `npm test` (runs `npm run docs:check` first through `pretest`) |
+| Test | `npm test` (runs `npm run docs:check` and `scripts/check-file-lengths.sh` first through `pretest`) |
 | Lint / typecheck | `npm run check` |
 | Build | `npm run build` |
 | Publish | push to `main`: `.github/workflows/pages.yml` builds `dist/` and serves it at the address in `astro.config.mjs` |
 | Docs only | `npm run docs:check` |
 
-`npm test` is the real gate: `pretest` runs the documentation shape check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy, the meaning-selection, share/storage and wheel/birth-wheel tests, and the Estonian spelling check. Nothing here talks to a server, so the same commands work offline.
+`npm test` is the real gate: `pretest` runs the documentation shape check and the file-length check first, then Vitest runs the chart and transit fixtures, the privacy scan, the content gate, the golden copy, the meaning-selection, share/storage and wheel/birth-wheel tests, and the Estonian spelling check.
+
+`scripts/check-file-lengths.sh` caps one code file at 1500 lines, counted over the code files the project writes by hand and skipping installed packages, build output, generated types and the `gen/` fixture workspace. It fails `npm test` on a file that passes the cap, and `tests/file-lengths.test.ts` proves it fails and that the project's own code sits inside the cap. A file that reaches the cap is split; the cap itself moves only by a deliberate decision. Nothing here talks to a server, so the same commands work offline.
 
 The privacy scan reads every published file and the licence test reads the built footer, so both need build output: run `npm run build` before `npm test`, as the project's own gate (`.no-mistakes.yaml`) and CI both do.
 

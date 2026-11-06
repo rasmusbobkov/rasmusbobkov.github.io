@@ -19,7 +19,7 @@
     "test:watch": "vitest",
     "check": "astro check",
     "docs:check": "bash scripts/check-project-docs.sh .",
-    "pretest": "bash scripts/check-project-docs.sh ."
+    "pretest": "bash scripts/check-project-docs.sh . && bash scripts/check-file-lengths.sh ."
   },
   "dependencies": {
     "@swisseph/browser": "^1.4.0",
