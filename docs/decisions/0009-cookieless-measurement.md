@@ -2,21 +2,19 @@
 
 ## Context
 
-The roadmap's second item under S1 asked how to know whether the app is used at
-all without turning the product into a tracker. The captain approved the plan
-in `card-f77f7896-fm-measurement-plan` and answered its four questions the way
-the plan recommended: a free cookieless counter as the only transport, a public
-page in the app for the numbers with those numbers baked in at build time, only
-the three events that exist today, and one sentence in the footer beside the
-existing privacy sentence. This decision records what that answer changes in the
-code and what it deliberately leaves alone.
+The measurement goal is to know whether the app is used without turning the
+product into a tracker. The accepted design uses a free cookieless counter as
+the only transport, a public page with the numbers baked in at build time,
+only the three events that exist today, and one sentence in the footer beside
+the existing privacy sentence. This record retains the decision without relying
+on a private plan or undefined roadmap stages.
 
 ## Decision
 
 Measure three events and nothing else. `src/lib/events.ts` holds the one typed
 event list: three wired events — a visit, birth data given, a story opened —
 and three named but unwired ones (notification permission, the paywall, a
-purchase) that stay silent until their features arrive in S2 and S4. An event
+purchase) that stay silent until those features exist. An event
 carries its name and the app version and nothing else: no birth data, no
 cookie, no device identifier, no page address, no referrer.
 
@@ -52,4 +50,5 @@ only.
 The trade-off is real and recorded: a cookieless counter still sees a request's
 IP address long enough to count it and dedupe within a short window. The plan
 accepted that as the cost of knowing whether the app is used, and the page says
-so in plain Estonian. A later item covers the full privacy policy and terms.
+so in plain Estonian. The full privacy policy and terms are outside this
+decision.

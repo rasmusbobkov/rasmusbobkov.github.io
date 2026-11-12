@@ -2,9 +2,9 @@
 
 ## Context
 
-The roadmap's first item settles the product's name, its public address and the
-brand direction behind them, and it comes before the other S1 items because
-most of them write that name or address into their own text, terms or file.
+This decision settles the product's name, its public address and the brand
+direction behind them. Later interface, terms and address changes use that
+choice; this record does not depend on an unpublished roadmap or stage labels.
 The name a visitor reads comes from one interface key, `app.name` in
 `src/messages/catalogue.ts`, which `src/pages/index.astro` renders as the page
 title and the header mark. The address lives in `astro.config.mjs` (`site` and
@@ -49,10 +49,10 @@ for instance — it says so instead of guessing.
 
 ## Consequence
 
-The item splits into three steps with different owners, so each stands on its
-own: this record; the name in the interface (the catalogue key, the spellcheck
-allowlist, and the documents that carry the name); and the address (the domain
-purchase, its DNS records, the site's own address and the repository rename).
+Delivery has three steps with different owners: this record; the name in the
+interface (the catalogue key, the spellcheck allowlist, and the documents that
+carry the name); and the address (the domain purchase, its DNS records, the
+site's own address and the repository rename).
 The purchase, the DNS records and the site setting are the captain's steps, not
 development days; once the domain answers, the old GitHub address carries a
 permanent redirect to it.

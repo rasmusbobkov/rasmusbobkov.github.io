@@ -1,11 +1,12 @@
 # Project documentation map
 
 One screen: what lives where, and what to read first.
-These files were created by firstmate's private project-docs tool; nothing here runs or depends on firstmate afterwards.
-`bash scripts/check-project-docs.sh .` validates them, and this map is kept by hand.
+The architecture, invariants and decision index started with firstmate's private project-docs tool; their checker needs only bash and git.
+`bash scripts/check-project-docs.sh .` validates their shape, and this map is kept by hand. The process manual describes guidance, not installed automation.
 
 | Read this | When |
 | --- | --- |
+| [`process/development-process.md`](process/development-process.md) | How to design, plan, review and deliver work; the canonical process, mapped to this project's existing records. |
 | [`architecture.md`](architecture.md) | Before a first change: purpose, how to run and verify, the map, and where to change what. |
 | [`invariants.md`](invariants.md) | Before touching behaviour that must never break, and when adding or deleting a rule. |
 | [`decisions/index.md`](decisions/index.md) | Before revisiting a settled choice; the index table is the only place a decision is listed. |
