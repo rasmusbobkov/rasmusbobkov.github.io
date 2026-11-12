@@ -100,7 +100,7 @@ Do not use a personal memory entry as the authoritative copy of project rules.
 
 ### 4.1 Root-instruction pointer for workers
 
-Add a short section to the project's current root instruction authority, preserving all existing instructions. The following is proposed text, not an edit already made:
+The existing `AGENTS.md` contains the worker pointer to this canonical process, preserving its other instructions. The reusable text below describes that present reading contract; it is not a pending proposal. The separate saved first-mate pointer in section 4.2 still requires post-integration activation:
 
 ```markdown
 ## Project development process
