@@ -52,10 +52,7 @@ for instance — it says so instead of guessing.
 Delivery has three steps with different owners: this record; the name in the
 interface (the catalogue key, the spellcheck allowlist, and the documents that
 carry the name); and the address (the domain purchase, its DNS records, the
-site's own address and the repository rename). The remaining address work is
-not yet filed as an active [GitHub issue](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues);
-reconcile and file its bounded outcome before planning it, rather than treating
-this decision as an active assignment.
+site's own address and the repository rename).
 The purchase, the DNS records and the site setting are the captain's steps, not
 development days; once the domain answers, the old GitHub address carries a
 permanent redirect to it.

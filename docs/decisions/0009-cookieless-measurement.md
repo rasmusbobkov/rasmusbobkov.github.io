@@ -14,9 +14,7 @@ on a private plan or undefined roadmap stages.
 Measure three events and nothing else. `src/lib/events.ts` holds the one typed
 event list: three wired events — a visit, birth data given, a story opened —
 and three named but unwired ones (notification permission, the paywall, a
-purchase) that stay silent until those features exist. Those future features
-are not yet filed as active [GitHub issues](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues);
-this decision does not schedule or authorize their implementation. An event
+purchase) that stay silent until those features exist. An event
 carries its name and the app version and nothing else: no birth data, no
 cookie, no device identifier, no page address, no referrer.
 
@@ -53,5 +51,4 @@ The trade-off is real and recorded: a cookieless counter still sees a request's
 IP address long enough to count it and dedupe within a short window. The plan
 accepted that as the cost of knowing whether the app is used, and the page says
 so in plain Estonian. The full privacy policy and terms are outside this
-decision and are not yet filed as an active issue; reconcile and file that
-bounded outcome in the same canonical backlog before planning it.
+decision.

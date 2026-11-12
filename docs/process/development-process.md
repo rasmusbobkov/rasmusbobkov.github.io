@@ -100,24 +100,11 @@ Do not use a personal memory entry as the authoritative copy of project rules.
 
 ### 4.1 Root-instruction pointer for workers
 
-The existing `AGENTS.md` contains the worker pointer to this canonical process, preserving its other instructions. The reusable text below describes that present reading contract; it is not a pending proposal. The separate saved first-mate pointer in section 4.2 still requires post-integration activation:
+The existing [`AGENTS.md` section “Project development process”](../../AGENTS.md#project-development-process) is the authoritative worker pointer to this manual. Read its actual instructions rather than maintaining a second template here; its other root instructions remain in force. This worker pointer is present, not proposed. The separate saved first-mate pointer in section 4.2 still requires post-integration activation.
 
-```markdown
-## Project development process
+The root pointer is ordinary Markdown, not an `@include`, automatic import, hook or executable command. A new coding worker receives the selected root instruction text; following its pointer requires an actual document read.
 
-The canonical process description is docs/process/development-process.md.
-Before assigned work, read its principles and activation rules, then the
-module and acceptance/review rules relevant to this task. Do not treat a
-link as evidence that the linked document was read.
-Identify the method revision and relevant specification version in the
-handoff/result. Report missing, unreadable or conflicting guidance rather
-than inventing a replacement. Existing authority, task scope and
-permissions still apply.
-```
-
-This is ordinary Markdown containing an instruction to read a file. It is not an `@include`, automatic import, hook or executable command. A new coding worker receives the selected root instruction text; following its pointer requires an actual document read.
-
-The human guide at `docs/README.md` uses `[Development process](process/development-process.md)`. A link from the root `README.md` would instead use `docs/process/development-process.md`. These are navigation links, not runtime loaders.
+The human guide at [`docs/README.md`](../README.md) labels its link `process/development-process.md`. The root `README.md` reaches it through that documentation map. These are navigation links, not runtime loaders.
 
 ### 4.2 Saved project pointer for the first mate
 
