@@ -52,7 +52,7 @@ Use the project's existing records rather than importing a second documentation 
 | Invariants | [`docs/invariants.md`](../invariants.md), with existing test/manual verification pointers |
 | Decisions | [`docs/decisions/index.md`](../decisions/index.md); retain one-page `NNNN-title.md` records with context, decision and consequence, adding options/recommendation/version references within that format when needed |
 | Development history | [`RECORD.md`](../../RECORD.md), not a new `docs/development-log.md` or duplicate diary |
-| Canonical backlog and roadmap | The project's work queue and plan may live in its own issue tracker, separate from the code repository; roadmap views derive from those canonical issues, not a separate editable list. |
+| Canonical backlog and roadmap | [Code-repository issues](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues) track technical work; a project's own issue tracker, if maintained, holds its product plan, and roadmap views derive from those canonical issues, not a separate editable list. |
 | Specification | The accepted versioned specification for the assigned work; no separate specification collection is introduced by this adoption. Link the actual issue/design artifact and revision; add a topic document only when work needs one. |
 | Executable gates | Existing `package.json`, `.no-mistakes.yaml` and `.github/workflows/ci.yml`; no new scripts, dependencies or workflows accompany this manual |
 
