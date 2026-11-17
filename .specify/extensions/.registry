@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "egm": {
+      "version": "0.9.1",
+      "source": "local",
+      "manifest_hash": "sha256:7a6411249f1ce31bc6f8b8110ccbe7f8b721e02d7b97a4e7dd8767b4f4f42eca",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "codex": [
+          "speckit.egm.brainstorm",
+          "speckit.egm.draft",
+          "speckit.egm.bootstrap",
+          "speckit.egm.drift-report",
+          "speckit.egm.resolve",
+          "speckit.egm.review-loop",
+          "speckit.egm.review"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-11-17T17:42:10.324216+00:00"
+    }
+  }
+}

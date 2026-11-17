@@ -1,0 +1,18 @@
+schema_version: "1.0"
+preset:
+  id: "firstmate-astro-pilot"
+  name: "Firstmate Astro pilot"
+  version: "0.1.0"
+  description: "Disposable EGM drafting policy adaptation"
+requires:
+  speckit_version: ">=1.2.5"
+  extensions:
+    - id: "egm"
+      version: ">=0.9.1"
+provides:
+  templates:
+    - type: "command"
+      name: "speckit.egm.draft"
+      file: "commands/speckit.egm.draft.md"
+      description: "Draft with project authority and recommendation policy"
+      strategy: "replace"

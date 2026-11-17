@@ -7,6 +7,7 @@ The architecture, invariants and decision index started with firstmate's private
 | Read this | When |
 | --- | --- |
 | [`process/development-process.md`](process/development-process.md) | How to design, plan, review and deliver work; the canonical process, mapped to this project's existing records. |
+| [`process/spec-kit-egm.md`](process/spec-kit-egm.md) | Spec Kit and EGM integration, command boundaries and unverified capabilities. |
 | [`architecture.md`](architecture.md) | Before a first change: purpose, how to run and verify, the map, and where to change what. |
 | [`invariants.md`](invariants.md) | Before touching behaviour that must never break, and when adding or deleting a rule. |
 | [`decisions/index.md`](decisions/index.md) | Before revisiting a settled choice; the index table is the only place a decision is listed. |
