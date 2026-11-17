@@ -2,22 +2,26 @@
   "schema_version": "1.0",
   "presets": {
     "firstmate-astro-pilot": {
-      "version": "0.1.0",
+      "version": "0.1.1",
       "source": "local",
-      "manifest_hash": "sha256:9e257c219de67ea1c55435858e507691e66965c2272d9f62d9fc4aef0db40199",
+      "manifest_hash": "sha256:9107fca2faaece9779ead81c034f37b936e3e210f5e156db949c3135a3a6a593",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
         "codex": [
-          "speckit.egm.draft"
+          "speckit.egm.draft",
+          "speckit.egm.review",
+          "speckit.taskstoissues"
         ]
       },
       "registered_skills": {
         "codex": [
-          "speckit-egm-draft"
+          "speckit-egm-draft",
+          "speckit-egm-review",
+          "speckit-taskstoissues"
         ]
       },
-      "installed_at": "2026-11-17T17:42:28.565341+00:00"
+      "installed_at": "2026-11-17T18:26:32.401185+00:00"
     }
   }
 }

@@ -1,11 +1,16 @@
 ---
 name: speckit-egm-review
-description: 'Orchestrates the EGM Goldfish Review Protocol. Used as part of the EGM process to perform design document reviews. Executes five review phases: Initial Zoom Out Review, Comprehension Review, Design Critique, Intermediate Zoom Out Review, and Implementation Readiness.'
+description: 'Orchestrates the EGM Goldfish Review Protocol. Used as part of the EGM
+  process to perform design document reviews. Executes five review phases: Initial
+  Zoom Out Review, Comprehension Review, Design Critique, Intermediate Zoom Out Review,
+  and Implementation Readiness.'
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
-  author: Kapil Sachdeva
-  source: egm:commands/speckit.egm.review.md
+  author: github-spec-kit
+  source: preset:firstmate-astro-pilot
 ---
+
+# Speckit Egm Review Skill
 
 ## User Input
 

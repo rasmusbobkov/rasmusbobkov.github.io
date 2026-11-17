@@ -1,12 +1,14 @@
 ---
-name: "speckit-taskstoissues"
-description: "Deprecated: Convert existing tasks into actionable, dependency-ordered GitHub issues for the feature based on available design artifacts."
-compatibility: "Requires spec-kit project structure with .specify/ directory"
+name: speckit-taskstoissues
+description: 'Deprecated: Convert existing tasks into actionable, dependency-ordered
+  GitHub issues for the feature based on available design artifacts.'
+compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
-  author: "github-spec-kit"
-  source: "templates/commands/taskstoissues.md"
+  author: github-spec-kit
+  source: preset:firstmate-astro-pilot
 ---
 
+# Speckit Taskstoissues Skill
 
 ## Deprecation Notice
 
