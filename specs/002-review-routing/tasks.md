@@ -1,6 +1,6 @@
 # Tasks: Minimal review routing
 
-**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-12, minimal-review-routing-v1
+**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-13, minimal-review-routing-v1
 **Status**: Derived execution list reconciled to the plan identified in Source above; five-phase design clearance and T007–T012 repository implementation completed. Delivery acceptance, integration and activation remain pending.
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -53,12 +53,12 @@ No independent parallel implementation group is safe in these shared policy file
 
 ## Approved enhancement — same feature and pull request
 
-Original checked items remain historical completion for their recorded versions, not acceptance of the enhancement. Source for the new work is plan draft-12 and spec FR-015–FR-019; prior counters and evidence remain intact.
+Original checked items remain historical completion for their recorded versions, not acceptance of the enhancement. Source for the new work is plan draft-13 and spec FR-015–FR-019; prior counters and evidence remain intact.
 
-- [x] T018 Reconcile Kun Chen's installed lavish-axi 0.1.96 local route in `specs/002-review-routing/plan.md` and `quickstart.md`: Codex HTML generation, Lavish rendering/annotation/feedback; telemetry0, loopback host/link, isolated task state/unused port, local assets/disposable data, no share/publish/upload/hooks/install/account changes, owned tracked listener/cleanup. Actual rendering/feedback/resumption remain to verify in T021; discovery alone is not operating proof.
+- [x] T018 Reconcile Kun Chen's installed lavish-axi 0.1.96 local route in `specs/002-review-routing/plan.md` and `quickstart.md`: Codex HTML generation, Lavish rendering/annotation/feedback; telemetry0, loopback host/link, isolated task state/unused port, local assets/disposable data, no share/publish/upload/hooks/install/account changes, owned tracked listener/cleanup. Actual rendering/two-submission delivery/rearmed listening/resumption remain to verify in T021; discovery alone is not operating proof.
 - [ ] T019 Reconcile affected independent design review for `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`, retaining actual used counters and requesting specific missing continuation authority only if needed; do not automatically restart design/comprehension.
 - [ ] T020 Update `.specify/memory/constitution.md`, `docs/process/spec-kit-egm.md`, `docs/decisions/0011-minimal-review-routing.md` and append-only `RECORD.md` with the approved Lavish-before-EGM, story-evidence closure, bounded agent-owned continuation and mandatory pre-PR native delivery-control rules; preserve protected areas and historical0010 bytes.
 - [ ] T021 Reconcile `specs/002-review-routing/quickstart.md` and `checklists/requirements.md` with actual supported route, UI/non-UI boundary, story acceptance checks/evidence and adverse missing/failed/cap stops; record actual unbuilt/unproved items.
 - [ ] T022 Obtain affected independent committed-change/scenario review, execute the full required project gate, and obtain separate proof judgment for the revised version before updating the existing PR; retain logs outside the working copy, then satisfy current hosted checks. No new runner or suite rerun solely for proof reading.
 
-T018 discovery/operational finalization is complete; T021 retains actual rendering/feedback/resumption proof, not another discovery task. T019 determines affected design coverage before policy implementation. T020–T021 follow reconciled scope/route and T019; T022 precedes revised publication. T017 remains dependent post-merge rollout and is not completed by these tasks.
+T018 discovery/operational finalization is complete; T021 retains actual rendering/feedback/resumption proof, not another discovery task. T019 determines affected design coverage before policy implementation; readiness must include the entire Detailed Implementation Plan enhancement execution delta and single local Lavish operational section. T020–T021 follow reconciled scope/route and T019; T022 precedes revised publication. T017 remains dependent post-merge rollout and is not completed by these tasks.

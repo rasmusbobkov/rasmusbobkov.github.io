@@ -52,7 +52,7 @@ A maintainer sees a Lavish mock derived from the current specification and user 
 
 **Acceptance scenarios**:
 1. Given UI intent and an established supported Lavish route, agents prepare the mock linked to the specification version; the human judges the intended visual direction.
-2. Given visual feedback, update the canonical specification before producing the revised mock or submitting matching intent and plan to EGM.
+2. Given visual feedback, update the canonical specification and revised mock, then obtain recorded human acceptance of the CURRENT version-linked visual direction before submitting matching intent and plan to FIRST Goldfish. Rejected/materially changed direction returns to visual review; feedback, silence, session end and reply receipt do not accept it.
 3. Given no UI impact, record why the visual step is inapplicable. Given unavailable Lavish capability or permission, stop that affected step and record the dependency rather than inventing an integration or substituting another tool silently.
 4. A suitable mock is neither implemented behavior nor an implementation, merge or deployment authorization.
 
@@ -86,7 +86,7 @@ The human chooses goals and consequential decisions while agents coordinate ordi
 - **FR-013**: After separately authorized merge, the first mate replaces the existing standing direction in place and coordinates real fresh-session verification of both routes. Until reconciliation, conflicting active instructions stop affected work.
 - **FR-014**: Later changes invalidate affected checks/reviews; new design decisions reopen affected design scrutiny, not every unchanged phase automatically. Preserve existing loop limits and report unresolved limits honestly.
 
-- **FR-015**: UI-changing design MUST pass a specification/story-linked Lavish visual-feedback loop before its first Goldfish review, including early brainstorm concept review. Human feedback updates the canonical specification; non-UI inapplicability is recorded. Missing capability or permission stops the affected step.
+- **FR-015**: UI-changing design MUST pass a specification/story-linked Lavish visual-feedback loop before its first Goldfish review, including early brainstorm concept review. Human feedback updates the canonical specification; explicit human acceptance of the current spec/mock visual pair is required before dispatch, including after revisions. Non-UI inapplicability is recorded. Missing capability or permission stops the affected step.
 - **FR-016**: Each story MUST specify acceptance criteria and an actual verification method before implementation. Tasks link criteria to checks/evidence; actual execution and independent proof judgment are required before claiming story completion. Exceptions remain explicit exceptions, not test passes.
 - **FR-017**: The first mate MUST coordinate bounded scope-preserving fixes, affected checks/reviews and next input-ready stages/allowed rounds without routine human continuation cards. This replaces the original routine-checkpoint policy only; actual finite counters, churn stops and required human authority remain intact.
 - **FR-018**: Human authority MUST remain required for new product/scope decisions, unresolved intent, access/cost/sensitive effects, limit extension, evidence exceptions, merge and deployment. Codex-only direct independent reviews remain; no nested models or alternative provider fallback.
