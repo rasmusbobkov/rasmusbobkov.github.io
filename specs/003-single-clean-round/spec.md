@@ -3,7 +3,7 @@
 **Feature Branch**: `inf/one-clean-planning-round-67ea`
 **Status**: Accepted intent transcribed for implementation; policy not effective
 **Specification**: single-clean-round-v1
-**Canonical issue**: Pending reconciliation and specific publication consent; do not reuse #39.
+**Canonical issue**: [#41](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/41); #39 remains the earlier routing outcome.
 **Owner**: One assigned workflow implementer; the first mate coordinates independent reviews and dependent rollout.
 **Input**: Approved planning-policy change, including the clarified separation of planning and implementation.
 

@@ -1,14 +1,14 @@
 # Tasks: One complete clean planning round
 
 **Source**: [spec.md](spec.md), single-clean-round-v1; [plan.md](plan.md), current revision.
-**Canonical issue**: Pending specific publication consent and reconciliation; not #39.
+**Canonical issue**: [#41](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/41); not #39.
 **Owner**: One assigned workflow implementer; the first mate coordinates native independent Codex review and dependent rollout.
 **Scope**: One atomic documentation change; checklist items are derived execution, not another backlog. No test edits or new suite.
 
 ## Phase 1: Setup
 
 - [x] T001 Read integrated AGENTS.md, .specify/memory/constitution.md and docs/process/spec-kit-egm.md; verify free feature/decision identifiers and record protected baseline externally.
-- [ ] T002 Reconcile the canonical new technical issue with specific publication consent and update the four specs/003-single-clean-round/ artifacts with its actual reference.
+- [x] T002 Reconcile the canonical new technical issue with specific publication consent and update the four specs/003-single-clean-round/ artifacts with its actual reference.
 - [x] T003 Transcribe accepted requirements and derive specs/003-single-clean-round/spec.md, plan.md, tasks.md and quickstart.md without editing active policy.
 
 ## Phase 2: Foundational planning scrutiny
@@ -53,4 +53,4 @@ Only the next input-ready phase is assigned. Missing/failed/stale reviewers, blo
 
 ## Dependencies and implementation strategy
 
-Setup precedes five ordered planning phases; actual issue publication can progress independently of scope-preserving drafting but must be reconciled before completion. Current design clearance precedes T009–T015. US1–US3 share a single convergence definition and ship atomically, not as separate partial releases. Their scenario groups can be judged independently but none is an authorized reduced MVP. Shared constitution/guide edits stay with one author, so there are no parallel file-edit tasks. Within each input-ready critique/readiness round the three independent role assessments can run concurrently; rounds and phases remain dependent on actual preceding results. T016 precedes proof execution; T017/T018 precede T019. T020 records dependent work rather than pretending activation/operation completed before merge.
+Setup precedes five ordered planning phases; canonical issue #41 was published with specific consent and reconciled in the feature artifacts. Current design clearance precedes T009–T015. US1–US3 share a single convergence definition and ship atomically, not as separate partial releases. Their scenario groups can be judged independently but none is an authorized reduced MVP. Shared constitution/guide edits stay with one author, so there are no parallel file-edit tasks. Within each input-ready critique/readiness round the three independent role assessments can run concurrently; rounds and phases remain dependent on actual preceding results. T016 precedes proof execution; T017/T018 precede T019. T020 records dependent work rather than pretending activation/operation completed before merge.

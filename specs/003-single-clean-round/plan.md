@@ -1,8 +1,8 @@
 # Implementation Plan: One complete clean planning round
 
 **Branch**: `inf/one-clean-planning-round-67ea` | **Spec**: [spec.md](spec.md)
-**Specification**: single-clean-round-v1 | **Plan revision**: draft-1
-**Canonical issue**: Pending specific publication consent and reconciliation; #39 remains the earlier routing outcome.
+**Specification**: single-clean-round-v1 | **Plan revision**: draft-2
+**Canonical issue**: [#41](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/41); #39 remains the earlier routing outcome.
 **Owner**: One assigned workflow implementer; independent native Codex reviewers are coordinated by the first mate.
 
 ## Summary
@@ -30,7 +30,7 @@ Goals: one clear definition shared by critique/readiness; independent current co
 
 ## Constitution Check
 
-Before drafting: integrated AGENTS, constitution and guide were read; this workflow change is significant and therefore requires five planning phases. Native independent review is coordinated by the first mate, not self-review or nested dispatch. Canonical issue reconciliation is pending its specific publication consent. No UI intent or external API/data contract is introduced.
+Before drafting: integrated AGENTS, constitution and guide were read; this workflow change is significant and therefore requires five planning phases. Native independent review is coordinated by the first mate, not self-review or nested dispatch. The specifically authorized canonical outcome issue is #41. No UI intent or external API/data contract is introduced.
 
 After design: the proposed override changes only planning convergence, with prospective integration/alignment and invocation-start pinning. Current two-clean requirements still govern this change's own critique/readiness. Required design clearance, committed-change/scenario judgment, ordered actual gate, separate proof and hosted checks remain pending, not assumed. No constitutional exception or self-waiver is proposed.
 
@@ -42,7 +42,7 @@ The constitution and process guide are mandatory project-authority reads. Place 
 
 ### Proposed convergence and coverage procedure
 
-At invocation start, the coordinator records effective rule/version, phase, current bundle/hashes, required roles and standards, scope and context exclusions, invocation identity, inner round and outer usage, remaining allowance and actual launch authority. A future rule applies only after separately authorized integration and instruction alignment; an in-flight invocation retains its starting rule and counters.
+At invocation start, the coordinator verifies and records the applicable merged method and standing-direction revisions. If applicable authorities conflict or no effective rule can be established, stop affected work for first-mate reconciliation. Record the effective rule/version, phase, current bundle/hashes, required roles and standards, scope and context exclusions, invocation identity, inner round and outer usage, remaining allowance and actual launch authority. A future rule applies only after separately authorized integration and instruction alignment; an in-flight invocation retains its starting rule and counters.
 
 Critique retains `design_critic.md`, `structural.md`, `style.md`; design and structural apply `feature-spec-standard.md`. Readiness retains `implementation_readiness.md`, `codebase_details.md`, `style.md`; readiness and codebase apply `implementation-readiness-standard.md`. Style applies its persona. Each role completes independently with actual reads, current matching inputs, attributed findings and status. Exactly one assigned readiness reviewer analyzes the same pinned spec/plan/tasks in a distinct section of its report; other roles do not repeat it.
 
@@ -64,7 +64,7 @@ This change's planning retains the current two-consecutive-clean requirement: a 
 
 The accepted project-authority override is smallest: mandatory method reads already establish the boundary, and one shared rule avoids divergent critique/readiness behavior. Its risk is readers following unchanged upstream text; explicit displacement and future fresh-session observation address, but do not prove away, that risk.
 
-A maintained preset override would distribute changed generated instructions but requires tooling maintenance outside this scope. Reconsider only in separately authorized work if actual observations show mandatory reads insufficient. Hand-editing generated/upstream files risks upgrade drift and violates protected scope. Keeping two-clean preserves the old confirmation but does not meet the accepted change. Splitting critique/readiness changes would temporarily create conflicting stopping rules. Reducing reviewer count or allowing author clearance would remove safeguards and is not accepted.
+A maintained preset override would distribute changed generated instructions but requires tooling maintenance outside this scope. Reconsider only in separately authorized work if actual observations show mandatory reads insufficient. Hand-editing generated/upstream files risks upgrade drift and violates protected scope. Keeping two-clean preserves a second fresh sample of unchanged text that can surface an unanticipated gap, but does not meet the accepted change. Targeted extra review answers named questions; it does not replace sampling for unknown shared blind spots. Neither targeted review nor a future real observation establishes equal detection reliability. Splitting critique/readiness changes would temporarily create conflicting stopping rules. Reducing reviewer count or allowing author clearance would remove safeguards and is not accepted.
 
 ## Complexity Tracking
 
@@ -74,7 +74,7 @@ No new subsystem, dependency or runner. No constitutional exception. The existin
 
 ### 1. Establish canonical artifacts and immutable baseline
 
-Create only `specs/003-single-clean-round/spec.md`, `plan.md`, `tasks.md`, `quickstart.md`. Identifiers 003 and decision 0012 are free on the integrated baseline; recheck before implementation. Read actual integrated authority and overlap, retain input hashes and protected bytes/history in external evidence. Reconcile one new technical outcome issue, never repurpose #39; obtain specific consent before publication. Keep one implementation owner. Do not persist a feature pointer or modify setup configuration.
+Create only `specs/003-single-clean-round/spec.md`, `plan.md`, `tasks.md`, `quickstart.md`. Identifiers 003 and decision 0012 are free on the integrated baseline; recheck before implementation. Read actual integrated authority and overlap, retain input hashes and protected bytes/history in external evidence. Use the one technical outcome issue, #41, published with specific consent; do not repurpose #39. Keep one implementation owner. Do not persist a feature pointer or modify setup configuration.
 
 ### 2. Complete current planning scrutiny
 
@@ -88,7 +88,7 @@ Record invocation, round, outer usage, failures, clean streak and stops. Critiqu
 
 - `.specify/memory/constitution.md`: advance 1.2.0 to 1.3.0 if still current, otherwise advance the refreshed minor version. Add the explicit project-authority planning convergence override, current independent coverage, finite accounting and prospective invocation-start transition. Preserve existing planning/implementation boundary and all other safeguards.
 - `docs/process/spec-kit-egm.md`: replace active two-clean convergence explanation with the shared single-clean procedure, identify displaced installed instruction, retain failed-reviewer retry/churn/outer/comprehension rules and authority, require independent affected verification/current coverage, name question-driven extra review and transition. Preserve five phases/personas, single readiness analysis and separate implementation/proof/publication rules.
-- `docs/decisions/0012-single-clean-round.md`: add rationale, accepted override, alternatives/trade-offs, protected scope and prospective rollout. Do not rewrite earlier decision bytes.
+- `docs/decisions/0012-single-clean-round.md`: add rationale, accepted override, alternatives/trade-offs, protected scope and prospective rollout. Explicitly distinguish targeted questions from the residual risk of missing an unknown shared blind spot after removing a fresh confirmation sample. Do not rewrite earlier decision bytes.
 - `docs/decisions/index.md`: add 0012; qualify an older entry only if necessary to prevent an active contradictory rule, without broadening supersession.
 - `RECORD.md`: append one factual history entry; preserve every existing byte as prefix.
 - `specs/002-review-routing/spec.md`, `plan.md`, `quickstart.md`: add minimal forward references distinguishing prospective new convergence from historical/invocation-pinned two-clean accounting. Do not touch its tasks, historical verdicts or substantive routing design.
@@ -104,12 +104,12 @@ Commit the authorized documentation, then supply full baseline diff, current acc
 
 After that review, run `npm ci`, `npm run check`, then `npm run build && npm test` under the load launcher, retaining exact commit, Node/npm environment, commands, output and exit status externally. Build must precede tests. Run the entire project gate; no test edit or new suite is proposed, so edited-test repetition is inapplicable unless scope changes with actual authority. Compare protected paths, historical decision bytes, old routing tasks and RECORD prefix. Read the whole diff against accepted intent and update documents made stale only within authorized scope.
 
-Manually walk the proposed semantics against retained real review history and all adverse/limit/transition cases in quickstart. Label these walkthroughs, not new reviewer reports or live activation. An independent reader checks semantic preservation; docs:check proves shape only. There is no executable changed app surface and no invented app journey. Retain missing future real-case proof distinctly, with first-mate owner and applicable pre-publication disposition; do not relabel static success live.
+Manually walk the proposed semantics against retained real review history and all adverse/limit/transition cases in quickstart. Label these walkthroughs, not new reviewer reports or live activation. An independent reader checks semantic preservation; docs:check proves shape only. There is no executable changed app surface and no invented app journey. For V8, pre-publication review checks only the documentary adequacy of the rollout procedure, ownership and gap accounting. Actual V8 operation remains pending with the first mate after separately authorized integration and alignment; a walkthrough neither passes nor waives it.
 
-Obtain separate independent proof judgment of author evidence against all required scenarios, without duplicating the suite. Missing required evidence or specific disposition holds publication. Before every push, read head-bound independent change/scenario review and every required proof disposition, not just generic documentary sufficiency. Existing approved gaps from an earlier change are not automatically this change's approvals.
+Obtain separate independent proof judgment of the applicable pre-publication evidence, without duplicating the suite. Before every push, read head-bound independent change/scenario review and every required proof disposition. If a live claim is registered as required before publication, hold unless accepted current live proof or the exact approved gap disposition exists. Reconcile any conflict in scenario timing rather than treating documentary adequacy as live proof or skipping the claim. Earlier approvals do not transfer automatically.
 
 ### 6. Publish only the validated version; preserve rollout separation
 
-Refresh current task policies and default branch, rebase only this change, resolve overlap and renew affected review/check/proof applicability. Push only once current pre-publication gate is satisfied, open the PR, inspect hosted checks/logs, repair owned failures and recheck. Present the green merge card; build approval is not merge permission. No automatic deployment or activation.
+Refresh current task policies and default branch, rebase only this change, resolve overlap and renew affected review/check/proof applicability. Push only once current pre-publication gate is satisfied, open the PR, inspect hosted checks/logs, repair owned failures and recheck. Build approval is not merge, deployment or activation permission. Merging to `main` starts the existing Pages workflow, which includes a deployment job; actual deployment depends on the hosted `github-pages` environment controls. Before offering merge, the first mate verifies those controls, identifies the deployment effect and resolves separate deployment authority. Hold merge while the effect or authority is unresolved. Do not manually trigger deployment, change the workflow/environment or treat merge as policy activation. Present the green merge card only after these prerequisites are satisfied.
 
 The story's after-merge work names first-mate-owned instruction alignment in place and the subsequent genuine authorized fresh-session one-clean invocation observation. Retain actual method/direction reads, roles and coverage, aggregates, counts, stops and naturally required rechecks. Missing suitable input-ready case remains an explicit gap, not synthetic proof. The existing missing real small-route case remains separate. Repository alignment, direction alignment and operating proof are distinct checkpoints.
