@@ -2,7 +2,7 @@
 
 **Feature**: [spec.md](../spec.md), minimal-review-routing-v1
 **Purpose**: Requested specification-quality check, not implementation proof or an additional generic reviewer
-**Status**: Author assessment of draft-1; independent design review pending
+**Status**: Requirements-quality checklist; five-phase design review completed with attributed evidence retained outside the project. This is not delivery validation.
 
 ## Content quality
 
@@ -23,7 +23,7 @@
 ## Open readiness facts
 
 - [x] Canonical technical issue #39 exists after its specific creation consent; the single implementation owner is retained.
-- [ ] Five required fresh design phases have completed on actual pinned inputs.
-- [ ] Exactly one final readiness reviewer has analyzed the matching final trilogy with distinct findings.
+- [x] Five required fresh design phases have completed on actual pinned inputs.
+- [x] Exactly one assigned readiness reviewer analyzed the matching trilogy with distinct findings, followed only by affected consistency checks in that same role.
 
-These unchecked items are real readiness gaps, not unanswered scope choices. This author checklist is not a clean review, a test result, policy activation or a substitute for the assigned readiness analysis. Additional custom checklists require a specific requirements-domain gap.
+Delivery review, actual validation and post-integration rollout remain separate obligations. This author checklist is not a clean review, a test result, policy activation or a substitute for the assigned readiness analysis. Additional custom checklists require a specific requirements-domain gap.

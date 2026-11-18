@@ -13,27 +13,27 @@
 - [x] T004 Complete standalone comprehension of pinned `specs/002-review-routing/plan.md` alone, with no author conversation or explanatory sources; preserve initial paraphrase/findings and retain the used draft-2 re-audit after CG-01–CG-05 repairs and its Major CR2-01. The separately authorized full draft-5 reading completed clean; preserve all earlier findings and stage synthesis. All five allowances are used; no additional comprehension assessment is authorized. Draft-6 critique repairs do not represent another comprehension verdict.
 - [x] T005 Obtain design critique of `specs/002-review-routing/plan.md` from design, structural and style personas; resolve attributed findings with phase-specific evidence.
 - [x] T006 Obtain intermediate zoom out of current `specs/002-review-routing/plan.md` with actual earlier reports/dispositions; retain separate stage evidence.
-- [ ] T007 Reconcile final `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`; obtain readiness personas and exactly one assigned Spec Kit analyze owner on the pinned matching trilogy, with distinct finding categories in one readiness report. Stop on missing reviewers/blockers.
+- [x] T007 Reconcile final `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`; obtain readiness personas and exactly one assigned Spec Kit analyze owner on the pinned matching trilogy, with distinct finding categories in one readiness report. Stop on missing reviewers/blockers.
 
 ## US1 — Small corrections, zero EGM (FR-001, FR-002, FR-007, FR-012)
 
 **Independent acceptance**: Real fresh-session small correction uses current accepted intent and zero EGM tasks; no new generic checklist or EGM-Lite.
 
-- [ ] T008 [US1] After T007 clearance, update `.specify/memory/constitution.md` to 1.1.0 and `docs/process/spec-kit-egm.md` with the bounded zero-phase exception and missing/stale-intent stop rule.
+- [x] T008 [US1] After T007 clearance, update `.specify/memory/constitution.md` to 1.1.0 and `docs/process/spec-kit-egm.md` with the bounded zero-phase exception and missing/stale-intent stop rule.
 
 ## US2 — Significant design, five phases (FR-003–FR-006, FR-014)
 
 **Independent acceptance**: Real significant case produces five ordered phase records; final readiness owns the same current trilogy analysis once.
 
-- [ ] T009 [US2] Align `docs/process/spec-kit-egm.md` and `.specify/memory/constitution.md` on significant triggers, ambiguity, fresh context exclusions, phase reports/limits and final analysis ownership without duplicate reads.
+- [x] T009 [US2] Align `docs/process/spec-kit-egm.md` and `.specify/memory/constitution.md` on significant triggers, ambiguity, fresh context exclusions, phase reports/limits and final analysis ownership without duplicate reads.
 
 ## US3 — One delivery-review track and dependent rollout (FR-008–FR-013)
 
 **Independent acceptance**: Current committed-change review, actual author checks and separate proof judgment remain distinct; activation is not inferred from document edits.
 
-- [ ] T010 [US3] Align `.specify/memory/constitution.md` and `docs/process/spec-kit-egm.md` on independent implementation/documentation/scenario review, author execution, separate proof read, unchanged care/attestation and complete gate.
-- [ ] T011 [US3] Add `docs/decisions/0011-minimal-review-routing.md` explicitly superseding only 0010's bounded-correction relevant-phase requirement, retaining its other decisions and consequential five-phase scrutiny. Keep `docs/decisions/0010-spec-kit-egm-workflow.md` byte-identical. Qualify 0010's status in `docs/decisions/index.md` exactly as the plan specifies, add 0011's accepted row and append factual `RECORD.md` history. Read both decisions/index for semantic agreement; the docs filename gate alone is insufficient.
-- [ ] T012 [US3] Finalize `specs/002-review-routing/quickstart.md` and requirements-checklist status against actual findings. Verify quickstart explicitly carries next-phase-only launch after actual inputs/prior clearance and separate launch authority, no later-phase reservations, actual assignment identity/hash recording, observed-prefix/unassigned-remainder reporting, complete-five evidence only when actually attainable, and missing-real-case/input stop with first-mate owner. Record unexecuted rollout honestly; no unauthorized sample implementation or historical substitute.
+- [x] T010 [US3] Align `.specify/memory/constitution.md` and `docs/process/spec-kit-egm.md` on independent implementation/documentation/scenario review, author execution, separate proof read, unchanged care/attestation and complete gate.
+- [x] T011 [US3] Add `docs/decisions/0011-minimal-review-routing.md` explicitly superseding only 0010's bounded-correction relevant-phase requirement, retaining its other decisions and consequential five-phase scrutiny. Keep `docs/decisions/0010-spec-kit-egm-workflow.md` byte-identical. Qualify 0010's status in `docs/decisions/index.md` exactly as the plan specifies, add 0011's accepted row and append factual `RECORD.md` history. Read both decisions/index for semantic agreement; the docs filename gate alone is insufficient.
+- [x] T012 [US3] Finalize `specs/002-review-routing/quickstart.md` and requirements-checklist status against actual findings. Verify quickstart explicitly carries next-phase-only launch after actual inputs/prior clearance and separate launch authority, no later-phase reservations, actual assignment identity/hash recording, observed-prefix/unassigned-remainder reporting, complete-five evidence only when actually attainable, and missing-real-case/input stop with first-mate owner. Record unexecuted rollout honestly; no unauthorized sample implementation or historical substitute.
 
 ## Final validation and delivery
 
