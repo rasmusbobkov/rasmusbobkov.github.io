@@ -1,7 +1,7 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-5
+**Plan revision**: draft-6
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -11,13 +11,24 @@
 
 Replace the current single relevant EGM phase for small understood corrections with zero EGM phases. Keep all five design phases for significant changes, and keep one independent native delivery-review track for either route. This changes development documentation only, not the application or installed tooling.
 
-A **small understood correction** means a bounded correction to accepted intent whose cause, scope and expected result are understood and which has none of the significant triggers below. These are one category, not two exceptions. This plan uses “small understood correction” throughout.
+A **small understood correction** means a bounded correction to accepted intent whose cause, scope and expected result are understood and which has none of the significant triggers below. This plan uses “small understood correction” for that single category.
 
 The first mate classifies impact from current accepted intent, not line count. New behavior, shared contracts, saved-data/security boundaries, workflow changes, unresolved architecture or ambiguity select the significant route. Missing or stale intent stops affected work for reconciliation. Small corrections reuse valid intent and artifacts rather than generating a new design ceremony.
 
+## Alternatives and trade-offs
+
+| Alternative | Benefit | Cost or retained risk | Disposition |
+| --- | --- | --- | --- |
+| Keep one focused EGM phase for each small understood correction | Earlier independent design perspective even on bounded repairs | Adds a separate design handoff when accepted intent and cause are already understood; does not replace implementation/proof review | Not selected; retain design scrutiny when a significant trigger or uncertainty exists instead |
+| Zero EGM phases for small understood corrections, five for significant work, one native delivery track for both | Keeps design and delivery responsibilities distinct without a routine extra design handoff for understood repairs | Classification can be wrong; current intent, recorded reasons, ambiguity-to-significant and independent change/scenario review mitigate but do not eliminate that risk | Selected accepted scope |
+| Five design phases for every correction | Uniform design-stage coverage | Repeats design assessment of unchanged accepted decisions and adds required reviewer handoffs regardless of impact | Not selected; disproportionate for understood corrections, while significant changes retain all five |
+| Add overlapping EGM-Lite or external diff-review pipeline | Another implementation-review perspective | Duplicates the native committed-change/proof track and introduces extra orchestration; design review still cannot prove execution | Not selected; reuse the existing native track and installed port |
+
+These are qualitative coordination and responsibility trade-offs, not measured token, cost or latency savings. None of the options removes the full project gate or separate merge authority. Missing intent does not justify choosing the cheaper route; it stops reconciliation first.
+
 ## Review responsibilities
 
-**Spec Kit** is the installed specification-driven development toolkit: its project-local procedures turn accepted intent into requirements, a technical plan and derived execution tasks. **EGM** means Elephant-Goldfish Model: an author maintains the design while fresh independent reviewers examine it through the five perspectives below. The installed procedures are `.agents/skills/speckit-specify/SKILL.md`, `speckit-plan/SKILL.md`, `speckit-tasks/SKILL.md`, `speckit-analyze/SKILL.md` and `speckit-egm-review/SKILL.md` under that same skills directory. They are agent instructions, not additional standalone review executables. This plan explains the operating flow itself; opening those procedures is not necessary to fill a missing explanation here.
+**Spec Kit** is the installed specification-driven development toolkit: its project-local procedures turn accepted intent into requirements, a technical plan and derived execution tasks. **EGM** means Elephant-Goldfish Model: an author maintains the design while fresh independent reviewers examine it through the five perspectives below. The installed procedures are `.agents/skills/speckit-specify/SKILL.md`, `speckit-plan/SKILL.md`, `speckit-tasks/SKILL.md`, `speckit-analyze/SKILL.md` and `speckit-egm-review/SKILL.md` under that same skills directory. They are agent instructions, not additional standalone review executables. Read the applicable installed procedures for the assigned operation; standalone comprehension retains its separate plan-only design-input boundary.
 
 Spec Kit owns requirements, the technical plan and derived execution tasks. EGM judges design. The native delivery-review track judges the committed implementation/documentation and scenarios, then separately judges author evidence. None substitutes for the others, and one track does not mean one model call.
 
@@ -34,6 +45,12 @@ Each phase has a distinct question and output:
 For each phase the author reads actual reports, preserves required reviewer identities/status and dispositions, and requests the next phase only after the phase's completion rules are met. A proposed repair is not a clean review. A missing reviewer or unresolved blocking finding stops progression; explicit gap reporting is required. Critique and readiness additionally follow the loop convergence rules below.
 
 Before readiness, update the derived tasks to match the final specification and plan. One assigned readiness reviewer applies Spec Kit analyze to that exact trilogy in the same report; separate design findings from consistency/coverage findings. Other reviewers do not duplicate that analysis. Additional requirements checklists need a concrete domain gap, not a stage name. Preserve phase-specific reports, attributed findings and existing loop limits. Missing reviewers or unresolved blockers are not clearance.
+
+### Existing CLI and host boundary
+
+The installed `specify` CLI supplies setup, integration/extension/preset management and artifact/template discovery. For this feature the author invokes the supported non-mutating operations `specify --version` and `specify preset resolve spec-template`, `specify preset resolve plan-template`, `specify preset resolve tasks-template` from the project root. Actual execution reported 1.2.5, core spec/tasks templates and the plan template from firstmate-astro-pilot 0.2.0. The author retains the transcript outside the project; resolution identifies the template source but does not generate accepted requirements or prove review completion.
+
+Infinitary's assigned author runs these ordinary shell operations, then uses the applicable project-local Spec Kit instructions to maintain this feature's artifacts. The first mate dispatches independent EGM host review tasks with pinned inputs; the CLI does not launch those reviewers in this design. No `specify plan` or `specify review` command is invented, no automatic delegation is claimed, and no new runner, plugin or MCP connection is added. Existing installation remains unchanged; upgrades, regeneration and event/hook execution are not part of these read-only operations. The supplied CLI capability is template discovery/setup support, not a claimed standalone review engine or a newly built automation integration.
 
 ### Delivery initiation and clearance
 
@@ -64,7 +81,7 @@ Examples inside one critique/readiness invocation:
 
 Only after the complete invocation returns does the outer stage report/checkpoint decide progression or a stage re-audit after further stage-level repair. That re-audit starts a new complete subloop invocation with its own five-round/two-clean accounting, and uses the wrapper's single permitted outer re-audit. Inner round 3 in the first example does not consume that outer allowance. A new invocation cannot be used merely to conceal an unapproved cap/churn continuation. Record invocation identities, inner round counts and the outer re-audit count separately.
 
-Comprehension has **no inner antagonistic subloop**: one direct plan-only assessment is the initial stage audit, and a second direct assessment after repair is its one permitted re-audit. A failed first comprehension followed by a clean second assessment can clear comprehension; it does not need two clean rounds. If the second assessment still has a blocking gap, stop: there is no ordinary third assessment and no inner five-round budget to borrow. This feature used its initial comprehension assessment, the ordinary re-audit, and two separately authorized additional assessments of draft-3 and draft-4. All four allowances are used. The latest assessment has one Major and one Nit; draft-5 repairs are not independent clearance. Any further assessment or independent disposition verification requires another explicit finite continuation, not an automatic fifth launch.
+Comprehension has **no inner antagonistic subloop**: one direct plan-only assessment is the initial stage audit, and a second direct assessment after repair is its one permitted re-audit. A failed first comprehension followed by a clean second assessment can clear comprehension; it does not need two clean rounds. If the second assessment still has a blocking gap, stop: there is no ordinary third assessment and no inner five-round budget to borrow. At the draft-5 drafting checkpoint, the initial comprehension assessment, ordinary re-audit and separately authorized draft-3/draft-4 assessments had been used; the then-current draft-4 result had one Major and one Nit. The separate review record now carries the later specifically authorized draft-5 assessment and its clean result; it does not retroactively change those earlier outcomes. All five actual allowances are consumed. These draft-6 critique repairs are not another comprehension assessment. Any further comprehension assessment requires a new explicit finite continuation; implementation approval or this historical paragraph supplies none.
 
 At an exhausted outer allowance, inner five-round cap or churn stop, retain the actual findings/counts and send a specific host-governed continuation question to the captain. A continuation must name the stopped stage/invocation, which limit it extends, the pinned revised input and a finite additional review scope. Extending an inner cap does not extend the outer cap, and extending comprehension does not authorize critique/readiness or change their counters. Returning to drafting grants no additional review allowance by itself. Generated automatic-advance wording never clears unresolved blocking findings under project authority. Do not silently extend limits, treat a proposed repair as independent clearance or infer permission from implementation approval. A permissible risk decision is explicit and cannot fabricate a clean review, bypass an unresolved project blocker or grant merge/deployment authority.
 
