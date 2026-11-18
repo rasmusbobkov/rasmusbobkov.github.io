@@ -2,7 +2,7 @@
 
 **Specification**: minimal-review-routing-v1; draft-1
 **Status**: Procedure, not evidence of execution
-**Canonical issue**: Assignment pending; one assigned workflow implementer remains owner
+**Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); one assigned workflow implementer remains owner
 
 ## Before policy integration
 

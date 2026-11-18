@@ -2,7 +2,7 @@
 
 **Specification**: minimal-review-routing-v1
 **Status**: Draft for five-phase design review; not active policy
-**Canonical technical issue**: Assignment pending; proposed new issue, not closed #38
+**Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (one owner throughout)
 **Feature directory**: `specs/002-review-routing`
 
@@ -79,4 +79,4 @@ A maintainer obtains independent committed-change/scenario review, executes chec
 
 ## Assumptions and dependencies
 
-Existing Spec Kit 1.2.5, installed EGM port 0.9.1 and local preset 0.2.0 remain sufficient; automatic delegation is unproven. Native host task launches and post-merge standing-direction activation require first-mate coordination. Issue creation awaits its single specific consent. Implementation is approved; merge and deployment are not. No product data model or external runtime interface changes.
+Existing Spec Kit 1.2.5, installed EGM port 0.9.1 and local preset 0.2.0 remain sufficient; automatic delegation is unproven. Native host task launches and post-merge standing-direction activation require first-mate coordination. Canonical technical issue #39 was created with its specific consent. Implementation is approved; merge and deployment are not. No product data model or external runtime interface changes.

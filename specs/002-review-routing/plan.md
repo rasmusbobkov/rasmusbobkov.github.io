@@ -3,7 +3,7 @@
 **Specification**: minimal-review-routing-v1
 **Plan revision**: draft-2
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
-**Canonical technical issue**: Assignment pending; do not reuse closed #38
+**Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
 **Spec**: [spec.md](spec.md)
 
@@ -60,7 +60,7 @@ For each later edit the author records an impact decision: changed requirement/d
 
 ## Constitution Check
 
-Current constitution 1.0.0 requires five phases for this workflow change. Drafting canonical inputs is authorized, not policy activation. Design clearance is incomplete; an initial-phase report does not clear later phases. Canonical issue assignment is pending, explicitly not satisfied by the old transition issue. One owner remains responsible. The approved exception changes the small-understood-correction rule only after review and integration; current significant-review authority is not bypassed.
+Current constitution 1.0.0 requires five phases for this workflow change. Drafting canonical inputs is authorized, not policy activation. Design clearance is incomplete; an initial-phase report does not clear later phases. Canonical technical issue #39 was created with the specific creation consent; the old transition issue is not reused. One owner remains responsible. The approved exception changes the small-understood-correction rule only after review and integration; current significant-review authority is not bypassed.
 
 All hooks are empty and `auto_execute_hooks: false` remains unchanged; events remain disabled independently. No application or installed instruction-file changes are planned. Review records must name actual files, revisions/hashes, persona/standard, context exclusions, results and dispositions. This draft is not a completed review or executed test.
 
@@ -106,4 +106,4 @@ Report repository alignment, direction activation and fresh-session proof as dis
 
 ## Dependencies and evidence boundaries
 
-Issue creation consent, real fresh design reviewers, independent delivery review/proof reading and first-mate rollout are dependencies, not inferred successes. Authoring can continue while issue consent waits; issue identity must be reconciled before claiming canonical readiness. No policy edit occurs before the five required design phases clear. Review acceptance never authorizes merge or deployment. Installation reductions (both previously considered sizes) remain deferred and unqueued.
+Canonical issue identity (#39), real fresh design reviewers, independent delivery review/proof reading and first-mate rollout are dependencies, not inferred successes. Issue creation is complete; the remaining reviewer and proof dependencies still prevent claiming readiness. No policy edit occurs before the five required design phases clear. Review acceptance never authorizes merge or deployment. Installation reductions (both previously considered sizes) remain deferred and unqueued.

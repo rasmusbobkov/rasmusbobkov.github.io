@@ -22,7 +22,7 @@
 
 ## Open readiness facts
 
-- [ ] Actual canonical technical issue is assigned after the specific creation consent; drafting may proceed meanwhile.
+- [x] Canonical technical issue #39 exists after its specific creation consent; the single implementation owner is retained.
 - [ ] Five required fresh design phases have completed on actual pinned inputs.
 - [ ] Exactly one final readiness reviewer has analyzed the matching final trilogy with distinct findings.
 

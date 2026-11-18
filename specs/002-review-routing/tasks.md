@@ -2,13 +2,13 @@
 
 **Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-2, minimal-review-routing-v1
 **Status**: Derived draft; refresh against final design before readiness
-**Canonical issue**: Assignment pending
+**Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
 
 ## Setup and design prerequisites
 
 - [x] T001 Draft canonical `specs/002-review-routing/spec.md`, `plan.md`, `tasks.md`, `quickstart.md` and `checklists/requirements.md` from accepted intent, retaining pending issue status.
-- [ ] T002 Obtain the specific issue-creation consent and record the actual canonical technical issue in `specs/002-review-routing/spec.md` and `plan.md`; do not use closed #38.
+- [x] T002 Obtain the specific issue-creation consent and record the actual canonical technical issue in `specs/002-review-routing/spec.md` and `plan.md`; do not use closed #38.
 - [x] T003 Pin `specs/002-review-routing/plan.md` and declared context for initial zoom out; request real zoom-out and inventive-catalyst reviewers and retain attributed phase report in task evidence.
 - [ ] T004 Complete standalone comprehension of pinned `specs/002-review-routing/plan.md` alone, with no author conversation or explanatory sources; preserve initial paraphrase/findings and obtain the single permitted re-audit of draft-2 after CG-01–CG-05 repairs. Initial review is complete, clearance is pending.
 - [ ] T005 Obtain design critique of `specs/002-review-routing/plan.md` from design, structural and style personas; resolve attributed findings with phase-specific evidence.
