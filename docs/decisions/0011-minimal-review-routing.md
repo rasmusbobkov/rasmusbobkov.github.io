@@ -14,6 +14,12 @@ Final derived tasks must exist before readiness. Exactly one assigned readiness 
 
 Both routes retain one native independent delivery-review track: committed-code/documentation/scenario review, actual author validation and separate independent proof reading without duplicating the suite. Preserve the full npm gate, hosted checks, applicable changed-test repeats, existing review limits and actual continuation authority. No extra runner, plugin, external review pipeline, automatic care change or fabricated attestation is introduced.
 
+Routine input-ready continuation and scope-preserving repair are first-mate coordinated within actual remaining finite authority, not repeated human approval questions. Product/scope, unresolved intent, resource/cost/sensitive effects, exceptions and cap/churn extensions remain human decisions. No allowance resets.
+
+UI-changing intent requires supported local Lavish feedback and recorded human acceptance of the CURRENT canonical spec/mock visual direction before FIRST Goldfish, including brainstorm concept review. Codex generates HTML; Lavish renders and returns feedback. Revise spec before mock; rejection/material change returns to visual review. Feedback, silence, session end or reply receipt never accepts a direction. Non-UI work records inapplicability; missing capability/permission stops affected work. The process guide carries isolation, one-shot listener rearming and owned-cleanup obligations; no publication/account/tooling permission follows.
+
+Story criteria and check/evidence links precede implementation. Completion requires actual criterion-covering execution and independent proof, not code, generic tests or mock suitability. Failures return to bounded repair/retest/review; missing evidence blocks completion and an approved exception is not a pass. Current independent committed-change/scenario review, actual story/project checks, documentation currency and separate proof precede new or updated PR publication. Hosted checks follow publication.
+
 ## Consequences
 
 Retaining one phase for every correction would add a design handoff despite unchanged understood intent; universal five-phase review adds more such coordination. An overlapping diff-review pipeline duplicates native delivery review. The chosen route reduces routine design handoffs but depends on accurate classification; current intent, recorded reasons, ambiguity escalation and independent delivery judgments mitigate rather than eliminate that risk. No time, token or cost saving is measured.
