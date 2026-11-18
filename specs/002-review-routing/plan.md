@@ -1,7 +1,7 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-9
+**Plan revision**: draft-10
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -122,7 +122,7 @@ Update `.specify/memory/constitution.md` from 1.0.0 to 1.1.0, preserving authori
 
 Update `docs/process/spec-kit-egm.md` with the matching classification, readiness ownership, context boundaries and single native delivery-review track. Keep existing installed-port/preset/licence/version provenance, generated-instruction dispositions and disabled hooks/events. Explicitly retain `npm ci`, `npm run check`, `npm run build && npm test`, hosted checks and applicable changed-test repeats. No external no-mistakes agent pipeline or automatic care change is added.
 
-Add `docs/decisions/0011-minimal-review-routing.md` with context, decision and consequence: removing one unnecessary small-correction design phase, not weakening significant scrutiny. Add its sole index row in `docs/decisions/index.md`. Append factual history in `RECORD.md`; do not rewrite earlier events or claim fresh-session proof not yet observed.
+Add `docs/decisions/0011-minimal-review-routing.md` with context, decision and consequence: removing one unnecessary small-correction design phase, not weakening significant scrutiny. Explicitly state in 0011 that it supersedes ONLY decision 0010's requirement for a relevant EGM phase on bounded corrections; its other decisions, including all five phases for consequential changes, remain accepted. Preserve `docs/decisions/0010-spec-kit-egm-workflow.md` byte-for-byte as historical text. In `docs/decisions/index.md`, qualify 0010's status as 'accepted; bounded-correction phase rule superseded by 0011; other decisions retained' and add 0011's sole row as accepted. This follows the index's existing qualified-status convention rather than rewriting historical rationale. Verify semantic agreement by reading both decisions and the index, not only passing the filename-membership gate. Append factual history in `RECORD.md`; do not rewrite earlier events or claim fresh-session proof not yet observed.
 
 ### 3. Validate and obtain independent delivery judgments
 
