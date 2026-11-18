@@ -1,7 +1,7 @@
 # Feature Specification: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Status**: Draft for five-phase design review; not active policy
+**Status**: Five-phase design review completed; repository implementation recorded in tasks.md. Delivery acceptance, integration and activation remain pending.
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (one owner throughout)
 **Feature directory**: `specs/002-review-routing`

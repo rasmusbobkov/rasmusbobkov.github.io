@@ -2,7 +2,7 @@
 
 **Specification**: minimal-review-routing-v1
 **Plan revision**: draft-10
-**Status**: Design inputs only; policy implementation awaits five-phase clearance
+**Status**: Five-phase design clearance completed; bounded repository implementation recorded in tasks.md. Delivery acceptance, integration and activation remain pending.
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
 **Spec**: [spec.md](spec.md)
@@ -100,7 +100,7 @@ For each later edit the author records an impact decision: changed requirement/d
 
 ## Constitution Check
 
-Current constitution 1.0.0 requires five phases for this workflow change. Drafting canonical inputs is authorized, not policy activation. Design clearance is incomplete; an initial-phase report does not clear later phases. Canonical technical issue #39 was created with the specific creation consent; the old transition issue is not reused. One owner remains responsible. The approved exception changes the small-understood-correction rule only after review and integration; current significant-review authority is not bypassed.
+Baseline constitution 1.0.0 required all five phases for this workflow change. Those phases completed with attributed findings, repairs and final clearance retained in the design-review record. The working-copy constitution is now 1.1.0; that repository implementation is not integration or policy activation. Delivery acceptance and dependent rollout proof remain pending. Canonical technical issue #39 was created with the specific creation consent; the old transition issue is not reused. One owner remains responsible. The approved exception changes the small-understood-correction rule only after review and integration; current significant-review authority is not bypassed.
 
 Preserve `auto_execute_hooks: false` and independently disabled events; do not enable or execute automation as part of this change. No application or installed instruction-file changes are planned. Review records must name actual files, revisions/hashes, persona/standard, context exclusions, results and dispositions. This draft is not a completed review or executed test.
 
