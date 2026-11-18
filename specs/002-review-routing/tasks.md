@@ -50,3 +50,15 @@ T001 and T002 are completed historical prerequisites; the earlier pending-assign
 Requirement coverage for the single readiness analysis owner: FR-001 T001–T002; FR-002 T008; FR-003–FR-006 T003–T009; FR-007 T001/T012; FR-008 T010/T013/T015; FR-009 T010/T014/T016; FR-010 T010/T015; FR-011 T008–T014 protected-area review; FR-012 T008–T011; FR-013 T016–T017; FR-014 T007/T009/T013–T016. This is a derived navigation aid, not a completed independent coverage analysis.
 
 No independent parallel implementation group is safe in these shared policy files. Do not ship a small-route-only MVP: preserve significant scrutiny and delivery checks in the same change. Design reports stay in task evidence, not this derived execution list or the canonical plan. This list is not another backlog.
+
+## Approved enhancement — same feature and pull request
+
+Original checked items remain historical completion for their recorded versions, not acceptance of the enhancement. Source for the new work is plan draft-11 and spec FR-015–FR-019; prior counters and evidence remain intact.
+
+- [ ] T018 Reconcile the actual supported Lavish usage route and permission/capability boundary before finalizing Lavish-specific instructions in `specs/002-review-routing/plan.md` and `quickstart.md`; no invented integration or silent substitution.
+- [ ] T019 Reconcile affected independent design review for `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`, retaining actual used counters and requesting specific missing continuation authority only if needed; do not automatically restart design/comprehension.
+- [ ] T020 Update `.specify/memory/constitution.md`, `docs/process/spec-kit-egm.md`, `docs/decisions/0011-minimal-review-routing.md` and append-only `RECORD.md` with the approved Lavish-before-EGM, story-evidence closure, bounded agent-owned continuation and mandatory pre-PR native delivery-control rules; preserve protected areas and historical0010 bytes.
+- [ ] T021 Reconcile `specs/002-review-routing/quickstart.md` and `checklists/requirements.md` with actual supported route, UI/non-UI boundary, story acceptance checks/evidence and adverse missing/failed/cap stops; record actual unbuilt/unproved items.
+- [ ] T022 Obtain affected independent committed-change/scenario review, execute the full required project gate, and obtain separate proof judgment for the revised version before updating the existing PR; retain logs outside the working copy, then satisfy current hosted checks. No new runner or suite rerun solely for proof reading.
+
+T018 blocks only Lavish-specific operational finalization and its proof, not ready canonical scope drafting. T019 determines affected design coverage before policy implementation. T020–T021 follow reconciled scope/route and T019; T022 precedes revised publication. T017 remains dependent post-merge rollout and is not completed by these tasks.

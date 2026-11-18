@@ -1,11 +1,29 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-10
-**Status**: Five-phase design clearance completed; bounded repository implementation recorded in tasks.md. Delivery acceptance, integration and activation remain pending.
+**Plan revision**: draft-11
+**Status**: Original routing design cleared and implemented; approved workflow enhancement inputs are being reconciled. Affected design/review, delivery, integration and activation remain pending.
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
 **Spec**: [spec.md](spec.md)
+
+## Approved enhancement and current dependency
+
+Extend this same feature, canonical issue and pull request with a Lavish visual specification-feedback loop before initial EGM review for UI-changing work, explicit per-story acceptance/check/evidence closure, bounded agent-owned continuation and one mandatory pre-PR native delivery-control track. This enhancement changes the former routine human checkpoint policy intentionally; it does not infer standing permission from old exact-round approvals.
+
+The human retains goals, significant product/scope decisions, unresolved intent, access/cost/sensitive effects, limit extensions, evidence exceptions, merge and deployment. The first mate coordinates only input-ready direct independent Codex reviewer tasks, ordinary scope-preserving repairs and affected checks inside actual remaining allowances. No nested model, second provider/runner, automatic counter reset or host-enforcement change is included.
+
+Actual Lavish capability and authorized usage route are still being established. Do not prescribe an unverified command, account, integration, automatic mock generator or silent replacement. Draft the ready requirements and boundary rules now; finalize the Lavish-specific operational instructions only after the supported route evidence arrives. For this documentation-only workflow enhancement, do not manufacture an application UI mock; record the no-product-UI boundary. Future actual UI cases still require the Lavish step and real observation proof.
+
+The UI sequence is current spec/user stories → version-linked Lavish mock → human visual feedback → canonical spec correction → revised mock as needed → matching spec/plan submitted to initial EGM review. Visual acceptance does not authorize product implementation or prove working behavior. Before implementation each story names acceptance criteria and actual verification method; derived tasks connect criteria/check/evidence. A failed criterion returns to the authorized repair and affected retest/review loop; missing evidence blocks story completion. Human-approved exceptions are reported separately, never as actual successful tests.
+
+Update the canonical feature artifacts, constitution, process guide, decision0011/index only as made stale, and append factual history. Preserve historical0010 bytes and the narrow supersession. Record affected-review applicability against original clearance rather than rerunning unchanged phases or treating original evidence as new proof. Original critique used3/5 rounds, readiness4/5, outer re-audits unused, all five comprehension allowances consumed; these do not reset. Any independently necessary assessment beyond actual remaining authority is a specific continuation gap, not automatic permission.
+
+The revised version must complete independent committed-change/scenario review, actual per-story/project checks, current documentation and separate proof judgment before updating the existing PR publication. Hosted checks must then pass at the published version. No separate no-mistakes agent pipeline or default care change is added. Prior exact gap acceptances remain limited to their unchanged claims; no broader story/Lavish operating proof is inferred. T017 remains the first mate's explicit post-merge direction reconciliation and actual fresh-session both-route observations.
+
+## Original reviewed approach and enhancement precedence
+
+The sections below retain the original reviewed approach as the baseline. The approved enhancement above supersedes its routine human-continuation/checkpoint wording only for scope-preserving, input-ready actions inside actual remaining limits. It does not supersede human resource/consent decisions, cap/churn stops or merge/deployment authority. Operational Lavish details and affected-review disposition remain pending, so this draft is not fresh design clearance.
 
 ## Summary
 
