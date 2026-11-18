@@ -1,6 +1,6 @@
 # Review routing validation and rollout
 
-**Specification**: minimal-review-routing-v1; draft-1
+**Specification**: minimal-review-routing-v1; aligned to plan draft-9
 **Status**: Procedure, not evidence of execution
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); one assigned workflow implementer remains owner
 
@@ -16,7 +16,7 @@
 1. Replace the existing standing direction in place with routing consistent with the merged constitution and guide. Record actual activation; do not add a competing direction or silently change care settings.
 2. Start a real fresh Infinitary session. Record which merged constitution/guide versions and active direction it actually reads, its context boundaries, and actual case intent/artifact versions. If inputs conflict or are stale, stop affected work and reconcile.
 3. Use a real authorized small understood correction with no significant trigger. Record classification/reason and actual task identities/counts: zero EGM tasks, with one native independent delivery-review track retained. Existing accepted intent/artifacts must apply.
-4. Use a real authorized significant change. Record its trigger and actual five ordered EGM phase assignments/results, named fresh reviewers, persona/standard, pinned inputs and context exclusions. Confirm comprehension's plan-only input and final current tasks before readiness.
+4. Use a real authorized significant change, recording its trigger and accepted artifact versions. Create and launch only the next EGM phase whose actual pinned inputs exist and whose preceding phase has cleared. Record that phase's real assignment identities, reviewers, persona/standard, hashes and context exclusions at launch. Do not create later reviewer assignments or sessions to reserve them. Reconcile each phase's reports/repairs, pin its resulting inputs, then request the next phase with its actual launch authority. Record the observed prefix and explicitly list the still-unassigned or unfinished phases. The complete set of five actual assignments is attainable only after readiness genuinely becomes input-ready and is assigned; completed five-phase proof also needs its actual result. Confirm comprehension's plan-only boundary and current matching final tasks before readiness. If no suitable real authorized case or actual inputs exist, stop that observation and report the exact missing case/input and first-mate owner, rather than inventing examples, assignments or historic substitutes. Do not implement sample changes merely to obtain routing proof.
 5. Record one assigned readiness reviewer analyzing the same spec/plan/tasks in its readiness report with separate consistency and design findings. No duplicate generic reread or checklist without a domain gap.
 6. Trace an actual delivery record through committed-change/scenario review, author execution and separate evidence judgment at the applicable version. Record hosted checks, gaps and actual attestation only if the host really supplies it. Do not infer attestation from care labels.
 

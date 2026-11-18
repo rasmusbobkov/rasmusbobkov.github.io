@@ -1,7 +1,7 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-8
+**Plan revision**: draft-9
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -87,7 +87,7 @@ At an exhausted outer allowance, inner five-round cap or churn stop, retain the 
 
 The author classifies each finding with the resolver, records precise edits/disposition, applies authorized repairs and repins inputs before renewed review. When an ordinary allowed repeat requires the installed checkpoint, or an exception needs captain continuation, obtain that actual authorization before launch.
 
-For each later edit the author records an impact decision: changed requirement/design decision, affected files and scenarios, affected prior review finding or evidence fact, and proposed repeat. The independent reviewer verifies that coverage decision; the first mate reconciles disputed scope. Pure wording repair needs comprehension/style recheck of affected explanations, not unrelated phase repetition. Changed routing criteria, authority or review contracts reopen the affected design judgments. Implementation edits need review of the changed diff and checks that exercise its affected behavior; new shared surfaces expand that set. Evidence from an unchanged version-dependent fact may be retained only with an explicit applicability explanation. Missing/stale affected evidence blocks clearance. The final full local gate and current hosted checks are retained even when narrower affected checks were run during repair.
+For each later edit the author records an impact decision: changed requirement/design decision, affected files and scenarios, affected prior review finding or evidence fact, and proposed repeat. The independent reviewer verifies that coverage decision; the first mate reconciles disputed scope. Pure wording repair needs review of affected explanations within the applicable unused allowance or specifically authorized continuation, not unrelated phase repetition. This does not authorize another comprehension assessment when its allowances are exhausted. Changed routing criteria, authority or review contracts reopen the affected design judgments. Implementation edits need review of the changed diff and checks that exercise its affected behavior; new shared surfaces expand that set. Evidence from an unchanged version-dependent fact may be retained only with an explicit applicability explanation. Missing/stale affected evidence blocks clearance. The final full local gate and current hosted checks are retained even when narrower affected checks were run during repair.
 
 ## Technical Context
 

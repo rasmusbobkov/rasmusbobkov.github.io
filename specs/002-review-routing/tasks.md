@@ -1,6 +1,6 @@
 # Tasks: Minimal review routing
 
-**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-8, minimal-review-routing-v1
+**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-9, minimal-review-routing-v1
 **Status**: Derived execution list reconciled to draft-8 for readiness; readiness result pending
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -33,7 +33,7 @@
 
 - [ ] T010 [US3] Align `.specify/memory/constitution.md` and `docs/process/spec-kit-egm.md` on independent implementation/documentation/scenario review, author execution, separate proof read, unchanged care/attestation and complete gate.
 - [ ] T011 [US3] Add `docs/decisions/0011-minimal-review-routing.md`, its row in `docs/decisions/index.md` and factual appended `RECORD.md` history; preserve earlier records.
-- [ ] T012 [US3] Finalize `specs/002-review-routing/quickstart.md` and requirements-checklist status against actual findings; record unexecuted rollout honestly.
+- [ ] T012 [US3] Finalize `specs/002-review-routing/quickstart.md` and requirements-checklist status against actual findings. Verify quickstart explicitly carries next-phase-only launch after actual inputs/prior clearance and separate launch authority, no later-phase reservations, actual assignment identity/hash recording, observed-prefix/unassigned-remainder reporting, complete-five evidence only when actually attainable, and missing-real-case/input stop with first-mate owner. Record unexecuted rollout honestly; no unauthorized sample implementation or historical substitute.
 
 ## Final validation and delivery
 
