@@ -2,6 +2,10 @@
 
 The [constitution](../../.specify/memory/constitution.md) defines the project workflow. Host authority, assigned scope and consent remain higher. Spec Kit 1.2.5 and the independently maintained EGM port 0.9.1 provide project-local skills; their presence does not authorize implementation, merge or deployment.
 
+## Planning and implementation boundary
+
+Planning and implementation are separate tracks. Spec Kit → applicable Lavish visual-intent feedback → Goldfish prepares and reviews specifications and feature/bug plans under the existing zero/five classification. An understood correction with current accepted intent still needs no new EGM planning phase. Implementation follows first mate → native no-mistakes validation → PR: execute the accepted story, independently review the committed change, run criterion-specific and project checks, confirm documentation currency and obtain separate proof judgment before publication. Ordinary scope-preserving implementation repairs do not restart the planning track; changed intent returns to the affected planning step within actual authority. This distinction changes no finite allowance, consent, merge or deployment boundary and adds no external runner.
+
 ## Artifacts and commands
 
 Find the existing canonical issue and owner before work. Product planning and technical issues retain their established tracker roles; one outcome has one canonical issue, not a duplicate in both. Keep private tracker details out of shared files. Roadmaps and host tasks are derived views or assignments.

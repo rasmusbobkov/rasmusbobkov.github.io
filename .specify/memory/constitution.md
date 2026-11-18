@@ -2,6 +2,10 @@
 
 **Version:** 1.2.0
 
+## Planning and implementation boundary
+
+Planning and implementation are separate tracks. Spec Kit → applicable Lavish visual-intent feedback → Goldfish prepares and reviews specifications and feature/bug plans under the existing zero/five classification. An understood correction with current accepted intent still needs no new EGM planning phase. Implementation follows first mate → native no-mistakes validation → PR: execute the accepted story, independently review the committed change, run criterion-specific and project checks, confirm documentation currency and obtain separate proof judgment before publication. Ordinary scope-preserving implementation repairs do not restart the planning track; changed intent returns to the affected planning step within actual authority. This distinction changes no finite allowance, consent, merge or deployment boundary and adds no external runner.
+
 ## Authority and intent
 
 Spec Kit and the Elephant-Goldfish Model (EGM) are the project development workflow. Host instructions, task scope, consent and applicable permissions take precedence. Reading these documents grants no implementation, merge, deployment or resource-access permission. Engineering documentation is English; the application is Estonian-first.

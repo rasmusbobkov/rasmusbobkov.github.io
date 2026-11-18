@@ -4,6 +4,10 @@
 **Status**: Procedure, not evidence of execution
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); one assigned workflow implementer remains owner
 
+## Planning and implementation boundary
+
+Planning and implementation are separate tracks. Spec Kit → applicable Lavish visual-intent feedback → Goldfish prepares and reviews specifications and feature/bug plans under the existing zero/five classification. An understood correction with current accepted intent still needs no new EGM planning phase. Implementation follows first mate → native no-mistakes validation → PR: execute the accepted story, independently review the committed change, run criterion-specific and project checks, confirm documentation currency and obtain separate proof judgment before publication. Ordinary scope-preserving implementation repairs do not restart the planning track; changed intent returns to the affected planning step within actual authority. This distinction changes no finite allowance, consent, merge or deployment boundary and adds no external runner.
+
 ## Approved enhancement validation draft
 
 This section prepares the newly approved enhancement, not completed operating proof. Kun Chen's installed lavish-axi 0.1.96 provides the supported local route: Codex generates HTML; Lavish renders/annotates/returns feedback. Installed help is not actual rendering/feedback/resumption proof. Do not install another version or start duplicate discovery.

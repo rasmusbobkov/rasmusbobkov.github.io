@@ -1,5 +1,9 @@
 # 0011: Match design review to change impact
 
+## Planning and implementation boundary
+
+Planning and implementation are separate tracks. Spec Kit → applicable Lavish visual-intent feedback → Goldfish prepares and reviews specifications and feature/bug plans under the existing zero/five classification. An understood correction with current accepted intent still needs no new EGM planning phase. Implementation follows first mate → native no-mistakes validation → PR: execute the accepted story, independently review the committed change, run criterion-specific and project checks, confirm documentation currency and obtain separate proof judgment before publication. Ordinary scope-preserving implementation repairs do not restart the planning track; changed intent returns to the affected planning step within actual authority. This distinction changes no finite allowance, consent, merge or deployment boundary and adds no external runner.
+
 ## Context
 
 Decision 0010 introduced Spec Kit and EGM with a relevant design phase even for bounded corrections. A correction whose accepted intent, cause, scope and expected result are understood can omit that separate design handoff while retaining independent delivery review and proof. Incorrect classification remains a residual risk, not a measured saving.
