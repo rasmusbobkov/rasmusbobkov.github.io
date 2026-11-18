@@ -28,11 +28,7 @@ the aligned problem and requirements from the brainstorm phase.
 1.  You **MUST** read and apply the
     execution instructions in
     `.specify/extensions/egm/resources/execution_instructions.md`.
-2.  **Artifact-First Delivery (MANDATORY)**: You are **STRICTLY FORBIDDEN** from
-    presenting large proposals, drafts, summaries, or plans directly in the chat
-    pane. You **MUST** write them directly to the selected feature plan (`<feature>/plan.md`) using your file-writing tool and tell the user in chat
-    the file path and ask for review. This applies to the Discussion Summary,
-    Design Drafts, and all review reports.
+2.  **Artifact-First Delivery (MANDATORY)**: Refine the selected feature's existing `<feature>/plan.md` in place for technical design content, preserving its unrelated sections and accepted intent. Keep discussion summaries and review reports in the host-authorized task evidence or artifact directory, never inside the canonical plan. Identify the appropriate retained artifact to the user under host delivery rules. Do not overwrite the plan with a summary or review report.
 3.  **Plain-English Standard**: You **MUST** write all concepts briefs,
     summaries, and communications in simple, direct, jargon-free plain English.
     Explain technical mechanisms directly. Do not summarize away substance or
@@ -73,7 +69,7 @@ Read `.specify/memory/constitution.md` and `docs/process/spec-kit-egm.md`. The a
 
 ## Inputs
 
-Select the assigned feature directory using the explicit feature selection mechanism. Read its accepted `spec.md` and existing `plan.md`. Optional predecessor context supplements, but never replaces, that specification.
+Select the assigned feature directory using the explicit feature selection mechanism. For bounded read-only or excluded-pointer flows, set `SPECIFY_FEATURE_NO_PERSIST=1` when invoking feature-selection scripts so they do not write `.specify/feature.json`. Read the accepted `spec.md` and existing `plan.md`. Optional predecessor context supplements, but never replaces, that specification.
 
 ## Execution Workflow
 
@@ -149,8 +145,7 @@ Read the assigned feature's accepted `spec.md` and existing `plan.md`. Stop for 
     (`.specify/extensions/egm/references/design_doc.md`).
 3.  **Focus**: Emphasize the *why* (the user need and business value) rather
     than the *how* (technical implementation).
-4.  **Write Draft Artifact (MANDATORY)**: Save this initial draft to
-    `<feature>/plan.md` in the selected feature directory using your file-writing tool.
+4.  **Refine Existing Plan (MANDATORY)**: Update only the relevant sections of the existing `<feature>/plan.md` in place. Preserve all other sections and previously accepted technical content; do not replace the file with an initial draft. Requirements remain in `spec.md`.
 5.  **Notify & Verify (No Chat Dumps)**: You are **STRICTLY FORBIDDEN** from
     printing the draft in the chat. Instead, notify the user in conversational
     chat text that Overview & Problem Statement has been drafted, provide a
