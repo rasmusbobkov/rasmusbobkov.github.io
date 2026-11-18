@@ -1,6 +1,6 @@
 # Tasks: Minimal review routing
 
-**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-2, minimal-review-routing-v1
+**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-3, minimal-review-routing-v1
 **Status**: Derived draft; refresh against final design before readiness
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -10,7 +10,7 @@
 - [x] T001 Draft canonical `specs/002-review-routing/spec.md`, `plan.md`, `tasks.md`, `quickstart.md` and `checklists/requirements.md` from accepted intent, retaining pending issue status.
 - [x] T002 Obtain the specific issue-creation consent and record the actual canonical technical issue in `specs/002-review-routing/spec.md` and `plan.md`; do not use closed #38.
 - [x] T003 Pin `specs/002-review-routing/plan.md` and declared context for initial zoom out; request real zoom-out and inventive-catalyst reviewers and retain attributed phase report in task evidence.
-- [ ] T004 Complete standalone comprehension of pinned `specs/002-review-routing/plan.md` alone, with no author conversation or explanatory sources; preserve initial paraphrase/findings and obtain the single permitted re-audit of draft-2 after CG-01–CG-05 repairs. Initial review is complete, clearance is pending.
+- [ ] T004 Complete standalone comprehension of pinned `specs/002-review-routing/plan.md` alone, with no author conversation or explanatory sources; preserve initial paraphrase/findings and retain the used draft-2 re-audit after CG-01–CG-05 repairs and its Major CR2-01. Both ordinary assessments are used; correct the nesting explanation in draft-3 and obtain explicit bounded continuation before any further comprehension assessment. Clearance remains pending.
 - [ ] T005 Obtain design critique of `specs/002-review-routing/plan.md` from design, structural and style personas; resolve attributed findings with phase-specific evidence.
 - [ ] T006 Obtain intermediate zoom out of current `specs/002-review-routing/plan.md` with actual earlier reports/dispositions; retain separate stage evidence.
 - [ ] T007 Reconcile final `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`; obtain readiness personas and exactly one assigned Spec Kit analyze owner on the pinned matching trilogy, with distinct finding categories in one readiness report. Stop on missing reviewers/blockers.
