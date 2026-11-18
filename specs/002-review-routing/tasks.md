@@ -1,7 +1,7 @@
 # Tasks: Minimal review routing
 
 **Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-8, minimal-review-routing-v1
-**Status**: Derived draft; refresh against final design before readiness
+**Status**: Derived execution list reconciled to draft-8 for readiness; readiness result pending
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
 
@@ -12,7 +12,7 @@
 - [x] T003 Pin `specs/002-review-routing/plan.md` and declared context for initial zoom out; request real zoom-out and inventive-catalyst reviewers and retain attributed phase report in task evidence.
 - [x] T004 Complete standalone comprehension of pinned `specs/002-review-routing/plan.md` alone, with no author conversation or explanatory sources; preserve initial paraphrase/findings and retain the used draft-2 re-audit after CG-01–CG-05 repairs and its Major CR2-01. The separately authorized full draft-5 reading completed clean; preserve all earlier findings and stage synthesis. All five allowances are used; no additional comprehension assessment is authorized. Draft-6 critique repairs do not represent another comprehension verdict.
 - [x] T005 Obtain design critique of `specs/002-review-routing/plan.md` from design, structural and style personas; resolve attributed findings with phase-specific evidence.
-- [ ] T006 Obtain intermediate zoom out of current `specs/002-review-routing/plan.md` with actual earlier reports/dispositions; retain separate stage evidence.
+- [x] T006 Obtain intermediate zoom out of current `specs/002-review-routing/plan.md` with actual earlier reports/dispositions; retain separate stage evidence.
 - [ ] T007 Reconcile final `specs/002-review-routing/spec.md`, `plan.md` and this `tasks.md`; obtain readiness personas and exactly one assigned Spec Kit analyze owner on the pinned matching trilogy, with distinct finding categories in one readiness report. Stop on missing reviewers/blockers.
 
 ## US1 — Small corrections, zero EGM (FR-001, FR-002, FR-007, FR-012)
@@ -45,6 +45,8 @@
 
 ## Dependencies, parallelism and strategy
 
-T001 permits drafting while T002 consent waits; T002 is not a circular drafting prerequisite. T003–T007 are sequential with affected repairs and existing loop limits; no policy implementation before T007 clearance. T008–T012 are one coherent policy change and share files, so they are not parallel slices. T013 precedes actual validation and T015 separately reads its proof; affected changes require affected updates. T016 requires completed pre-merge checks/reviews, not T017. T017 is dependent post-merge rollout owned by the first mate, not a claim that the repository author activated anything.
+T001 and T002 are completed historical prerequisites; the earlier pending-assignment state did not prohibit drafting. T003–T007 are sequential with affected repairs and existing loop limits; no policy implementation before T007 clearance. T008–T012 are one coherent policy change and share files, so they are not parallel slices. T013 precedes actual validation and T015 separately reads its proof; affected changes require affected updates. T016 requires completed pre-merge checks/reviews, not T017. T017 is dependent post-merge rollout owned by the first mate, not a claim that the repository author activated anything.
+
+Requirement coverage for the single readiness analysis owner: FR-001 T001–T002; FR-002 T008; FR-003–FR-006 T003–T009; FR-007 T001/T012; FR-008 T010/T013/T015; FR-009 T010/T014/T016; FR-010 T010/T015; FR-011 T008–T014 protected-area review; FR-012 T008–T011; FR-013 T016–T017; FR-014 T007/T009/T013–T016. This is a derived navigation aid, not a completed independent coverage analysis.
 
 No independent parallel implementation group is safe in these shared policy files. Do not ship a small-route-only MVP: preserve significant scrutiny and delivery checks in the same change. Design reports stay in task evidence, not this derived execution list or the canonical plan. This list is not another backlog.
