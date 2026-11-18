@@ -1,0 +1,33 @@
+schema_version: "1.0"
+preset:
+  id: "firstmate-astro-pilot"
+  name: "Firstmate Astro pilot"
+  version: "0.2.0"
+  description: "Spec Kit and EGM project workflow adaptations"
+requires:
+  speckit_version: ">=1.2.5"
+  extensions:
+    - id: "egm"
+      version: ">=0.9.1"
+provides:
+  templates:
+    - type: "command"
+      name: "speckit.egm.draft"
+      file: "commands/speckit.egm.draft.md"
+      description: "Draft with project authority and recommendation policy"
+      strategy: "replace"
+    - type: "command"
+      name: "speckit.egm.review"
+      file: "commands/speckit.egm.review.md"
+      description: "Preserve interactive stage reports"
+      strategy: "replace"
+    - type: "command"
+      name: "speckit.taskstoissues"
+      file: "commands/speckit.taskstoissues.md"
+      description: "Match tasks by feature and task identity"
+      strategy: "replace"
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Canonical technical plan with EGM review boundary"
+      strategy: "replace"

@@ -20,15 +20,9 @@ No code file may pass 1500 lines. `scripts/check-file-lengths.sh` counts them
 and `npm test` fails through `pretest` on one that does. Split the file; the cap
 moves only by a deliberate decision.
 
-## Project development process
+## Development workflow
 
-The canonical process description is [docs/process/development-process.md](docs/process/development-process.md).
-Before assigned work, read its principles and activation rules, then the
-module and acceptance/review rules relevant to this task. A link is not proof
-that the document was read. Identify the method revision and relevant
-specification version in the handoff/result. Report missing, unreadable or
-conflicting guidance rather than inventing a replacement. Existing authority,
-task scope and permissions still apply.
+Read [the constitution](.specify/memory/constitution.md) and [the Spec Kit and EGM guide](docs/process/spec-kit-egm.md) for the assigned work. Carry the canonical issue, feature specification and plan revisions, review scope, owner, checks and evidence gaps in handoffs. Existing host authority, task scope and permissions apply.
 
 ## Documentation
 

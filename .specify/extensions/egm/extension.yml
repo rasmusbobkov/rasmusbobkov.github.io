@@ -1,0 +1,46 @@
+schema_version: "1.0"
+
+extension:
+  id: egm
+  name: "Elephant-Goldfish Model"
+  version: "0.9.1"
+  description: "Design with an elephant. Review with a goldfish."
+  category: "process"
+  effect: "read-write"
+  author: "Kapil Sachdeva"
+  repository: "https://github.com/ksachdeva/spec-kit-extensions"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.9.0"
+
+provides:
+  commands:
+    - name: speckit.egm.brainstorm
+      file: commands/speckit.egm.brainstorm.md
+      description: "Interactive ideation and brainstorming for the Elephant & Goldfish Model (EGM)"
+    - name: speckit.egm.draft
+      file: commands/speckit.egm.draft.md
+      description: "Draft a design for the Elephant & Goldfish Model (EGM)"
+    - name: speckit.egm.bootstrap
+      file: commands/speckit.egm.bootstrap.md
+      description: "Bootstrap EGM Peanuts and Hay README contracts across a repository subtree"
+    - name: speckit.egm.drift-report
+      file: commands/speckit.egm.drift-report.md
+      description: "Detect and report drift between design documents or READMEs and source code"
+    - name: speckit.egm.resolve
+      file: commands/speckit.egm.resolve.md
+      description: "Evaluate Goldfish review findings and resolve them with the user"
+    - name: speckit.egm.review-loop
+      file: commands/speckit.egm.review-loop.md
+      description: "Orchestrate iterative Goldfish reviews and resolution"
+    - name: speckit.egm.review
+      file: commands/speckit.egm.review.md
+      description: "Run the EGM Goldfish review protocol and remediate approved findings"
+
+tags:
+  - "assessment"
+  - "discovery"
+  - "triage"
+  - "product"
+  - "workflow"
