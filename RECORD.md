@@ -426,3 +426,7 @@ is registered and answers.
   `tests/file-lengths.test.ts` proves the failure, and the exclusions
   (`node_modules`, `dist`, `.astro`, `gen/`, and files that are not code).
 - **Splitting the file is the fix; raising the cap is a decision of its own.**
+
+## Spec Kit and EGM workflow transition
+
+The project replaces its former custom development manual with Spec Kit and EGM. The constitution selects proportionate review and canonical feature artifacts; decision 0010 records the boundaries. Product rules, historical decisions and the existing checks remain. The project check, build and 506 tests passed for the transition contents; the review record retains the exact version and remaining evidence. Automatic EGM delegation remains unproven. This entry does not claim a merge or deployment.

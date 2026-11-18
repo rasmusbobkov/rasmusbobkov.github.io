@@ -2,8 +2,8 @@ schema_version: "1.0"
 preset:
   id: "firstmate-astro-pilot"
   name: "Firstmate Astro pilot"
-  version: "0.1.1"
-  description: "Project policy and command corrections"
+  version: "0.2.0"
+  description: "Spec Kit and EGM project workflow adaptations"
 requires:
   speckit_version: ">=1.2.5"
   extensions:
@@ -25,4 +25,9 @@ provides:
       name: "speckit.taskstoissues"
       file: "commands/speckit.taskstoissues.md"
       description: "Match tasks by feature and task identity"
+      strategy: "replace"
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Canonical technical plan with EGM review boundary"
       strategy: "replace"

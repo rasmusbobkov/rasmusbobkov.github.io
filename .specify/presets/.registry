@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "presets": {
     "firstmate-astro-pilot": {
-      "version": "0.1.1",
+      "version": "0.2.0",
       "source": "local",
-      "manifest_hash": "sha256:9107fca2faaece9779ead81c034f37b936e3e210f5e156db949c3135a3a6a593",
+      "manifest_hash": "sha256:843f4d21d88a1eaa8daa4af769ae77a7a33fa35d209d34d103a39435db0d8458",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
@@ -21,7 +21,7 @@
           "speckit-taskstoissues"
         ]
       },
-      "installed_at": "2026-11-17T18:26:32.401185+00:00"
+      "installed_at": "2026-11-18T08:02:53.495542+00:00"
     }
   }
 }

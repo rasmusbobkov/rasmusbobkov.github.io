@@ -1,36 +1,35 @@
-# Spec Kit and EGM integration
+# Spec Kit and EGM workflow
 
-This integration adds drafting and review aids, not a new development method or dispatcher. The [development process](development-process.md) and root `AGENTS.md` remain authoritative. Its method revision for this adoption is project commit `5aac843dcffa27f53cfc4957ef20fcd5bd0cd2ee`; the adoption specification is `spec-kit-egm-adoption-plan-v1`. The shared firstmate-home project documentation template is a reusable source, not another installed method.
+The [constitution](../../.specify/memory/constitution.md) defines the project workflow. Host authority, assigned scope and consent remain higher. Spec Kit 1.2.5 and the independently maintained EGM port 0.9.1 provide project-local skills; their presence does not authorize implementation, merge or deployment.
 
-## Components and records
+## Artifacts and commands
 
-- Spec Kit CLI 1.2.5 generated the managed `.specify/` infrastructure and `.agents/skills/` Codex skills. The Codex integration records `--events false`; do not start the included workflow as a second runner.
-- EGM is the independently maintained Spec Kit port, version 0.9.1, release commit `31a141167f732aa79d9bd74a88743aaac7b079ce`. Its release archive SHA-256 is `920f2570be2d40f2a5abe359dd7f58658e90aea317b38438bb8444f8a01d4deb`. Its packaged commands and resources are in `.specify/extensions/egm/`. The port's MIT licence is kept in `LICENSE` there; the ten persona files in `agents/` and `resources/egm-bootstrap/templates.md` identify Apache-2.0, whose original text is in `LICENSE-Apache-2.0` beside it.
-- The local preset `firstmate-astro-pilot` 0.1.1 lives in `.specify/local-presets/firstmate-astro-pilot/`. Spec Kit materializes it in `.specify/presets/` and the generated skills. It replaces the upstream draft command's prohibition on recommendations with the method's contextual recommendation rule and carries the review and task-to-issue corrections below. Upstream files remain distinguishable from these overrides.
-- The accepted specification for each assignment is its canonical specification. Drafts, generated checklists and review reports are working artifacts, not independent specifications or backlogs. Code-repository issues remain the technical backlog; product planning retains its designated tracker. `docs/architecture.md`, `docs/invariants.md`, `docs/decisions/` and `RECORD.md` retain their existing roles. English remains the engineering-documentation language; the product is Estonian-first.
+Find the existing canonical issue and owner before work. Product planning and technical issues retain their established tracker roles; one outcome has one canonical issue, not a duplicate in both. Keep private tracker details out of shared files. Roadmaps and host tasks are derived views or assignments.
 
-## Command boundaries
-
-Read the applicable root instructions and process manual before invoking a skill. Project and host authority, user scope and consent take precedence over generated command text. Existing cards and separate implementation, merge and deployment decisions remain in force; a command's suggested next step grants none of them. Do not treat a generated constitution or template as a replacement for existing authority.
-
-| EGM skill | Purpose and boundary |
+| Step | Command and artifact |
 | --- | --- |
-| `speckit-egm-brainstorm` | Explore a bounded concept. Its prescribed files, chat gates and reviewer spawning do not override the assigned artifact, host interaction or available delegation. |
-| `speckit-egm-draft` | Draft against the assigned accepted specification, without creating a competing canonical document. The local preset enables reasoned recommendations. |
-| `speckit-egm-bootstrap` | Can rewrite existing READMEs and spawn unbounded workers. Do not run it for this adoption; mass bootstrapping is outside its scope. |
-| `speckit-egm-drift-report` | Compare selected documents and code; use an authorized target and report location, not an assumed new project record. |
-| `speckit-egm-resolve` | Assess attributed findings and apply only authorized fixes; its chat and file instructions do not override host delivery or approval rules. |
-| `speckit-egm-review-loop` | Requests fresh reviewers and a staged resolution loop. Stop and report missing delegation rather than substituting self-review. |
-| `speckit-egm-review` | Requests fresh reviewers for staged design review. Its generated gates and report paths are subordinate to the assigned scope and host rules. |
+| Explore an unresolved concept | `speckit-egm-brainstorm`; its concepts brief is working input, not another accepted specification. |
+| Define intent | `speckit-specify` and `speckit-clarify` produce `specs/<feature>/spec.md`, the canonical requirements for that outcome. |
+| Design | `speckit-plan` produces `plan.md`; `speckit-egm-draft` refines that same plan with the feature specification as context. |
+| Review | `speckit-egm-review` and `speckit-egm-review-loop` describe EGM phases; use existing host tasks to coordinate fresh reviewers when direct delegation is unavailable. |
+| Prepare work | `speckit-tasks` derives `tasks.md`; `speckit-analyze` checks alignment before implementation. Checklists are not a backlog. |
+| Implement | With separate authorization, use `speckit-implement`; `speckit-converge` identifies remaining accepted work, not new scope. |
+| Investigate drift | `speckit-egm-drift-report` compares an authorized set of documents and sources. `speckit-egm-resolve` assesses attributed findings; changes still need scope and permission. |
 
-The review instructions mix persona names such as `egm-design` with filename-based shortname resolution. The packaged filename for that persona is `agents/design_critic.md`, not `agents/egm-design.md`; other persona names also use hyphens while their filenames use underscores. When the host does not register named personas, use the explicit packaged persona paths rather than assuming the shortname mapping works. Actual delegated execution remains unverified.
+Do not run `speckit-egm-bootstrap` as a mass README rewrite or use task-to-issues conversion by default. The latter remains available only when separately authorized; its feature/task identity repair avoids collisions. Use `SPECIFY_FEATURE_DIRECTORY` or the ignored local feature pointer when branch and feature names differ.
 
-The preset's review override preserves separate reports for interactive stages 7 and 9. Its task-to-issues override uses the feature directory and task ID together when matching issues. Refresh the preset from its versioned local source to regenerate these corrections. Integration status may report the preset-overridden core skill as modified relative to the original integration manifest; inspect this expected difference before an upgrade.
+## Review policy and limits
 
-The draft command also loads `.specify/extensions/egm/resources/execution_instructions.md`. Its design-only restriction applies within a design workflow, not to a separately authorized implementation. Its blanket step-by-step confirmations, plain-chat-only responses and prohibition on summaries do not displace the existing method or host rules. Resolve real contradictions through the applicable authority and recorded decisions, not an invented universal halt. The preset does not rewrite this shared upstream resource or the other six commands.
+The selected policy matches review to impact. New behavior, shared contracts, saved-data or security boundaries, and workflow changes receive all five phases: initial zoom out, comprehension, design critique, intermediate zoom out and implementation readiness. Bounded corrections without those impacts receive the relevant phase: comprehension for documentation, implementation readiness for an understood repair. The first mate records classification and reasons; ambiguity uses all five. The technical plan is the review target, with the canonical specification as declared context except for standalone comprehension, which receives no author conversation or explanatory sources.
 
-## Validation and limits
+Use explicit files under `.specify/extensions/egm/agents/`: persona names and filenames do not uniformly match. Record each reviewer's actual inputs, version, procedural boundary, findings and disposition. Missing reviewers are not clean reviews. Preserve loop limits and stage-specific reports; unresolved blocking findings stop completion. Host interaction, permissions and task scope override generated chat or automatic-advance instructions. Automatic EGM spawning, registration and nested delegation remain unproven; coordinated fresh reviews are not proof of them.
 
-Run `npm run check`, then `npm run build && npm test`; the latter includes the documentation shape check. A fresh reader should be able to identify the method, accepted specification, record owners, gate and limitations from project documents. The generated instruction files are not proof that a host discovers or follows them.
+## Components and verification
 
-The disposable pilot verified the release archive, seven generated definitions and static composition of the draft preset. Two independently coordinated readers reviewed a documentation example with procedural input boundaries; that was not automatic EGM delegation. In a fresh project session at commit `dfd7f724a24f7f566c5a7e0319dbe6b8f94d5579`, the supplied skills list included `speckit-egm-drift-report` before its file was opened. The session read and used it for a bounded comparison of the root and documentation READMEs: it found no substantive contradiction, but noted that the documentation map omitted `RECORD.md`. The session did not cross-check code or write the prescribed report because its task was read-only. This was not a complete EGM journey, and automatic delegation was not tested. If a requested fresh reviewer cannot be launched, record it as not run. No second runner, automatic event handler, global plugin or mass README bootstrap is authorized by this integration.
+The EGM archive is pinned to release commit `31a141167f732aa79d9bd74a88743aaac7b079ce`, SHA-256 `920f2570be2d40f2a5abe359dd7f58658e90aea317b38438bb8444f8a01d4deb`. Its port MIT licence and the original Apache-2.0 licence for the ten marked persona files and bootstrap template are retained in `.specify/extensions/egm/`.
+
+Versioned preset `firstmate-astro-pilot` 0.2.0 lives in `.specify/local-presets/firstmate-astro-pilot/`. It retains reasoned recommendations, distinct review-stage reports and feature/task issue identity, and adapts the plan template and drafting command to the canonical feature artifacts. Regenerate with `specify preset update firstmate-astro-pilot --dev .specify/local-presets/firstmate-astro-pilot`; inspect expected managed-file differences before upgrades. Codex events and automatic hook execution are disabled; the bundled workflow is not a second runner.
+
+Native template resolution requires Python 3 with PyYAML. If the default `python3` lacks it, set `SPECKIT_PYTHON_EXECUTABLE` to a Python executable that has PyYAML, such as the Python environment used by the installed Spec Kit CLI; do not assume the shell default has it.
+
+Run `npm run check`, then `npm run build && npm test`; the latter includes documentation and file-length checks. [Architecture](../architecture.md) owns the run guide, [invariants](../invariants.md) retain product rules including the approved measurement exception, [decisions](../decisions/index.md) retain reasons and [RECORD.md](../../RECORD.md) retains history. Record actual versions, checks, sources, review results and gaps. The earlier bounded skill journey and separately coordinated review did not establish automatic delegation or deployment.
