@@ -12,3 +12,5 @@ The canonical issue and owner remain in the established tracker and host assignm
 - [ ] T008 At the committed version, retain a bounded documentation journey and independently coordinated fresh review.
 - [ ] T009 Obtain independent change review, current hosted checks and separate merge decision.
 - [ ] T010 After authorized integration, have the first mate reconcile the standing direction and verify actual new-artifact reads.
+- [ ] T011 Run `speckit-analyze` across the canonical specification, plan and tasks; retain its findings before future implementation.
+- [ ] T012 Obtain a fresh-reader assessment of the constitution, workflow, canonical specification and issue roles, owner, gate and host limits.
