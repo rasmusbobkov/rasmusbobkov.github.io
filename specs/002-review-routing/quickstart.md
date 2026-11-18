@@ -1,6 +1,6 @@
 # Review routing validation and rollout
 
-**Specification**: minimal-review-routing-v1; aligned to plan draft-9
+**Specification**: minimal-review-routing-v1; procedure used with the [canonical plan](plan.md). Before each observation, verify and record the actual applicable plan version; this reference does not certify execution or independent alignment.
 **Status**: Procedure, not evidence of execution
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); one assigned workflow implementer remains owner
 
