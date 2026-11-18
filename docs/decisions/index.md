@@ -14,4 +14,5 @@ This table is the only place a decision is listed; the record itself holds the r
 | [0007](0007-agpl-3-0-and-source-offer.md) | Ship under AGPL-3.0 and offer the source from the page | accepted |
 | [0008](0008-product-name-and-public-address.md) | The product is called Tähelugu and published at tähelugu.ee | accepted |
 | [0009](0009-cookieless-measurement.md) | Measure three events with one cookieless counter, baked at build time | accepted |
-| [0010](0010-spec-kit-egm-workflow.md) | Use Spec Kit and EGM for the development workflow | accepted |
+| [0010](0010-spec-kit-egm-workflow.md) | Use Spec Kit and EGM for the development workflow | accepted; bounded-correction phase rule superseded by 0011; other decisions retained |
+| [0011](0011-minimal-review-routing.md) | Omit EGM for understood corrections; retain significant design scrutiny and one native delivery-review track | accepted |

@@ -430,3 +430,13 @@ is registered and answers.
 ## Spec Kit and EGM workflow transition
 
 The project replaces its former custom development manual with Spec Kit and EGM. The constitution selects proportionate review and canonical feature artifacts; decision 0010 records the boundaries. Product rules, historical decisions and the existing checks remain. The project check, build and 506 tests passed for the transition contents; the review record retains the exact version and remaining evidence. Automatic EGM delegation remains unproven. This entry does not claim a merge or deployment.
+
+## Minimal review routing
+
+Constitution 1.1.0 and decision 0011 define zero EGM design phases for small understood corrections with current accepted intent. Significant or ambiguous changes retain all five design phases. Final readiness owns one matching-trilogy analysis; both routes retain independent committed-change review, author checks and separate proof reading. Decision 0010's original text remains intact; only its bounded-correction phase rule is superseded in the new decision and index qualification.
+
+The workflow design completed five coordinated review stages with attributed findings and repairs retained outside the project. Design clearance is not executed application validation or proof of automatic delegation. Installed tools, local preset, licences, application behavior and gates remain unchanged. Direction activation and real fresh-session both-route observations remain dependent post-integration work; this entry claims neither activation, merge nor deployment, and no measured saving.
+
+## Visual intent and evidence-led workflow continuation
+
+Extended the review-routing policy with current-version human visual acceptance before first Goldfish review, explicit per-story execution and proof, bounded agent-coordinated continuation and native pre-publication delivery control. Updated the constitution to 1.2.0 and reconciled the derived requirements-quality checklist. Installed methods, disabled hooks/events, historical decision 0010 and application behavior remain unchanged. Documentary design review is not operating proof; local feedback/resumption observations and current delivery checks remain pending, separately from post-integration real-route observations.
