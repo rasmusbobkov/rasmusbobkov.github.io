@@ -4,6 +4,18 @@
 **Status**: Procedure, not evidence of execution
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); one assigned workflow implementer remains owner
 
+## Approved enhancement validation draft
+
+This section prepares the newly approved enhancement, not completed operating proof. The established supported Lavish route and its access boundary are still being checked separately; do not invent commands or start another investigation.
+
+1. Before implementation, record each story's acceptance criteria, actual verification method and derived task/evidence links. Verify a generic suite result is not substituted for a story's actual acceptance behavior; use end-to-end checks when needed to see it.
+2. For UI-changing intent, use the established Lavish route to prepare a mock linked to the actual spec/story version before initial EGM review. Record human visual feedback, canonical spec revisions and the resulting matching mock/spec/plan inputs. This draft prescribes no unverified Lavish command or access. For non-UI work record inapplicability; for unavailable route/permission stop the affected step.
+3. Observe an ordinary within-scope failure or review finding going to repair, affected check and independent judgment without another generic human continuation card. Record actual remaining stage/round allowance and resource authority before each continuation. Used counters do not reset, and no nested model or non-Codex fallback is permitted.
+4. Observe a genuine scope/product, unresolved-intent, access/cost/sensitive-action, cap/churn or missing-proof decision stopping for the human instead. Distinguish actual implementation, verified acceptance and an accepted exception; an exception is not a passed test.
+5. Before publishing a PR or updated version, retain independent committed-change/scenario review, actual story/project checks, documentation currency and separate proof judgment. Hosted checks then run on that published version; merge and deployment remain separate authority.
+
+These are repository workflow checks, not a newly implemented host enforcer or a claim of successful Lavish operation. Actual case inputs/results and independent judgment are required. The original review/gate records retain their own versions, and dependent post-merge T017 remains unexecuted.
+
 ## Before policy integration
 
 1. Read the accepted feature specification, matching plan/tasks and current constitution/guide. Record actual revisions and readings, not only paths.
