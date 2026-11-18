@@ -1,7 +1,7 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-6
+**Plan revision**: draft-7
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -48,7 +48,7 @@ Before readiness, update the derived tasks to match the final specification and 
 
 ### Existing CLI and host boundary
 
-The installed `specify` CLI supplies setup, integration/extension/preset management and artifact/template discovery. For this feature the author invokes the supported non-mutating operations `specify --version` and `specify preset resolve spec-template`, `specify preset resolve plan-template`, `specify preset resolve tasks-template` from the project root. Actual execution reported 1.2.5, core spec/tasks templates and the plan template from firstmate-astro-pilot 0.2.0. The author retains the transcript outside the project; resolution identifies the template source but does not generate accepted requirements or prove review completion.
+The installed `specify` CLI supplies setup, integration/extension/preset management and artifact/template discovery. For this feature the author invokes the supported non-mutating operations `specify --version` and `specify preset resolve spec-template`, `specify preset resolve plan-template`, `specify preset resolve tasks-template` from the project root. The author reports observing version 1.2.5, core spec/tasks templates and the firstmate-astro-pilot 0.2.0 plan template. These historical observations are not independently verified by this plan; the retained execution transcript belongs to the delivery evidence and its separate proof read. Template resolution identifies the source but does not generate accepted requirements or prove review completion.
 
 Infinitary's assigned author runs these ordinary shell operations, then uses the applicable project-local Spec Kit instructions to maintain this feature's artifacts. The first mate dispatches independent EGM host review tasks with pinned inputs; the CLI does not launch those reviewers in this design. No `specify plan` or `specify review` command is invented, no automatic delegation is claimed, and no new runner, plugin or MCP connection is added. Existing installation remains unchanged; upgrades, regeneration and event/hook execution are not part of these read-only operations. The supplied CLI capability is template discovery/setup support, not a claimed standalone review engine or a newly built automation integration.
 
@@ -81,7 +81,7 @@ Examples inside one critique/readiness invocation:
 
 Only after the complete invocation returns does the outer stage report/checkpoint decide progression or a stage re-audit after further stage-level repair. That re-audit starts a new complete subloop invocation with its own five-round/two-clean accounting, and uses the wrapper's single permitted outer re-audit. Inner round 3 in the first example does not consume that outer allowance. A new invocation cannot be used merely to conceal an unapproved cap/churn continuation. Record invocation identities, inner round counts and the outer re-audit count separately.
 
-Comprehension has **no inner antagonistic subloop**: one direct plan-only assessment is the initial stage audit, and a second direct assessment after repair is its one permitted re-audit. A failed first comprehension followed by a clean second assessment can clear comprehension; it does not need two clean rounds. If the second assessment still has a blocking gap, stop: there is no ordinary third assessment and no inner five-round budget to borrow. At the draft-5 drafting checkpoint, the initial comprehension assessment, ordinary re-audit and separately authorized draft-3/draft-4 assessments had been used; the then-current draft-4 result had one Major and one Nit. The separate review record now carries the later specifically authorized draft-5 assessment and its clean result; it does not retroactively change those earlier outcomes. All five actual allowances are consumed. These draft-6 critique repairs are not another comprehension assessment. Any further comprehension assessment requires a new explicit finite continuation; implementation approval or this historical paragraph supplies none.
+Comprehension has **no inner antagonistic subloop**: one direct plan-only assessment is the initial stage audit, and a second direct assessment after repair is its one permitted re-audit. A failed first comprehension followed by a clean second assessment can clear comprehension; it does not need two clean rounds. If the second assessment still has a blocking gap, stop: there is no ordinary third assessment and no inner five-round budget to borrow. This feature's five actual comprehension allowances are consumed. The attributed stage review record owns the individual authorizations, inputs, findings and final clean reading; later critique repairs are not another comprehension assessment. Any further comprehension assessment requires a new explicit finite continuation. Implementation approval does not supply it.
 
 At an exhausted outer allowance, inner five-round cap or churn stop, retain the actual findings/counts and send a specific host-governed continuation question to the captain. A continuation must name the stopped stage/invocation, which limit it extends, the pinned revised input and a finite additional review scope. Extending an inner cap does not extend the outer cap, and extending comprehension does not authorize critique/readiness or change their counters. Returning to drafting grants no additional review allowance by itself. Generated automatic-advance wording never clears unresolved blocking findings under project authority. Do not silently extend limits, treat a proposed repair as independent clearance or infer permission from implementation approval. A permissible risk decision is explicit and cannot fabricate a clean review, bypass an unresolved project blocker or grant merge/deployment authority.
 
@@ -94,7 +94,7 @@ For each later edit the author records an impact decision: changed requirement/d
 - English Markdown workflow documentation; no runtime/API/schema change.
 - Existing Spec Kit 1.2.5, EGM port 0.9.1 and local preset 0.2.0 stay installed unchanged.
 - Existing Astro application and npm lockfile/gate remain untouched.
-- Node baseline verified as v22.23.4; npm 10.9.9.
+- Required project Node baseline: v22.23.4 or newer, as specified by package.json. Actual validation records must identify the Node/npm environment used.
 - Verification: author runs `npm ci`, `npm run check`, then `npm run build && npm test`; hosted checks remain required. Applicable edited-test repeats remain unchanged; no test edit is planned.
 - No measured latency/cost target, new package, runner, nested agent, plugin or hook.
 
@@ -102,7 +102,7 @@ For each later edit the author records an impact decision: changed requirement/d
 
 Current constitution 1.0.0 requires five phases for this workflow change. Drafting canonical inputs is authorized, not policy activation. Design clearance is incomplete; an initial-phase report does not clear later phases. Canonical technical issue #39 was created with the specific creation consent; the old transition issue is not reused. One owner remains responsible. The approved exception changes the small-understood-correction rule only after review and integration; current significant-review authority is not bypassed.
 
-All hooks are empty and `auto_execute_hooks: false` remains unchanged; events remain disabled independently. No application or installed instruction-file changes are planned. Review records must name actual files, revisions/hashes, persona/standard, context exclusions, results and dispositions. This draft is not a completed review or executed test.
+Preserve `auto_execute_hooks: false` and independently disabled events; do not enable or execute automation as part of this change. No application or installed instruction-file changes are planned. Review records must name actual files, revisions/hashes, persona/standard, context exclusions, results and dispositions. This draft is not a completed review or executed test.
 
 ## Project Structure
 

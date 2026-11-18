@@ -1,6 +1,6 @@
 # Tasks: Minimal review routing
 
-**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-6, minimal-review-routing-v1
+**Source**: [spec.md](spec.md), [plan.md](plan.md), plan draft-7, minimal-review-routing-v1
 **Status**: Derived draft; refresh against final design before readiness
 **Canonical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39)
 **Implementation owner**: Assigned workflow implementer (single owner)
