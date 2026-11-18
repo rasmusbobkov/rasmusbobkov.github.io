@@ -1,7 +1,7 @@
 # Implementation Plan: Minimal review routing
 
 **Specification**: minimal-review-routing-v1
-**Plan revision**: draft-7
+**Plan revision**: draft-8
 **Status**: Design inputs only; policy implementation awaits five-phase clearance
 **Canonical technical issue**: [#39](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/39); distinct from closed #38
 **Implementation owner**: Assigned workflow implementer (single owner)
@@ -24,7 +24,7 @@ The first mate classifies impact from current accepted intent, not line count. N
 | Five design phases for every correction | Uniform design-stage coverage | Repeats design assessment of unchanged accepted decisions and adds required reviewer handoffs regardless of impact | Not selected; disproportionate for understood corrections, while significant changes retain all five |
 | Add overlapping EGM-Lite or external diff-review pipeline | Another implementation-review perspective | Duplicates the native committed-change/proof track and introduces extra orchestration; design review still cannot prove execution | Not selected; reuse the existing native track and installed port |
 
-These are qualitative coordination and responsibility trade-offs, not measured token, cost or latency savings. None of the options removes the full project gate or separate merge authority. Missing intent does not justify choosing the cheaper route; it stops reconciliation first.
+These are qualitative coordination and responsibility trade-offs, not measured token, cost or latency savings. None of the options removes the full project gate or separate merge authority. Missing intent does not justify choosing the cheaper route; affected work stops pending reconciliation.
 
 ## Review responsibilities
 
