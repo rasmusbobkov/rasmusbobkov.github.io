@@ -440,3 +440,7 @@ The workflow design completed five coordinated review stages with attributed fin
 ## Visual intent and evidence-led workflow continuation
 
 Extended the review-routing policy with current-version human visual acceptance before first Goldfish review, explicit per-story execution and proof, bounded agent-coordinated continuation and native pre-publication delivery control. Updated the constitution to 1.2.0 and reconciled the derived requirements-quality checklist. Installed methods, disabled hooks/events, historical decision 0010 and application behavior remain unchanged. Documentary design review is not operating proof; local feedback/resumption observations and current delivery checks remain pending, separately from post-integration real-route observations.
+
+## One complete clean planning round
+
+Constitution 1.3.0 and decision 0012 retain independent current coverage and replace automatic two-clean convergence for eligible new critique and readiness invocations. All five significant planning phases and the separate native implementation validation route remain. This change's own design scrutiny completed under the preceding two-clean rule; the earlier verdicts and counters remain intact. The directive applies prospectively after separately authorized integration and instruction alignment. Actual operating evidence remains separate; this entry claims neither activation nor deployment.

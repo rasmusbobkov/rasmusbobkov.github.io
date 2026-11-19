@@ -17,7 +17,7 @@
 - [x] T005 Obtain standalone comprehension of specs/003-single-clean-round/plan.md alone and preserve full paraphrase; resolve within initial-plus-one ordinary allowance or actual finite exception.
 - [x] T006 Obtain critique of specs/003-single-clean-round/plan.md high-level scope from design_critic.md, structural.md and style.md; retain current two-clean convergence, five inner rounds and one outer re-audit, independent repair closure and actual counters.
 - [x] T007 Obtain intermediate zoom out of specs/003-single-clean-round/plan.md with actual prior findings/dispositions from zoom_out.md.
-- [ ] T008 Obtain readiness of specs/003-single-clean-round/plan.md detailed scope from implementation_readiness.md, codebase_details.md and style.md. The assigned implementation_readiness.md reviewer alone applies Spec Kit analyze to the same pinned spec.md/plan.md/tasks.md, retaining separate consistency/coverage and design findings. Preserve current two-clean convergence, caps and independent closure.
+- [x] T008 Obtain readiness of specs/003-single-clean-round/plan.md detailed scope from implementation_readiness.md, codebase_details.md and style.md. The assigned implementation_readiness.md reviewer alone applies Spec Kit analyze to the same pinned spec.md/plan.md/tasks.md, retaining separate consistency/coverage and design findings. Preserve current two-clean convergence, caps and independent closure.
 
 Only the next input-ready phase is assigned. Missing/failed/stale reviewers, blocking findings, churn or exhausted authority stop affected clearance. Keep actual input versions/reads, ownership, statuses, reports, counters and original verdicts externally; no author self-clearance or counter reset.
 
@@ -27,23 +27,23 @@ Only the next input-ready phase is assigned. Missing/failed/stale reviewers, blo
 
 **Independent validation**: quickstart V1/V3; full three-role current coverage, attributed Nits, no automatic confirmation, no missing-role clearance.
 
-- [ ] T009 [US1] Add narrowly scoped project-authority planning convergence override and minor version advancement to .specify/memory/constitution.md after current design clearance.
-- [ ] T010 [US1] Replace active convergence explanation in docs/process/spec-kit-egm.md with one complete clean aggregate, required roles/standards, before-repair judgment and bounded failed-reviewer handling. Keep actual reads distinct from hashes, and a clean verdict distinct from convergence when another stop applies. Preserve implementation separation.
+- [x] T009 [US1] Add narrowly scoped project-authority planning convergence override and minor version advancement to .specify/memory/constitution.md after current design clearance.
+- [x] T010 [US1] Replace active convergence explanation in docs/process/spec-kit-egm.md with one complete clean aggregate, required roles/standards, before-repair judgment and bounded failed-reviewer handling. Keep actual reads distinct from hashes, and a clean verdict distinct from convergence when another stop applies. Preserve implementation separation.
 
 ## Phase 4: User Story 2 — Independent repair/current coverage
 
 **Independent validation**: quickstart V2/V3; failed verdict preserved, independent affected verification and every role's current applicability, material-edit reopening and justified contests.
 
-- [ ] T011 [US2] Document independent closure, repinning, affected verification, original reviewer confirmation of every retained portion, full current coverage for replacements, material-change invalidation and recurring findings in docs/process/spec-kit-egm.md, consistent with .specify/memory/constitution.md.
+- [x] T011 [US2] Document independent closure, repinning, affected verification, original reviewer confirmation of every retained portion, full current coverage for replacements, material-change invalidation and recurring findings in docs/process/spec-kit-egm.md, consistent with .specify/memory/constitution.md.
 
 ## Phase 5: User Story 3 — Finite authority and prospective transition
 
 **Independent validation**: quickstart V4/V5/V6/V8; all finite limits, question-driven review, protected history, invocation-start transition and future real-case gaps.
 
-- [ ] T012 [US3] Retain five-inner/one-outer accounting, immutable batch pins and slot charging at launch, comprehension allowance, retry/churn, question-driven extra review and full current coverage for a same-pin fifth-slot aggregate in docs/process/spec-kit-egm.md; document prospective integration/alignment and invocation-start rule pinning in that guide and .specify/memory/constitution.md.
-- [ ] T013 [US3] Add docs/decisions/0012-single-clean-round.md and docs/decisions/index.md entry, preserving prior decision bytes and narrow supersession. Distinguish the lost chance to catch unknown blind spots in a fresh sample from extra review of known questions.
-- [ ] T014 [US3] Add only minimal prospective forward references to specs/002-review-routing/spec.md, plan.md and quickstart.md; preserve its tasks and historical verdicts.
-- [ ] T015 [US3] Append factual history to RECORD.md without changing its existing prefix.
+- [x] T012 [US3] Retain five-inner/one-outer accounting, immutable batch pins and slot charging at launch, comprehension allowance, retry/churn, question-driven extra review and full current coverage for a same-pin fifth-slot aggregate in docs/process/spec-kit-egm.md; document prospective integration/alignment and invocation-start rule pinning in that guide and .specify/memory/constitution.md.
+- [x] T013 [US3] Add docs/decisions/0012-single-clean-round.md and docs/decisions/index.md entry, preserving prior decision bytes and narrow supersession. Distinguish the lost chance to catch unknown blind spots in a fresh sample from extra review of known questions.
+- [x] T014 [US3] Add only minimal prospective forward references to specs/002-review-routing/spec.md, plan.md and quickstart.md; preserve its tasks and historical verdicts.
+- [x] T015 [US3] Append factual history to RECORD.md without changing its existing prefix.
 
 ## Phase 6: Cross-cutting delivery
 

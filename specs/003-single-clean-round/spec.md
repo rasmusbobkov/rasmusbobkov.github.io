@@ -1,7 +1,7 @@
 # Feature Specification: One complete clean planning round
 
 **Feature Branch**: `inf/one-clean-planning-round-67ea`
-**Status**: Accepted intent transcribed for implementation; policy not effective
+**Status**: Accepted intent documented; delivery checks and dependent rollout remain pending
 **Specification**: single-clean-round-v1
 **Canonical issue**: [#41](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/41); #39 remains the earlier routing outcome.
 **Owner**: One assigned workflow implementer; the first mate coordinates independent reviews and dependent rollout.

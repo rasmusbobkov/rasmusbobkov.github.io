@@ -10,6 +10,8 @@
 
 Planning and implementation are separate tracks. Spec Kit → applicable Lavish visual-intent feedback → Goldfish prepares and reviews specifications and feature/bug plans under the existing zero/five classification. An understood correction with current accepted intent still needs no new EGM planning phase. Implementation follows first mate → native no-mistakes validation → PR: execute the accepted story, independently review the committed change, run criterion-specific and project checks, confirm documentation currency and obtain separate proof judgment before publication. Ordinary scope-preserving implementation repairs do not restart the planning track; changed intent returns to the affected planning step within actual authority. This distinction changes no finite allowance, consent, merge or deployment boundary and adds no external runner.
 
+For new critique/readiness invocations after separately authorized integration and instruction alignment, see [decision 0012](../../docs/decisions/0012-single-clean-round.md) for the convergence threshold. The two-clean rule described here remains historical or invocation-pinned; prior verdicts and counters do not change.
+
 ## User Scenarios & Testing
 
 ### User Story 1 — Correct understood defects without duplicate design review (P1)

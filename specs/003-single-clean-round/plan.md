@@ -32,7 +32,7 @@ Goals: one clear definition shared by critique/readiness; independent current co
 
 Integrated AGENTS, constitution and guide govern this work. This workflow change is significant, so it requires five planning phases. Native independent review is coordinated by the first mate, not self-review or nested dispatch. The specifically authorized canonical outcome issue is #41. No UI intent or external API/data contract is introduced.
 
-After design: the proposed override changes only planning convergence, with prospective integration/alignment and invocation-start pinning. Current two-clean requirements still govern this change's own critique/readiness. Required design clearance, committed-change/scenario judgment, ordered actual gate, separate proof and hosted checks remain pending, not assumed. No constitutional exception or self-waiver is proposed.
+After design: the proposed override changes only planning convergence, with prospective integration/alignment and invocation-start pinning. Current two-clean requirements still govern this change's own critique/readiness. Design clearance completed under the starting two-clean rule. Committed-change/scenario judgment, the ordered actual gate, separate proof and hosted checks remain pending. No constitutional exception or self-waiver is proposed.
 
 ## Project Structure and integration
 
