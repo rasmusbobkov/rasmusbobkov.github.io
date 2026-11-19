@@ -1,7 +1,7 @@
 # Implementation Plan: One complete clean planning round
 
 - **Branch**: `inf/one-clean-planning-round-67ea` | **Spec**: [spec.md](spec.md)
-- **Specification**: single-clean-round-v1 | **Plan revision**: draft-7
+- **Specification**: single-clean-round-v1 | **Plan revision**: draft-8
 - **Canonical issue**: [#41](https://github.com/rasmusbobkov/rasmusbobkov.github.io/issues/41); #39 remains the earlier routing outcome.
 - **Owner**: One assigned workflow implementer; independent native Codex reviewers are coordinated by the first mate.
 
@@ -96,6 +96,8 @@ Critique examines the high-level portion with its three roles. Intermediate zoom
 
 Record invocation, round, outer usage, failures, clean streak and stops. Critique/readiness need two consecutive complete clean rounds under the invocation-start rule; five inner rounds and one outer re-audit remain. Comprehension retains initial-plus-one ordinary allowance. No counter reset or blanket continuation past cap/churn. This real significant case contributes only actually completed stages to existing routing rollout evidence. The separate small-route gap requires a real authorized correction under current accepted intent, with known cause, bounded scope and expected result, and no significant trigger. In a fresh session, the first mate records actual merged method and direction reads, the classification and zero EGM planning assignments, plus the real native delivery review, checks and separate proof judgment. Do not invent a task for that observation, claim full routing proof from direction alignment, or treat it as the prospective one-clean operating case.
 
+**Prospective same-pin fifth-slot check.** If round 4 was complete and clean but a named question held progression, an authorized batch charged to slot 5 must produce its own complete current aggregate, even if the pin did not change. The independent question reviewer verifies the deciding signal in its assigned scope; it cannot fill the other roles. For every retained portion, its original independent reviewer must explicitly confirm applicability in round 5 to the same pinned bundle, the unchanged inputs and the impact of the answer. Do not require a full reread for confirmed unaffected coverage. If a role is replaced, the replacement must independently cover its full current role. Aggregate the three roles before repairs; converge only if round 5 is complete and clean and no stop remains. If any role coverage is missing, the answer is inconclusive or another required condition fails, record the slot as spent and stop at the cap. Preserve round 4's clean-but-held result without retroactive release. No sixth ordinary round, outer escape or waiver; see quickstart V4/V5. This is not the rule governing this change's current two-clean scrutiny.
+
 **PE-1 — Pre-edit story evidence checkpoint.** Before T009–T015, verify T008's complete independent readiness clearance. For each story, record its acceptance criteria, actual check method, derived task IDs, intended evidence location and owner. Use the matching spec, plan, tasks and quickstart scenarios. Distinguish deferred operating evidence and explicit exceptions from passing results. Retain the record in external task evidence and reference it in the execution handoff; hold policy edits if it or readiness clearance is missing. Recording the method does not execute a check.
 
 ### 3. Implement the narrow documentation override after design clearance
@@ -105,7 +107,7 @@ Operations are relative to the exact execution-start pin recorded in step 1, whe
 | Operation | Exact path | Authorized change |
 | --- | --- | --- |
 | Modify | `.specify/memory/constitution.md` | Advance the then-current minor version (1.2.0 to 1.3.0 if unchanged). Add the planning convergence override, current independent coverage, finite accounting and prospective transition. Preserve planning/implementation separation. |
-| Modify | `docs/process/spec-kit-egm.md` | Add the shared planning override and identify the displaced installed instruction. Retain roles, independent coverage and affected verification, retry, churn, outer/comprehension limits, question-driven review and launch authority. Preserve the five phases, single readiness analysis and separate implementation/proof/publication route. |
+| Modify | `docs/process/spec-kit-egm.md` | Add the shared planning override and identify the displaced installed instruction. Retain roles, independent coverage and affected verification, retry, churn, outer/comprehension limits, question-driven review and launch authority. Include the same-pin fifth-slot coverage and cap boundary from step 2. Preserve the five phases, single readiness analysis and separate implementation/proof/publication route. |
 | Create | `docs/decisions/0012-single-clean-round.md` | Record rationale, narrow override, trade-offs, protected scope and prospective rollout. Distinguish targeted questions from the risk of missing an unknown shared blind spot after losing a fresh sample. |
 | Modify | `docs/decisions/index.md` | Add 0012; qualify an older entry only if needed to prevent a competing rule, without broadening supersession. |
 | Modify | `RECORD.md` | Append one factual history entry; preserve the original byte prefix. |

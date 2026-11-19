@@ -40,7 +40,7 @@ Only the next input-ready phase is assigned. Missing/failed/stale reviewers, blo
 
 **Independent validation**: quickstart V4/V5/V6/V8; all finite limits, question-driven review, protected history, invocation-start transition and future real-case gaps.
 
-- [ ] T012 [US3] Retain five-inner/one-outer accounting, immutable batch pins and slot charging at launch, comprehension allowance, retry/churn and question-driven extra review in docs/process/spec-kit-egm.md; document prospective integration/alignment and invocation-start rule pinning in that guide and .specify/memory/constitution.md.
+- [ ] T012 [US3] Retain five-inner/one-outer accounting, immutable batch pins and slot charging at launch, comprehension allowance, retry/churn, question-driven extra review and full current coverage for a same-pin fifth-slot aggregate in docs/process/spec-kit-egm.md; document prospective integration/alignment and invocation-start rule pinning in that guide and .specify/memory/constitution.md.
 - [ ] T013 [US3] Add docs/decisions/0012-single-clean-round.md and docs/decisions/index.md entry, preserving prior decision bytes and narrow supersession. Distinguish the lost chance to catch unknown blind spots in a fresh sample from extra review of known questions.
 - [ ] T014 [US3] Add only minimal prospective forward references to specs/002-review-routing/spec.md, plan.md and quickstart.md; preserve its tasks and historical verdicts.
 - [ ] T015 [US3] Append factual history to RECORD.md without changing its existing prefix.
