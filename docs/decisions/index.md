@@ -16,3 +16,4 @@ This table is the only place a decision is listed; the record itself holds the r
 | [0009](0009-cookieless-measurement.md) | Measure three events with one cookieless counter, baked at build time | accepted |
 | [0010](0010-spec-kit-egm-workflow.md) | Use Spec Kit and EGM for the development workflow | accepted; bounded-correction phase rule superseded by 0011; other decisions retained |
 | [0011](0011-minimal-review-routing.md) | Omit EGM for understood corrections; retain significant design scrutiny and one native delivery-review track | accepted |
+| [0012](0012-single-clean-round.md) | Replace automatic two-clean convergence in eligible new critique and readiness invocations | accepted; prospective after authorized integration and instruction alignment |

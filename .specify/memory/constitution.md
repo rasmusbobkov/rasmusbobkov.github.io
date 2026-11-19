@@ -1,6 +1,6 @@
 # Tähelugu development constitution
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 
 ## Planning and implementation boundary
 
@@ -29,6 +29,12 @@ The project architecture and run/verify guide is [docs/architecture.md](../../do
 9. Obtain separate merge and deployment authority. Repository alignment, post-merge standing-direction reconciliation and real fresh-session both-route observations are distinct checkpoints. The first mate replaces the existing direction in place after authorized integration and coordinates unavailable launches/proof; conflicting instructions stop affected work until reconciled. Plans and reviews are not executed checks or rollout proof.
 
 Automatic EGM spawning, persona registration, nested delegation and a complete automated review loop are unproven. Do not replace them with self-review, a second runner, automatic hooks or event handlers. Host card and authority rules govern interaction when generated instructions conflict. Reconcile stale or missing specifications before work and report gaps rather than inventing success.
+
+### Planning convergence override
+
+For eligible new critique and implementation-readiness invocations, one complete clean aggregate meets the convergence threshold. This project rule displaces only the installed two-consecutive-clean threshold. All three required independent roles must complete with matching current coverage and no unresolved Blocker or Major; determine cleanliness before repairs. Keep attributed Nits and their dispositions. A clean verdict does not lift another stop. Author fixes never clear a failed round; obtain independent affected verification and explicit independent applicability for retained coverage as specified in the [integration guide](../../docs/process/spec-kit-egm.md#findings-limits-and-continuation). Keep the five inner slots, one outer re-audit, separate comprehension allowance, bounded failed-reviewer retry and churn stops. Unused slots confer no authority or transfer.
+
+Apply this override only to invocations started after separately authorized integration and verified alignment of the applicable standing direction. Record the effective rule and actual method/direction revisions at invocation start; stop affected work if they conflict or cannot be established. Underway invocations retain their starting rule and counters. This change's own planning used the preceding two-clean rule. The override does not change review routing, implementation validation, publication gates or consent. See [decision 0012](../../docs/decisions/0012-single-clean-round.md).
 
 ## Verification
 
