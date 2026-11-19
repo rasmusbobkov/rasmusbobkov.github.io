@@ -17,7 +17,7 @@ A planning coordinator ends critique or readiness at its first complete clean ag
 **Independent Test**: Independently apply the rule to a complete current three-person aggregate and verify that no automatic confirmation is required. Before activation this is a labelled rule walkthrough, not an observed live invocation.
 
 **Acceptance Scenarios**:
-1. Given all three required reviewers completed on matching current inputs without unresolved Blocker/Major, when the coordinator aggregates their results before repairs, then the phase converges after that one clean round.
+1. Given all three required reviewers completed on matching current inputs without unresolved Blocker/Major, when the coordinator aggregates their results before repairs, then record one clean round. It converges under the new rule only if no separate stop applies. If a named unresolved question still stops progression, keep the aggregate clean and record the hold separately.
 2. Given only attributed Nit findings, when they receive explicit dispositions, then they remain nonblocking and do not trigger automatic confirmation.
 3. Given a missing, failed, unavailable or stale reviewer, mismatched readiness trilogy or unresolved blocking finding, when results are aggregated, then affected clearance stops; absence is not zero findings.
 
@@ -30,7 +30,7 @@ A coordinator retains a failed result, obtains independent affected verification
 
 **Acceptance Scenarios**:
 1. Given a failed round, when the author repairs and repins inputs, then the original round remains failed and the repair is not review.
-2. Given independent affected verification plus each unaffected reviewer's explicit applicability confirmation against the current bundle and delta, when the complete aggregate is clean, then it can converge without another confirmation.
+2. Given independent affected verification plus each unaffected reviewer's explicit applicability confirmation against the current bundle and delta, when the complete aggregate is clean and no separate stop applies, then it can converge without an automatic confirmation.
 3. Given material later edits or uncertain impact, when coverage is assessed, then affected coverage and prior phase judgments reopen; uncertain scope broadens review or stops for reconciliation.
 4. Given a recurring fixed issue, when an independent reviewer raises it again, then it reopens. A justified independent contest remains attributed; an accepted-risk label cannot waive a required condition.
 
@@ -56,7 +56,7 @@ A clean aggregate cannot drop an unresolved named risk question to finish. An af
 ### Functional Requirements
 
 - **FR-001 — Required aggregate**: Critique retains design, structural and style; readiness retains implementation-readiness, codebase-details and style. Each independent reviewer declares persona, applicable standard, semantic scope, actual reads and matching current inputs. Exactly one assigned readiness reviewer analyzes the matching spec/plan/tasks in its report, separating analysis from design findings.
-- **FR-002 — Clean and converged**: One complete aggregate with no unresolved Blocker/Major converges. Determine cleanliness before repairs. Keep Nit attribution, affected scope and disposition separately; Nits alone need no confirmation. Missing/failed/unavailable/stale review is not zero findings. Preserve existing failed-reviewer handling, including its one bounded retry; never substitute author self-review.
+- **FR-002 — Clean and converged**: Determine cleanliness before repairs: a complete aggregate with no unresolved Blocker/Major is clean. One such aggregate meets the prospective convergence threshold, but an applicable separate stop still holds progression. Keep Nit attribution, affected scope and disposition separately; Nits alone need no confirmation. Missing/failed/unavailable/stale review is not zero findings. Preserve existing failed-reviewer handling, including its one bounded retry; never substitute author self-review.
 - **FR-003 — Independent closure**: Author dispositions or fixes are not independent clearance. Required fixes receive independent affected verification on repinned inputs. Preserve failed verdicts. Reopen recurring fixed findings. Contests require concrete permitted-input counter-evidence and independent agreement; preserve exception and accepted-risk boundaries without manufacturing cleanliness.
 - **FR-004 — Current coverage**: Review affected decisions, findings, scenarios and explanations independently. Retain unaffected coverage only when its independent reviewer explicitly confirms applicability to the current pinned bundle and delta. Every role needs current coverage. Material changes invalidate affected coverage and prior phase judgments; uncertain impact broadens affected review or stops for reconciliation.
 - **FR-005 — Question-driven extra review**: Record the high-consequence uncertainty/conflict, evidence, deciding question, affected scope, independent reviewer, expected signal and stopping condition. Use actual remaining allowance and launch authority. Unresolved questions remain stops; do not order a generic second clean round for confidence.
@@ -76,8 +76,8 @@ A clean aggregate cannot drop an unresolved named risk question to finish. An af
 
 ### Measurable Outcomes
 
-- **SC-001**: A complete clean-first three-person aggregate finishes in one round without automatic confirmation; identities, reads, hashes and findings remain attributable.
-- **SC-002**: A failed/repair/independently verified sequence finishes at its first complete clean current aggregate while every original failed verdict remains unchanged.
+- **SC-001**: With no separate stop, a complete clean-first three-person aggregate finishes in one round without automatic confirmation. Otherwise retain the clean verdict and record the stop. Identities, reads, hashes and findings remain attributable.
+- **SC-002**: When no separate stop applies, a failed/repair/independently verified sequence finishes at its first complete clean current aggregate while every original failed verdict remains unchanged.
 - **SC-003**: Missing/stale review, mismatched trilogy, unresolved blocking findings and material later edits each prevent affected clearance; Nit-only findings remain attributed and nonblocking.
 - **SC-004**: Fifth-round, outer-limit, comprehension and churn decisions retain separate finite accounting, no hidden sixth round and no drafting reset.
 - **SC-005**: Every extra review has its named high-consequence question/conflict, current inputs, allowance and deciding signal; no unresolved question is silently dropped.
